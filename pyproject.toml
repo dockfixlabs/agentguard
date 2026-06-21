@@ -1,0 +1,51 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.backends._legacy:_Backend"
+
+[project]
+name = "agentguard"
+version = "0.1.0"
+description = "Autonomous security scanner for AI agents — detects prompt injection, tool abuse, data exfiltration, and OWASP ASI Top 10 vulnerabilities."
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.10"
+authors = [{name = "Dockfix Labs", email = "security@dockfixlabs.dev"}]
+keywords = ["ai-security", "agent-security", "owasp-asi", "prompt-injection", "mcp", "static-analysis", "llm-security"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Security",
+    "Topic :: Software Development :: Quality Assurance",
+]
+dependencies = [
+    "click>=8.1",
+    "rich>=13.0",
+    "pydantic>=2.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=7.0", "pytest-cov", "ruff"]
+mcp = ["mcp>=0.9"]
+
+[project.scripts]
+agentguard = "agentguard.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/dockfixlabs/agentguard"
+Documentation = "https://github.com/dockfixlabs/agentguard#readme"
+Issues = "https://github.com/dockfixlabs/agentguard/issues"
+"Security Policy" = "https://github.com/dockfixlabs/agentguard/blob/main/SECURITY.md"
+
+[tool.setuptools.packages.find]
+where = ["."]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
