@@ -7,7 +7,7 @@ name = "dfx-agentguard"
 version = "0.2.0"
 description = "Autonomous security scanner for AI agents — detects prompt injection, tool abuse, data exfiltration, and OWASP ASI Top 10 vulnerabilities."
 readme = "README.md"
-license = {text = "MIT"}
+license = "MIT"
 requires-python = ">=3.10"
 authors = [{name = "Dockfix Labs", email = "security@dockfixlabs.dev"}]
 keywords = ["ai-security", "agent-security", "owasp-asi", "prompt-injection", "mcp", "static-analysis", "llm-security"]
