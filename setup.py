@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="agentguard",
+    name="dfx-agentguard",
     version="0.2.0",
     description="Autonomous security scanner for AI agents — detects prompt injection, tool abuse, data exfiltration, and OWASP ASI Top 10 vulnerabilities.",
     long_description=open("README.md").read(),

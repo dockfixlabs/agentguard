@@ -3,7 +3,7 @@ requires = ["setuptools>=68.0", "wheel"]
 build-backend = "setuptools.backends._legacy:_Backend"
 
 [project]
-name = "agentguard"
+name = "dfx-agentguard"
 version = "0.1.0"
 description = "Autonomous security scanner for AI agents — detects prompt injection, tool abuse, data exfiltration, and OWASP ASI Top 10 vulnerabilities."
 readme = "README.md"

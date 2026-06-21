@@ -26,7 +26,7 @@ Existing tools (Bandit, Semgrep, CodeQL) scan for traditional vulnerabilities. A
 ## Quick Start
 
 ```bash
-pip install agentguard
+pip install dfx-agentguard
 
 # Scan a directory
 agentguard .
@@ -87,7 +87,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: pip install agentguard
+      - run: pip install dfx-agentguard
       - run: agentguard . --format sarif > results.sarif
       - uses: github/codeql-action/upload-sarif@v3
         with:
