@@ -63,12 +63,12 @@ Options:
 | ASI01 | Prompt Injection | ✅ |
 | ASI02 | Tool Abuse / Unintended Tool Use | ✅ |
 | ASI03 | Data Exfiltration / Sensitive Data Leakage | ✅ |
-| ASI04 | Unauthorized Actions / Excessive Agency | 🚧 |
-| ASI05 | Supply Chain / Untrusted Components | 🚧 |
+| ASI04 | Unauthorized Actions / Excessive Agency | ✅ |
+| ASI05 | Supply Chain / Untrusted Components | ✅ |
 | ASI06 | Insecure Output Handling | ✅ |
 | ASI07 | Credential / Secret Exposure | ✅ |
 | ASI08 | Context Window Manipulation | ✅ |
-| ASI09 | Agent Loop Exploitation | 🚧 |
+| ASI09 | Agent Loop Exploitation | ✅ |
 | ASI10 | Trust Boundary Violation | ✅ |
 
 ## CI/CD Integration
@@ -144,12 +144,35 @@ Flags missing token limits, unbounded context accumulation, and large files load
 ### ASI10 — Trust Boundary Violation
 Detects agents running as root, host filesystem access, self-modifying code, and direct database access with user input.
 
+## MCP Server Mode
+
+Scan agent code directly from Claude Code, Cursor, or any MCP-compatible client:
+
+```json
+// ~/.claude/claude_code_config.json
+{
+  "mcpServers": {
+    "agentguard": {
+      "command": "python3",
+      "args": ["-m", "agentguard.mcp_server"]
+    }
+  }
+}
+```
+
+Then ask Claude: *"Scan my agent code for security vulnerabilities"*
+
+### MCP Tools
+- `scan_agent_code` — Scan a directory/file for vulnerabilities
+- `list_rules` — List all detection rules and OWASP mapping
+- `get_finding_details` — Get remediation guidance for a specific rule
+
 ## Roadmap
 
-- [ ] ASI04 — Excessive Agency detection (permission scope analysis)
-- [ ] ASI05 — Supply Chain analysis (dependency vulnerability mapping)
-- [ ] ASI09 — Agent loop exploitation detection
-- [ ] MCP server mode — scan from Claude/Cursor
+- [x] OWASP ASI Top 10 — all 10 categories covered
+- [x] MCP server mode — scan from Claude Code/Cursor
+- [x] SARIF output — GitHub Code Scanning integration
+- [ ] PyPI publication
 - [ ] Semantic analysis with LLM-assisted code review
 - [ ] Language support: Rust, Go, Java
 - [ ] VS Code extension
