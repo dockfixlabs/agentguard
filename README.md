@@ -173,11 +173,16 @@ Then ask Claude: *"Scan my agent code for security vulnerabilities"*
 - [x] OWASP ASI Top 10 — all 10 categories covered
 - [x] MCP server mode — scan from Claude Code/Cursor
 - [x] SARIF output — GitHub Code Scanning integration
-- [ ] PyPI publication
-- [ ] Semantic analysis with LLM-assisted code review
+- [x] PyPI publication — [`dfx-agentguard`](https://pypi.org/project/dfx-agentguard/)
+- [x] VS Code extension — [AgentGuard VS Code](https://github.com/dockfixlabs/agentguard-vscode)
+- [x] GitHub App for automated PR reviews — [AgentGuard App](https://github.com/dockfixlabs/agentguard-app)
+- [x] Benchmark suite — [AgentGuard Benchmark](https://github.com/dockfixlabs/agentguard-benchmark)
+- [ ] Semantic analysis with LLM-assisted code review — [v0.3.0](https://github.com/dockfixlabs/agentguard/issues/4)
+- [ ] GitHub Action (drop-in CI/CD) — [v0.3.0](https://github.com/dockfixlabs/agentguard/issues/5)
+- [ ] Pre-commit hook
 - [ ] Language support: Rust, Go, Java
-- [ ] VS Code extension
-- [ ] GitHub App for automated PR reviews
+
+See the full [ROADMAP.md](ROADMAP.md).
 
 ## Contributing
 
