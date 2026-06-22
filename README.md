@@ -2,6 +2,7 @@
 
 > **Autonomous security scanner for AI agents.** Detects prompt injection, tool abuse, data exfiltration, and OWASP ASI Top 10 vulnerabilities in agent code.
 
+[![PyPI](https://img.shields.io/pypi/v/dfx-agentguard?style=flat-square&logo=pypi&logoColor=white&color=1f6feb)](https://pypi.org/project/dfx-agentguard/)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10+-3776AB?style=flat-square&logo=python&logoColor=white)](https://python.org)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
 [![CI](https://img.shields.io/badge/CI-GitHub%20Actions-2088FF?style=flat-square&logo=github-actions&logoColor=white)](https://github.com/dockfixlabs/agentguard/actions)
