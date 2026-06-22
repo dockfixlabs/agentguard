@@ -6,7 +6,7 @@ from agentguard.models import Finding, OWASP_ASI, Rule, Severity
 
 # Sending data to external URLs
 EXFIL_URL = re.compile(
-    r'(?:requests\.(?:post|put|get)|fetch|axios|http\.request|urllib)\s*\(\s*[f"\']https?://(?!localhost|127\.0\.0\.1|0\.0\.0\.0)',
+    r'(?:requests\.(?:post|put|get)|fetch|axios|http\.request|urllib)\s*\(\s*(?:f["\']|["\'])https?://(?!localhost|127\.0\.0\.1|0\.0\.0\.0)',
     re.I
 )
 
