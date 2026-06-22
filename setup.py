@@ -25,7 +25,6 @@ setup(
     keywords=["ai-security", "agent-security", "owasp-asi", "prompt-injection", "mcp", "static-analysis", "llm-security"],
     classifiers=[
         "Development Status :: 3 - Alpha",
-        "License :: OSI Approved :: MIT License",
         "Programming Language :: Python :: 3",
         "Topic :: Security",
     ],
