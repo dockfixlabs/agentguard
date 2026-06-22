@@ -1,4 +1,4 @@
-#  AgentGuard
+﻿# AgentGuard
 
 > **Autonomous security scanner for AI agents.** Detects prompt injection, tool abuse, data exfiltration, and OWASP ASI Top 10 vulnerabilities in agent code.
 
@@ -12,7 +12,7 @@
 
 ## Why AgentGuard?
 
-AI agents are being deployed at scale " in coding tools, customer support, trading bots, and autonomous systems. **Nobody is scanning their code for security vulnerabilities.**
+AI agents are being deployed at scale - in coding tools, customer support, trading bots, and autonomous systems. **Nobody is scanning their code for security vulnerabilities.**
 
 Existing tools (Bandit, Semgrep, CodeQL) scan for traditional vulnerabilities. AgentGuard scans for **agent-specific** attack vectors:
 
@@ -20,9 +20,9 @@ Existing tools (Bandit, Semgrep, CodeQL) scan for traditional vulnerabilities. A
 - " **Tool Abuse** " agents with unrestricted shell/exec access
 - " **Data Exfiltration** " agents leaking data to external URLs
 - "' **Credential Exposure** " hardcoded API keys and wallet seeds
--  **Unsafe Eval** " `eval()`, `exec()`, `subprocess(shell=True)` with user input
--  **Context Manipulation** " unbounded context window attacks
--  **Trust Boundary Violations** " agents running as root, accessing host filesystem
+- **Unsafe Eval** " `eval()`, `exec()`, `subprocess(shell=True)` with user input
+- **Context Manipulation** " unbounded context window attacks
+- **Trust Boundary Violations** " agents running as root, accessing host filesystem
 
 ## Quick Start
 
@@ -48,13 +48,13 @@ agentguard . --min-severity HIGH
 agentguard [OPTIONS] [TARGET]
 
 Arguments:
-  TARGET  Directory or file to scan (default: current directory)
+ TARGET Directory or file to scan (default: current directory)
 
 Options:
-  --format [text|json|sarif]  Output format (default: text)
-  --exit-code / --no-exit-code  Exit non-zero if findings found (default: on)
-  --min-severity [CRITICAL|HIGH|MEDIUM|LOW|INFO]  Minimum severity to report
-  --help  Show help
+ --format [text|json|sarif] Output format (default: text)
+ --exit-code / --no-exit-code Exit non-zero if findings found (default: on)
+ --min-severity [CRITICAL|HIGH|MEDIUM|LOW|INFO] Minimum severity to report
+ --help Show help
 ```
 
 ## OWASP ASI Top 10 Coverage
@@ -81,29 +81,29 @@ name: Security Scan
 on: [push, pull_request]
 
 jobs:
-  agentguard:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-      - run: pip install dfx-agentguard
-      - run: agentguard . --format sarif > results.sarif
-      - uses: github/codeql-action/upload-sarif@v3
-        with:
-          sarif_file: results.sarif
+ agentguard:
+ runs-on: ubuntu-latest
+ steps:
+ - uses: actions/checkout@v4
+ - uses: actions/setup-python@v5
+ with:
+ python-version: '3.12'
+ - run: pip install dfx-agentguard
+ - run: agentguard . --format sarif > results.sarif
+ - uses: github/codeql-action/upload-sarif@v3
+ with:
+ sarif_file: results.sarif
 ```
 
 ### Pre-commit Hook
 
 ```yaml
 repos:
-  - repo: https://github.com/dockfixlabs/agentguard
-    rev: v0.1.0
-    hooks:
-      - id: agentguard
-        args: ["--min-severity", "HIGH"]
+ - repo: https://github.com/dockfixlabs/agentguard
+ rev: v0.1.0
+ hooks:
+ - id: agentguard
+ args: ["--min-severity", "HIGH"]
 ```
 
 ## Programmatic Usage
@@ -119,7 +119,7 @@ print(f"Critical: {result.critical_count}")
 print(f"High: {result.high_count}")
 
 for finding in result.findings:
-    print(f"  [{finding.severity}] {finding.rule_name} at {finding.file}:{finding.line}")
+ print(f" [{finding.severity}] {finding.rule_name} at {finding.file}:{finding.line}")
 ```
 
 ## Detection Rules
@@ -152,12 +152,12 @@ Scan agent code directly from Claude Code, Cursor, or any MCP-compatible client:
 ```json
 // ~/.claude/claude_code_config.json
 {
-  "mcpServers": {
-    "agentguard": {
-      "command": "python3",
-      "args": ["-m", "agentguard.mcp_server"]
-    }
-  }
+ "mcpServers": {
+ "agentguard": {
+ "command": "python3",
+ "args": ["-m", "agentguard.mcp_server"]
+ }
+ }
 }
 ```
 
