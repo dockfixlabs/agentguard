@@ -1,4 +1,4 @@
-# 🛡️ AgentGuard
+﻿# ًں›،ï¸ڈ AgentGuard
 
 > **Autonomous security scanner for AI agents.** Detects prompt injection, tool abuse, data exfiltration, and OWASP ASI Top 10 vulnerabilities in agent code.
 
@@ -12,17 +12,17 @@
 
 ## Why AgentGuard?
 
-AI agents are being deployed at scale — in coding tools, customer support, trading bots, and autonomous systems. **Nobody is scanning their code for security vulnerabilities.**
+AI agents are being deployed at scale â€” in coding tools, customer support, trading bots, and autonomous systems. **Nobody is scanning their code for security vulnerabilities.**
 
 Existing tools (Bandit, Semgrep, CodeQL) scan for traditional vulnerabilities. AgentGuard scans for **agent-specific** attack vectors:
 
-- 📥 **Prompt Injection** — untrusted input reaching LLM prompts
-- 🔧 **Tool Abuse** — agents with unrestricted shell/exec access
-- 📤 **Data Exfiltration** — agents leaking data to external URLs
-- 🔑 **Credential Exposure** — hardcoded API keys and wallet seeds
-- ⚡ **Unsafe Eval** — `eval()`, `exec()`, `subprocess(shell=True)` with user input
-- 🧠 **Context Manipulation** — unbounded context window attacks
-- 🏰 **Trust Boundary Violations** — agents running as root, accessing host filesystem
+- ًں“¥ **Prompt Injection** â€” untrusted input reaching LLM prompts
+- ًں”§ **Tool Abuse** â€” agents with unrestricted shell/exec access
+- ًں“¤ **Data Exfiltration** â€” agents leaking data to external URLs
+- ًں”‘ **Credential Exposure** â€” hardcoded API keys and wallet seeds
+- âڑ، **Unsafe Eval** â€” `eval()`, `exec()`, `subprocess(shell=True)` with user input
+- ًں§  **Context Manipulation** â€” unbounded context window attacks
+- ًںڈ° **Trust Boundary Violations** â€” agents running as root, accessing host filesystem
 
 ## Quick Start
 
@@ -61,16 +61,16 @@ Options:
 
 | ID | Vulnerability | Status |
 |----|--------------|--------|
-| ASI01 | Prompt Injection | ✅ |
-| ASI02 | Tool Abuse / Unintended Tool Use | ✅ |
-| ASI03 | Data Exfiltration / Sensitive Data Leakage | ✅ |
-| ASI04 | Unauthorized Actions / Excessive Agency | ✅ |
-| ASI05 | Supply Chain / Untrusted Components | ✅ |
-| ASI06 | Insecure Output Handling | ✅ |
-| ASI07 | Credential / Secret Exposure | ✅ |
-| ASI08 | Context Window Manipulation | ✅ |
-| ASI09 | Agent Loop Exploitation | ✅ |
-| ASI10 | Trust Boundary Violation | ✅ |
+| ASI01 | Prompt Injection | âœ… |
+| ASI02 | Tool Abuse / Unintended Tool Use | âœ… |
+| ASI03 | Data Exfiltration / Sensitive Data Leakage | âœ… |
+| ASI04 | Unauthorized Actions / Excessive Agency | âœ… |
+| ASI05 | Supply Chain / Untrusted Components | âœ… |
+| ASI06 | Insecure Output Handling | âœ… |
+| ASI07 | Credential / Secret Exposure | âœ… |
+| ASI08 | Context Window Manipulation | âœ… |
+| ASI09 | Agent Loop Exploitation | âœ… |
+| ASI10 | Trust Boundary Violation | âœ… |
 
 ## CI/CD Integration
 
@@ -124,25 +124,25 @@ for finding in result.findings:
 
 ## Detection Rules
 
-### ASI01 — Prompt Injection
+### ASI01 â€” Prompt Injection
 Detects untrusted user input being concatenated into LLM prompts via f-strings, `.format()`, or string concatenation.
 
-### ASI02 — Tool Abuse
+### ASI02 â€” Tool Abuse
 Flags agents with access to `exec()`, `subprocess`, `os.system()`, shell tools, unrestricted tool registration, and missing rate limits.
 
-### ASI03 — Data Exfiltration
+### ASI03 â€” Data Exfiltration
 Detects outbound HTTP requests to external URLs, webhook configurations, DNS exfiltration patterns, and secret+network correlation.
 
-### ASI06 — Unsafe Eval
+### ASI06 â€” Unsafe Eval
 Flags `eval()`, `exec()`, `compile()` with user input, `pickle.load()`, `yaml.load()` without SafeLoader, `subprocess(shell=True)`.
 
-### ASI07 — Credential Exposure
+### ASI07 â€” Credential Exposure
 Detects hardcoded API keys (sk-, ghp_, AKIA), private keys, connection strings with passwords, and crypto wallet seeds.
 
-### ASI08 — Context Manipulation
+### ASI08 â€” Context Manipulation
 Flags missing token limits, unbounded context accumulation, and large files loaded directly into LLM context.
 
-### ASI10 — Trust Boundary Violation
+### ASI10 â€” Trust Boundary Violation
 Detects agents running as root, host filesystem access, self-modifying code, and direct database access with user input.
 
 ## MCP Server Mode
@@ -164,21 +164,21 @@ Scan agent code directly from Claude Code, Cursor, or any MCP-compatible client:
 Then ask Claude: *"Scan my agent code for security vulnerabilities"*
 
 ### MCP Tools
-- `scan_agent_code` — Scan a directory/file for vulnerabilities
-- `list_rules` — List all detection rules and OWASP mapping
-- `get_finding_details` — Get remediation guidance for a specific rule
+- `scan_agent_code` â€” Scan a directory/file for vulnerabilities
+- `list_rules` â€” List all detection rules and OWASP mapping
+- `get_finding_details` â€” Get remediation guidance for a specific rule
 
 ## Roadmap
 
-- [x] OWASP ASI Top 10 — all 10 categories covered
-- [x] MCP server mode — scan from Claude Code/Cursor
-- [x] SARIF output — GitHub Code Scanning integration
-- [x] PyPI publication — [`dfx-agentguard`](https://pypi.org/project/dfx-agentguard/)
-- [x] VS Code extension — [AgentGuard VS Code](https://github.com/dockfixlabs/agentguard-vscode)
-- [x] GitHub App for automated PR reviews — [AgentGuard App](https://github.com/dockfixlabs/agentguard-app)
-- [x] Benchmark suite — [AgentGuard Benchmark](https://github.com/dockfixlabs/agentguard-benchmark)
-- [ ] Semantic analysis with LLM-assisted code review — [v0.3.0](https://github.com/dockfixlabs/agentguard/issues/4)
-- [ ] GitHub Action (drop-in CI/CD) — [v0.3.0](https://github.com/dockfixlabs/agentguard/issues/5)
+- [x] OWASP ASI Top 10 â€” all 10 categories covered
+- [x] MCP server mode â€” scan from Claude Code/Cursor
+- [x] SARIF output â€” GitHub Code Scanning integration
+- [x] PyPI publication â€” [`dfx-agentguard`](https://pypi.org/project/dfx-agentguard/)
+- [x] VS Code extension â€” [AgentGuard VS Code](https://github.com/dockfixlabs/agentguard-vscode)
+- [x] GitHub App for automated PR reviews â€” [AgentGuard App](https://github.com/dockfixlabs/agentguard-app)
+- [x] Benchmark suite â€” [AgentGuard Benchmark](https://github.com/dockfixlabs/agentguard-benchmark)
+- [ ] Semantic analysis with LLM-assisted code review â€” [v0.3.0](https://github.com/dockfixlabs/agentguard/issues/4)
+- [ ] GitHub Action (drop-in CI/CD) â€” [v0.3.0](https://github.com/dockfixlabs/agentguard/issues/5)
 - [ ] Pre-commit hook
 - [ ] Language support: Rust, Go, Java
 
@@ -190,11 +190,11 @@ See [CONTRIBUTING.md](CONTRIBUTING.md). Bug reports and feature requests welcome
 
 ## Security
 
-See [SECURITY.md](SECURITY.md). Report vulnerabilities privately — do not open public issues.
+See [SECURITY.md](SECURITY.md). Report vulnerabilities privately â€” do not open public issues.
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+MIT â€” see [LICENSE](LICENSE).
 
 ---
 
