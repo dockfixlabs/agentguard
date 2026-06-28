@@ -1,4 +1,4 @@
-"""ASI07: Credential Leak — detects hardcoded secrets and credential exposure."""
+"""ASI07: Credential Leak -- detects hardcoded secrets and credential exposure."""
 
 from __future__ import annotations
 import re
@@ -7,9 +7,11 @@ from agentguard.models import Finding, OWASP_ASI, Rule, Severity
 # Hardcoded API keys (common patterns)
 API_KEY_PATTERNS = [
     re.compile(r'(?:api_key|apikey|api-key)\s*[:=]\s*["\'][a-zA-Z0-9_-]{20,}["\']', re.I),
-    re.compile(r'(?:sk-|pk-|rk-|ghp_|gho_|ghs_|ghr_|ghu_)[a-zA-Z0-9]{20,}', re.I),
-    re.compile(r'AKIA[0-9A-Z]{16}', re.I),  # AWS
+    re.compile(r'(?:sk-|pk-|rk-|ghp_|gho_|ghs_|ghr_|ghu_)[a-zA-Z0-9_-]{20,}', re.I),
+    re.compile(r'AKIA[0-9A-Z]{16}', re.I),  # AWS access key
     re.compile(r'(?:Bearer|Token)\s+[a-zA-Z0-9._-]{20,}', re.I),
+    re.compile(r'xox[baprs]-[a-zA-Z0-9-]{10,}', re.I),  # Slack tokens
+    re.compile(r'AIza[0-9A-Za-z_-]{35}', re.I),  # Google API key
 ]
 
 # Private keys
@@ -24,8 +26,14 @@ PASSWORD = re.compile(r'(?:password|passwd|pwd)\s*[:=]\s*["\'][^"\']{4,}["\']', 
 # Wallet private keys (crypto)
 WALLET_KEY = re.compile(r'(?:private_key|priv_key|seed|mnemonic)\s*[:=]\s*["\'][a-zA-Z0-9]{32,}["\']', re.I)
 
-# .env in code (not in .env file)
+# .env file access in code (not .env file itself)
 ENV_IN_CODE = re.compile(r'\.env\s*(?:\[|\.get|\.getenv|\[)', re.I)
+
+# Generic secret variable assignment (high-entropy strings)
+GENERIC_SECRET = re.compile(
+    r'(?:secret|token|credential|auth_key|access_key)\s*[:=]\s*["\'][a-zA-Z0-9_-]{32,}["\']',
+    re.I
+)
 
 
 class CredentialLeakRule(Rule):
@@ -49,6 +57,7 @@ class CredentialLeakRule(Rule):
         if stripped.startswith("#") or stripped.startswith("//"):
             return findings
 
+        # Check API key patterns
         for pattern in API_KEY_PATTERNS:
             if pattern.search(stripped):
                 findings.append(Finding(
@@ -59,12 +68,13 @@ class CredentialLeakRule(Rule):
                     file=file,
                     line=line_num,
                     snippet=redact(stripped),
-                    description="Hardcoded API key detected — credential in source code",
+                    description="Hardcoded API key detected -- credential in source code",
                     recommendation="Use environment variables or a secret manager. Never commit credentials. Rotate any exposed keys immediately.",
                     confidence=0.95,
                 ))
                 break
 
+        # Check private key
         if PRIVATE_KEY.search(stripped):
             findings.append(Finding(
                 rule_id=self.rule_id,
@@ -74,11 +84,12 @@ class CredentialLeakRule(Rule):
                 file=file,
                 line=line_num,
                 snippet="***REDACTED PRIVATE KEY***",
-                description="Private key in source code — immediate credential compromise",
+                description="Private key in source code -- immediate credential compromise",
                 recommendation="Remove immediately. Rotate the key. Use secret manager or HSM for private keys.",
                 confidence=0.99,
             ))
 
+        # Check connection strings
         if CONN_STRING.search(stripped):
             findings.append(Finding(
                 rule_id=self.rule_id,
@@ -88,11 +99,12 @@ class CredentialLeakRule(Rule):
                 file=file,
                 line=line_num,
                 snippet=redact(stripped),
-                description="Connection string with embedded credentials — password in URL",
+                description="Connection string with embedded credentials -- password in URL",
                 recommendation="Use separate host, user, and password parameters from environment variables. Never embed credentials in connection URLs.",
                 confidence=0.9,
             ))
 
+        # Check wallet keys
         if WALLET_KEY.search(stripped):
             findings.append(Finding(
                 rule_id=self.rule_id,
@@ -102,9 +114,54 @@ class CredentialLeakRule(Rule):
                 file=file,
                 line=line_num,
                 snippet="***REDACTED WALLET KEY***",
-                description="Crypto wallet private key or seed phrase in code — fund theft risk",
+                description="Crypto wallet private key or seed phrase in code -- fund theft risk",
                 recommendation="Remove immediately. Move funds to a new wallet. Never store private keys in code.",
                 confidence=0.99,
+            ))
+
+        # Check hardcoded passwords
+        if PASSWORD.search(stripped):
+            findings.append(Finding(
+                rule_id=self.rule_id,
+                rule_name=self.rule_name,
+                severity=Severity.HIGH,
+                owasp=self.owasp,
+                file=file,
+                line=line_num,
+                snippet=redact(stripped),
+                description="Hardcoded password in source code",
+                recommendation="Use environment variables or a secret manager. Never commit passwords.",
+                confidence=0.85,
+            ))
+
+        # Check generic secret assignments
+        if GENERIC_SECRET.search(stripped):
+            findings.append(Finding(
+                rule_id=self.rule_id,
+                rule_name=self.rule_name,
+                severity=Severity.HIGH,
+                owasp=self.owasp,
+                file=file,
+                line=line_num,
+                snippet=redact(stripped),
+                description="Hardcoded secret or token in source code",
+                recommendation="Use environment variables or a secret manager. Never commit secrets.",
+                confidence=0.8,
+            ))
+
+        # Check .env access in code
+        if ENV_IN_CODE.search(stripped):
+            findings.append(Finding(
+                rule_id=self.rule_id,
+                rule_name=self.rule_name,
+                severity=Severity.MEDIUM,
+                owasp=self.owasp,
+                file=file,
+                line=line_num,
+                snippet=stripped[:200],
+                description="Environment file access in code -- ensure .env is gitignored",
+                recommendation="Verify .env is in .gitignore. Prefer os.environ.get() with defaults over .env file parsing in production code.",
+                confidence=0.5,
             ))
 
         return findings
@@ -112,7 +169,7 @@ class CredentialLeakRule(Rule):
 
 def redact(text: str) -> str:
     """Redact potential secrets from display text."""
-    text = re.sub(r'(sk-|pk-|ghp_|gho_)[a-zA-Z0-9]+', r'\1****REDACTED****', text)
+    text = re.sub(r'(sk-|pk-|ghp_|gho_)[a-zA-Z0-9_-]+', r'\1****REDACTED****', text)
     text = re.sub(r'(["\'])[a-zA-Z0-9_-]{20,}(["\'])', r'\1****REDACTED****\2', text)
     text = re.sub(r':[a-zA-Z0-9_-]{8,}@', ':****REDACTED****@', text)
     return text

@@ -1,0 +1,8 @@
+- id: agentguard
+  name: AgentGuard Security Scan
+  description: Scan AI agent code for OWASP ASI Top 10 vulnerabilities
+  entry: agentguard
+  language: python
+  types: [python, javascript, typescript]
+  args: ["--format", "text"]
+  require_serial: true

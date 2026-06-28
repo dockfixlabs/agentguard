@@ -6,10 +6,9 @@ import sys
 from pathlib import Path
 
 import click
-from rich.console import Console
 
 from agentguard.scanner import scan_directory
-from agentguard.reporter import print_report, json_report, sarif_report
+from agentguard.reporter import print_report, json_report, sarif_report, _make_console
 
 
 @click.command()
@@ -43,7 +42,7 @@ def main(target: str, output_format: str, exit_code: bool, min_severity: str) ->
         agentguard . --format sarif     # SARIF for CI/CD
         agentguard . --min-severity HIGH  # Only HIGH+ findings
     """
-    console = Console()
+    console = _make_console()
     result = scan_directory(target)
 
     # Filter by severity

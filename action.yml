@@ -1,0 +1,36 @@
+name: "AgentGuard Security Scan"
+description: "Scan AI agent code for OWASP ASI Top 10 vulnerabilities -- prompt injection, tool abuse, data exfiltration, credential exposure, and more."
+branding:
+  icon: "shield"
+  color: "blue"
+inputs:
+  path:
+    description: "Directory or file to scan"
+    required: false
+    default: "."
+  format:
+    description: "Output format: text, json, or sarif"
+    required: false
+    default: "sarif"
+  min-severity:
+    description: "Minimum severity to report: CRITICAL, HIGH, MEDIUM, LOW, INFO"
+    required: false
+    default: "INFO"
+  fail-on-finding:
+    description: "Fail the workflow if findings are found"
+    required: false
+    default: "true"
+runs:
+  using: "composite"
+  steps:
+    - name: Install AgentGuard
+      run: pip install dfx-agentguard
+      shell: bash
+    - name: Run AgentGuard scan
+      run: |
+        args="--format ${{ inputs.format }} --min-severity ${{ inputs.min-severity }}"
+        if [ "${{ inputs.fail-on-finding }}" = "false" ]; then
+          args="$args --no-exit-code"
+        fi
+        agentguard ${{ inputs.path }} $args
+      shell: bash
