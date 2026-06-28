@@ -4,12 +4,18 @@ from __future__ import annotations
 
 import json
 import sys
+import os
 
 from agentguard.models import ScanResult, Severity
 from rich.console import Console
 from rich.panel import Panel
 from rich.table import Table
 from rich.text import Text
+
+try:
+    from agentguard import __version__
+except ImportError:
+    __version__ = "unknown"
 
 
 SEVERITY_COLORS = {
@@ -20,24 +26,36 @@ SEVERITY_COLORS = {
     Severity.INFO: "dim",
 }
 
-SEVERITY_ICONS = {
-    Severity.CRITICAL: "🔴",
-    Severity.HIGH: "🟠",
-    Severity.MEDIUM: "🟡",
-    Severity.LOW: "🔵",
-    Severity.INFO: "⚪",
+# ASCII-only labels (no emoji — crashes on Windows cp1256)
+SEVERITY_LABELS = {
+    Severity.CRITICAL: "[!]",
+    Severity.HIGH: "[H]",
+    Severity.MEDIUM: "[M]",
+    Severity.LOW: "[L]",
+    Severity.INFO: "[i]",
 }
+
+
+def _make_console() -> Console:
+    """Create a Console that works on all platforms including Windows."""
+    # On Windows with non-UTF encodings, force UTF-8 output
+    if sys.platform == "win32":
+        try:
+            sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+        except (AttributeError, OSError):
+            pass
+    return Console(force_terminal=True if not sys.stdout.isatty() else None)
 
 
 def print_report(result: ScanResult, console: Console | None = None) -> None:
     """Print a rich, human-readable scan report."""
     if console is None:
-        console = Console()
+        console = _make_console()
 
     # Header
     console.print()
     console.print(Panel.fit(
-        f"[bold cyan]AgentGuard[/bold cyan] — AI Agent Security Scan\n"
+        f"[bold cyan]AgentGuard[/bold cyan] - AI Agent Security Scan\n"
         f"Target: [white]{result.target}[/white]\n"
         f"Files scanned: [white]{result.files_scanned}[/white]\n"
         f"Duration: [white]{result.scan_duration_ms}ms[/white]",
@@ -47,16 +65,16 @@ def print_report(result: ScanResult, console: Console | None = None) -> None:
     # Summary
     summary = Table(show_header=False, box=None, padding=(0, 2))
     summary.add_row(
-        f"🔴 Critical: {result.critical_count}",
-        f"🟠 High: {result.high_count}",
-        f"🟡 Medium: {result.medium_count}",
-        f"🔵 Low: {result.low_count}",
+        f"[bold red]CRITICAL: {result.critical_count}[/bold red]",
+        f"[red]HIGH: {result.high_count}[/red]",
+        f"[yellow]MEDIUM: {result.medium_count}[/yellow]",
+        f"[blue]LOW: {result.low_count}[/blue]",
     )
     console.print(summary)
     console.print()
 
     if result.clean:
-        console.print("[bold green]✓ No vulnerabilities found.[/bold green]")
+        console.print("[bold green]No vulnerabilities found.[/bold green]")
         console.print()
         return
 
@@ -68,19 +86,18 @@ def print_report(result: ScanResult, console: Console | None = None) -> None:
         title="Findings",
     )
     table.add_column("#", style="dim", width=4)
-    table.add_column("Severity", width=10)
+    table.add_column("Severity", width=12)
     table.add_column("OWASP", width=8)
     table.add_column("Rule", width=25)
     table.add_column("File:Line", width=30)
     table.add_column("Description")
 
     for i, f in enumerate(result.findings, 1):
-        sev_str = f"{SEVERITY_ICONS[f.severity]} {f.severity.value}"
+        sev_str = f"{SEVERITY_LABELS[f.severity]} {f.severity.value}"
         color = SEVERITY_COLORS[f.severity]
 
         file_line = f"{f.file}:{f.line}"
         if len(file_line) > 28:
-            # Truncate path
             parts = file_line.split("/")
             if len(parts) > 2:
                 file_line = ".../" + "/".join(parts[-2:])
@@ -88,7 +105,7 @@ def print_report(result: ScanResult, console: Console | None = None) -> None:
         table.add_row(
             str(i),
             Text(sev_str, style=color),
-            f.owasp.value if f.owasp else "—",
+            f.owasp.value if f.owasp else "-",
             f.rule_name,
             file_line,
             f.description,
@@ -104,7 +121,7 @@ def print_report(result: ScanResult, console: Console | None = None) -> None:
         key = f.rule_id
         if key not in seen:
             seen.add(key)
-            console.print(f"  • [{SEVERITY_COLORS[f.severity]}]{f.rule_name}[/{SEVERITY_COLORS[f.severity]}]: {f.recommendation}")
+            console.print(f"  [{SEVERITY_COLORS[f.severity]}]{f.rule_name}[/{SEVERITY_COLORS[f.severity]}]: {f.recommendation}")
     console.print()
 
 
@@ -122,7 +139,7 @@ def sarif_report(result: ScanResult) -> str:
             "tool": {
                 "driver": {
                     "name": "AgentGuard",
-                    "version": "0.1.0",
+                    "version": __version__,
                     "informationUri": "https://github.com/dockfixlabs/agentguard",
                 }
             },

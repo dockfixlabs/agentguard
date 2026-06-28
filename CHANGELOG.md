@@ -36,3 +36,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Programmatic Python API
 - CI/CD integration ready
 - 10 test cases
+## [0.2.1] - 2026-06-28
+
+### Fixed
+- Critical: CredentialLeakRule had scan_line instead of scan_content — rule was never invoked
+- Critical: EXFIL_URL regex now matches f-strings (was missing in v0.2.0 PyPI release)
+- Reporter: replaced emoji with ASCII labels to fix Windows cp1256 crash
+- SARIF report version now uses __version__ instead of hardcoded 0.1.0

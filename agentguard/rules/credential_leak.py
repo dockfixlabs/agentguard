@@ -34,7 +34,16 @@ class CredentialLeakRule(Rule):
     severity = Severity.CRITICAL
     owasp = OWASP_ASI.ASI07
 
-    def scan_line(self, line: str, line_num: int, file: str) -> list[Finding]:
+    def scan_content(self, content: str, file: str) -> list[Finding]:
+        findings = []
+        lines = content.splitlines()
+
+        for i, line in enumerate(lines, 1):
+            findings.extend(self._scan_line(line, i, file))
+
+        return findings
+
+    def _scan_line(self, line: str, line_num: int, file: str) -> list[Finding]:
         findings = []
         stripped = line.strip()
         if stripped.startswith("#") or stripped.startswith("//"):
