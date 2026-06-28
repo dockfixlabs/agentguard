@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "dfx-agentguard"
-version = "0.3.1"
+version = "0.3.2"
 description = "Autonomous security scanner for AI agents — detects prompt injection, tool abuse, data exfiltration, and OWASP ASI Top 10 vulnerabilities."
 readme = "README.md"
 license = "MIT"
