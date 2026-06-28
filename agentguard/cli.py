@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import sys
-from pathlib import Path
 
 import click
 
@@ -30,20 +29,28 @@ from agentguard.reporter import print_report, json_report, sarif_report, _make_c
     default="INFO",
     help="Minimum severity to report (default: INFO = all)",
 )
-def main(target: str, output_format: str, exit_code: bool, min_severity: str) -> None:
-    """AgentGuard — Scan AI agent code for security vulnerabilities.
+@click.option(
+    "--include-tests",
+    is_flag=True,
+    default=False,
+    help="Include test files and directories in scan (default: skip tests)",
+)
+def main(target: str, output_format: str, exit_code: bool, min_severity: str,
+         include_tests: bool) -> None:
+    """AgentGuard -- Scan AI agent code for security vulnerabilities.
 
     TARGET: Directory or file to scan (default: current directory)
 
     Examples:
 
-        agentguard .                    # Scan current directory
-        agentguard src/ --format json   # JSON output
-        agentguard . --format sarif     # SARIF for CI/CD
-        agentguard . --min-severity HIGH  # Only HIGH+ findings
+        agentguard .                        # Scan current directory
+        agentguard src/ --format json       # JSON output
+        agentguard . --format sarif         # SARIF for CI/CD
+        agentguard . --min-severity HIGH    # Only HIGH+ findings
+        agentguard . --include-tests        # Include test files
     """
     console = _make_console()
-    result = scan_directory(target)
+    result = scan_directory(target, include_tests=include_tests)
 
     # Filter by severity
     severity_order = ["CRITICAL", "HIGH", "MEDIUM", "LOW", "INFO"]

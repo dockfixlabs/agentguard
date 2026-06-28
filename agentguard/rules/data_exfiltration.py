@@ -22,9 +22,9 @@ AXIOS_EXFIL = re.compile(
     re.I
 )
 
-# URL variable assignment to external host
+# URL variable assignment to external host (excluding known API providers)
 URL_VAR_ASSIGN = re.compile(
-    r'(?:url|endpoint|host|server|webhook_url|callback_url|api_url|base_url)\s*[:=]\s*(?:f["\']|["\'])https?://(?!localhost|127\.0\.0\.1|0\.0\.0\.0)',
+    r'(?:url|endpoint|host|server|webhook_url|callback_url|api_url|base_url)\s*[:=]\s*(?:f["\']|["\'])https?://(?!localhost|127\.0\.0\.1|0\.0\.0\.0|api\.openai\.com|api\.anthropic\.com|generativelanguage\.googleapis\.com|api\.groq\.com|api\.together\.xyz|api\.mistral\.ai|api\.cohere\.ai|api\.deepseek\.com|api\.xai\.com)',
     re.I
 )
 
