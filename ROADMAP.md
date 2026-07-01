@@ -1,6 +1,6 @@
 # Roadmap
 
-## v0.3.x (Current -- June 2026)
+## v0.5.x (Current -- July 2026)
 - [x] Complete OWASP ASI Top 10 coverage (10/10)
 - [x] MCP server mode
 - [x] SARIF output for CI/CD
@@ -8,17 +8,18 @@
 - [x] PyPI package (dfx-agentguard) -- Trusted Publishing (OIDC)
 - [x] VS Code extension
 - [x] GitHub App for PR reviews
-- [x] Benchmark suite (28 samples)
+- [x] Benchmark suite (32 samples)
 - [x] Pre-commit hook (.pre-commit-hooks.yaml)
 - [x] GitHub Action (action.yml)
 - [x] Dockerfile for agentguard-app
 - [x] 100% detection rate, 0% false positives on benchmark
-- [x] Test suite: 26 tests covering all OWASP ASI categories
-- [x] Dev.to publication (3 articles)
+- [x] Test suite: 50 tests covering all OWASP ASI categories
+- [x] Dev.to publication (6 articles)
+- [x] AST-based taint tracking for Python (v0.5.0)
+- [x] AST-based taint tracking for JavaScript/TypeScript (v0.5.2)
+- [x] Adversarial hardening: 10/10 real-world attacks detected (v0.5.1)
 
-## v0.4.0 (Q3 2026)
-- [x] AST-based taint tracking for Python (v0.5.0 -- traces source-to-sink data flow)
-- [ ] AST-based taint tracking for JavaScript/TypeScript
+## v0.6.0 (Q3 2026)
 - [ ] Rust language support
 - [ ] Go language support
 - [ ] Java language support
