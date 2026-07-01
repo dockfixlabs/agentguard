@@ -20,7 +20,7 @@ Existing tools (Bandit, Semgrep, CodeQL) scan for traditional vulnerabilities. A
 
 | Feature | AgentGuard | Semgrep | CodeQL | Bandit |
 |---------|-----------|---------|--------|--------|
-| Prompt Injection (ASI01) | Yes | No | No | No |
+| Prompt Injection (ASI01) | Yes + AST taint | No | No | No |
 | Tool Abuse (ASI02) | Yes | No | No | Partial |
 | Data Exfiltration (ASI03) | Yes | No | No | No |
 | Excessive Agency (ASI04) | Yes | No | No | No |
@@ -30,6 +30,7 @@ Existing tools (Bandit, Semgrep, CodeQL) scan for traditional vulnerabilities. A
 | Context Manipulation (ASI08) | Yes | No | No | No |
 | Agent Loop Exploitation (ASI09) | Yes | No | No | No |
 | Trust Boundary (ASI10) | Yes | No | No | No |
+| AST Taint Tracking | Yes | No | No | No |
 | OWASP ASI Top 10 Coverage | 10/10 | 1/10 | 1/10 | 2/10 |
 | MCP Server Mode | Yes | No | No | No |
 | SARIF Output | Yes | Yes | Yes | No |
