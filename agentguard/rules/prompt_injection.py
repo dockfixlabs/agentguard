@@ -6,12 +6,12 @@ from agentguard.models import Finding, OWASP_ASI, Rule, Severity
 
 # Patterns that indicate untrusted data reaching prompt construction
 PATTERNS = [
-    # Direct user input in prompt strings
-    (re.compile(r'(?:prompt|system_prompt|messages)\s*(?:\+?=|\bformat\b|\bf\b)\s*.*(?:input|user_input|user_request|request\.\w|query|user_message|user_msg|user_content)', re.I),
+    # Direct user input in prompt strings -- use word boundaries, exclude string literals
+    (re.compile(r'(?:prompt|system_prompt|messages)\s*(?:\+?=|\bformat\b|\bf\b)\s*.*(?:\buser_input\b|\buser_request\b|request\.\w+\b|\buser_query\b|\buser_message\b|\buser_msg\b|\buser_content\b|\binput_data\b)', re.I),
      "Untrusted input concatenated into prompt -- prompt injection vector",
      Severity.CRITICAL, 0.9),
-    # f-string prompt construction with user data
-    (re.compile(r'f["\'].*(?:system|assistant|user|prompt).*\{.*(?:input|user|request|query|message|content|msg).*\}', re.I),
+    # f-string prompt construction with user data -- use word boundaries
+    (re.compile(r'f["\'].*(?:system|assistant|user|prompt).*\{.*(?:\buser_input\b|\buser_msg\b|\buser_message\b|\brequest\b|\buser_query\b|\binput_data\b).*\}', re.I),
      "f-string prompt with user-controlled variable -- prompt injection via format string",
      Severity.CRITICAL, 0.85),
     # .format() on prompt templates with user data
