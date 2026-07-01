@@ -10,6 +10,7 @@ from agentguard.rules.credential_leak import CredentialLeakRule
 from agentguard.rules.context_manipulation import ContextManipulationRule
 from agentguard.rules.agent_loop import AgentLoopRule
 from agentguard.rules.trust_boundary import TrustBoundaryRule
+from agentguard.rules.taint_tracking import TaintTrackingRule
 
 ALL_RULES = [
     PromptInjectionRule(),
@@ -22,4 +23,5 @@ ALL_RULES = [
     ContextManipulationRule(),
     AgentLoopRule(),
     TrustBoundaryRule(),
+    TaintTrackingRule(),
 ]

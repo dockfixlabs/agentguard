@@ -380,3 +380,83 @@ client = openai.OpenAI(api_key=key)
     findings = scan_file(f)
     # Should have 0 findings - this is safe
     assert len(findings) == 0, f"Should not flag safe env access, got {len(findings)} findings"
+
+
+# --- AST taint tracking tests ---
+
+def test_taint_direct_flow(tmp_path):
+    """Taint tracker should detect direct source-to-sink flow."""
+    f = tmp_path / "agent.py"
+    f.write_text('''
+user_input = request.args.get("q")
+prompt = f"Summarize: {user_input}"
+''')
+    findings = scan_file(f)
+    taint = [x for x in findings if "TAINT" in x.rule_id]
+    assert len(taint) > 0, "Should detect taint flow from request to prompt"
+
+
+def test_taint_indirect_format(tmp_path):
+    """Taint tracker should detect .format() with tainted data."""
+    f = tmp_path / "agent.py"
+    f.write_text('''
+query = request.json.get("query")
+template = "Answer: {q}"
+prompt = template.format(q=query)
+''')
+    findings = scan_file(f)
+    taint = [x for x in findings if "TAINT" in x.rule_id]
+    assert len(taint) > 0, "Should detect taint via .format()"
+
+
+def test_taint_multi_hop(tmp_path):
+    """Taint tracker should follow multi-hop variable assignments."""
+    f = tmp_path / "agent.py"
+    f.write_text('''
+user_input = request.args.get("message")
+processed = user_input.strip()
+prompt = f"You are helpful. {processed}"
+''')
+    findings = scan_file(f)
+    taint = [x for x in findings if "TAINT" in x.rule_id]
+    assert len(taint) > 0, "Should detect multi-hop taint (user_input -> processed -> prompt)"
+
+
+def test_taint_sanitized_not_flagged(tmp_path):
+    """Sanitized input should not be flagged as tainted."""
+    f = tmp_path / "agent.py"
+    f.write_text('''
+user_input = request.args.get("q")
+safe_input = str(user_input)[:100]
+prompt = f"Query: {safe_input}"
+''')
+    findings = scan_file(f)
+    taint = [x for x in findings if "TAINT" in x.rule_id]
+    assert len(taint) == 0, "Should not flag sanitized input"
+
+
+def test_taint_safe_prompt_not_flagged(tmp_path):
+    """Hardcoded prompts with no user input should not be flagged."""
+    f = tmp_path / "agent.py"
+    f.write_text('''
+prompt = "What is the weather?"
+response = openai.chat.completions.create(model="gpt-4", messages=[{"role":"user","content":prompt}])
+''')
+    findings = scan_file(f)
+    taint = [x for x in findings if "TAINT" in x.rule_id]
+    assert len(taint) == 0, "Should not flag hardcoded prompts"
+
+
+def test_taint_messages_array(tmp_path):
+    """Taint tracker should detect tainted data in messages array."""
+    f = tmp_path / "agent.py"
+    f.write_text('''
+user_msg = request.json.get("message")
+messages = [
+    {"role": "system", "content": "You are helpful."},
+    {"role": "user", "content": user_msg}
+]
+''')
+    findings = scan_file(f)
+    taint = [x for x in findings if "TAINT" in x.rule_id]
+    assert len(taint) > 0, "Should detect taint in messages array"
