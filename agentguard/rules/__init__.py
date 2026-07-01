@@ -11,6 +11,7 @@ from agentguard.rules.context_manipulation import ContextManipulationRule
 from agentguard.rules.agent_loop import AgentLoopRule
 from agentguard.rules.trust_boundary import TrustBoundaryRule
 from agentguard.rules.taint_tracking import TaintTrackingRule
+from agentguard.rules.js_taint_tracking import JSTaintTrackingRule
 
 ALL_RULES = [
     PromptInjectionRule(),
@@ -24,4 +25,5 @@ ALL_RULES = [
     AgentLoopRule(),
     TrustBoundaryRule(),
     TaintTrackingRule(),
+    JSTaintTrackingRule(),
 ]

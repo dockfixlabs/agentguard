@@ -521,3 +521,58 @@ messages = [
     findings = scan_file(f)
     taint = [x for x in findings if "TAINT" in x.rule_id]
     assert len(taint) > 0, "Should detect taint in messages array"
+
+
+# --- JS/TS taint tracking tests ---
+
+def test_js_taint_direct_prompt(tmp_path):
+    """JS taint tracker should detect direct source-to-sink flow."""
+    f = tmp_path / "agent.js"
+    f.write_text('''
+const userInput = req.query.get("message");
+const prompt = `You are helpful. ${userInput}`;
+''')
+    findings = scan_file(f)
+    taint = [x for x in findings if "JS-TAINT" in x.rule_id]
+    assert len(taint) > 0, "Should detect JS taint flow"
+
+
+def test_js_taint_llm_call(tmp_path):
+    """JS taint tracker should detect tainted var in LLM API call."""
+    f = tmp_path / "agent.js"
+    f.write_text('''
+const userMsg = request.body.message;
+const response = await openai.chat.completions.create({
+  messages: [{ role: "user", content: userMsg }]
+});
+''')
+    findings = scan_file(f)
+    taint = [x for x in findings if "JS-TAINT" in x.rule_id]
+    assert len(taint) > 0, "Should detect tainted var in JS LLM call"
+
+
+def test_js_taint_safe_const_not_flagged(tmp_path):
+    """JS taint tracker should not flag hardcoded prompts."""
+    f = tmp_path / "agent.js"
+    f.write_text('''
+const prompt = "What is the weather?";
+const response = await openai.chat.completions.create({
+  messages: [{ role: "user", content: prompt }]
+});
+''')
+    findings = scan_file(f)
+    taint = [x for x in findings if "JS-TAINT" in x.rule_id]
+    assert len(taint) == 0, "Should not flag hardcoded JS prompt"
+
+
+def test_js_taint_sanitized_not_flagged(tmp_path):
+    """JS taint tracker should not flag sanitized input."""
+    f = tmp_path / "agent.js"
+    f.write_text('''
+const userInput = req.query.get("q");
+const safe = String(userInput).slice(0, 100);
+const prompt = `Query: ${safe}`;
+''')
+    findings = scan_file(f)
+    taint = [x for x in findings if "JS-TAINT" in x.rule_id]
+    assert len(taint) == 0, "Should not flag sanitized JS input"
