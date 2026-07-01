@@ -70,6 +70,12 @@ SUBPROCESS_EXFIL = re.compile(
     re.I
 )
 
+# WebSocket exfiltration
+WEBSOCKET_EXFIL = re.compile(
+    r'(?:websocket|ws)\.\s*(?:create_connection|send|connect)\s*\(\s*(?:f["\']|["\'])wss?://',
+    re.I
+)
+
 
 class DataExfiltrationRule(Rule):
     rule_id = "ASI03-DATA-EXFIL"
@@ -239,6 +245,21 @@ class DataExfiltrationRule(Rule):
                     description="Subprocess calling curl/wget to external URL -- exfiltration via shell",
                     recommendation="Never pass user-controlled data to subprocess calls. Use safe HTTP libraries with URL validation.",
                     confidence=0.85,
+                ))
+
+            # WebSocket exfiltration
+            if WEBSOCKET_EXFIL.search(stripped):
+                findings.append(Finding(
+                    rule_id=self.rule_id,
+                    rule_name=self.rule_name,
+                    severity=Severity.HIGH,
+                    owasp=self.owasp,
+                    file=file,
+                    line=i,
+                    snippet=stripped[:200],
+                    description="WebSocket connection to external server -- potential exfiltration channel",
+                    recommendation="Whitelist allowed WebSocket endpoints. Monitor WebSocket traffic for data exfiltration.",
+                    confidence=0.75,
                 ))
 
         # Cross-line correlation: secret access + network call on adjacent lines

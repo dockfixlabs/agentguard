@@ -59,9 +59,11 @@ def should_scan(path: Path, include_tests: bool = False) -> bool:
     return True
 
 
-def scan_file(file_path: Path) -> list[Finding]:
+def scan_file(file_path: Path | str) -> list[Finding]:
     """Scan a single file with all rules."""
     findings: list[Finding] = []
+
+    file_path = Path(file_path)
 
     try:
         content = file_path.read_text(encoding="utf-8", errors="ignore")

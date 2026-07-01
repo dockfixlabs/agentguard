@@ -4,15 +4,15 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "dfx-agentguard"
-version = "0.5.0"
-description = "Autonomous security scanner for AI agents — detects prompt injection, tool abuse, data exfiltration, and OWASP ASI Top 10 vulnerabilities."
+version = "0.5.1"
+description = "Autonomous security scanner for AI agents. Detects prompt injection, tool abuse, data exfiltration, and OWASP ASI Top 10 vulnerabilities."
 readme = "README.md"
 license = "MIT"
 requires-python = ">=3.10"
 authors = [{name = "Dockfix Labs", email = "security@dockfixlabs.dev"}]
 keywords = ["ai-security", "agent-security", "owasp-asi", "prompt-injection", "mcp", "static-analysis", "llm-security"]
 classifiers = [
-    "Development Status :: 3 - Alpha",
+    "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
     "Intended Audience :: Information Technology",
     "Operating System :: OS Independent",

@@ -4,9 +4,10 @@ from __future__ import annotations
 import re
 from agentguard.models import Finding, OWASP_ASI, Rule, Severity
 
-# Dangerous tool patterns
+# Dangerous tool patterns -- subprocess alone is fine, shell=True or os.system is not
 DANGEROUS_TOOLS = re.compile(
-    r'(?:exec|eval|subprocess|os\.system|os\.popen|os\.exec|os\.spawn|'
+    r'(?:\bexec\s*\(|\beval\s*\(|os\.system\s*\(|os\.popen\s*\(|os\.exec\w*\s*\(|os\.spawn\w*\s*\(|'
+    r'subprocess\.\w+.*shell\s*=\s*True|'
     r'child_process|run_command|shell_exec|popen|pty\.spawn|commands\.)',
     re.I
 )

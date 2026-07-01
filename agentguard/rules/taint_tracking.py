@@ -17,6 +17,8 @@ SOURCE_PATTERNS = {
     "user_input", "user_msg", "user_message", "user_query",
     "request", "req", "input_data", "query", "message",
     "prompt_input", "chat_input", "msg",
+    "result", "tool_result", "tool_output", "response_text",
+    "search_result", "web_result", "api_response",
 }
 
 # Source attribute access patterns (e.g., request.args.get("q"))

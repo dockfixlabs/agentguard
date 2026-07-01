@@ -7,7 +7,7 @@ from agentguard.models import Finding, OWASP_ASI, Rule, Severity
 # Patterns that indicate untrusted data reaching prompt construction
 PATTERNS = [
     # Direct user input in prompt strings
-    (re.compile(r'(?:prompt|system_prompt|messages)\s*(?:\+?=|\bformat\b|\bf\b)\s*.*(?:input|user_input|request|query|message|content)', re.I),
+    (re.compile(r'(?:prompt|system_prompt|messages)\s*(?:\+?=|\bformat\b|\bf\b)\s*.*(?:input|user_input|user_request|request\.\w|query|user_message|user_msg|user_content)', re.I),
      "Untrusted input concatenated into prompt -- prompt injection vector",
      Severity.CRITICAL, 0.9),
     # f-string prompt construction with user data
