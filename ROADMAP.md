@@ -17,7 +17,7 @@
 - [x] Dev.to publication (3 articles)
 
 ## v0.4.0 (Q3 2026)
-- [ ] AST-based taint tracking for Python (beyond regex)
+- [x] AST-based taint tracking for Python (v0.5.0 -- traces source-to-sink data flow)
 - [ ] AST-based taint tracking for JavaScript/TypeScript
 - [ ] Rust language support
 - [ ] Go language support

@@ -203,7 +203,7 @@ TOTAL            28         26    100%     0
 - [x] GitHub Action (action.yml)
 - [x] Dockerfile for agentguard-app
 - [x] PyPI Trusted Publishing (OIDC)
-- [ ] AST-based taint tracking (v0.5.0)
+- [x] AST-based taint tracking (v0.5.0) -- traces source-to-sink data flow
 - [ ] Language support: Rust, Go, Java
 - [ ] Web dashboard (SaaS)
 - [ ] REST API (Scan-as-a-Service)
