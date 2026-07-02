@@ -23,7 +23,6 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "Topic :: Security",
     "Topic :: Software Development :: Quality Assurance",
-    "License :: OSI Approved :: MIT License",
 ]
 dependencies = [
     "click>=8.1",
