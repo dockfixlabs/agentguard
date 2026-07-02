@@ -32,5 +32,10 @@ runs:
         if [ "${{ inputs.fail-on-finding }}" = "false" ]; then
           ARGS="$ARGS --no-exit-code"
         fi
-        agentguard ${{ inputs.path }} $ARGS
+        if [ "${{ inputs.format }}" = "sarif" ]; then
+          agentguard ${{ inputs.path }} $ARGS > agentguard-results.sarif 2>&1 || true
+          cat agentguard-results.sarif
+        else
+          agentguard ${{ inputs.path }} $ARGS
+        fi
       shell: bash
