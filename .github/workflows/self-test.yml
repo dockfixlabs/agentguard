@@ -1,0 +1,26 @@
+﻿name: AgentGuard Self-Test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run AgentGuard
+        uses: dockfixlabs/agentguard@v1
+        with:
+          path: .
+          format: json
+          min-severity: HIGH
+          fail-on-finding: false
+      - name: Run AgentGuard (SARIF)
+        uses: dockfixlabs/agentguard@v1
+        with:
+          path: .
+          format: sarif
+          min-severity: HIGH
+          fail-on-finding: false
