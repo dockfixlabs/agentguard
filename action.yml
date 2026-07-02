@@ -13,11 +13,11 @@ inputs:
     required: false
     default: "sarif"
   min-severity:
-    description: "Minimum severity to report: CRITICAL, HIGH, MEDIUM, LOW, INFO"
+    description: "Minimum severity to report: critical, high, medium, low, info"
     required: false
-    default: "INFO"
+    default: "info"
   fail-on-finding:
-    description: "Fail the workflow if findings are found"
+    description: "Fail the workflow if findings are found (true/false)"
     required: false
     default: "true"
 runs:
@@ -28,9 +28,9 @@ runs:
       shell: bash
     - name: Run AgentGuard scan
       run: |
-        args="--format ${{ inputs.format }} --min-severity ${{ inputs.min-severity }}"
+        ARGS="--format ${{ inputs.format }} --min-severity ${{ inputs.min-severity }}"
         if [ "${{ inputs.fail-on-finding }}" = "false" ]; then
-          args="$args --no-exit-code"
+          ARGS="$ARGS --no-exit-code"
         fi
-        agentguard ${{ inputs.path }} $args
+        agentguard ${{ inputs.path }} $ARGS
       shell: bash
