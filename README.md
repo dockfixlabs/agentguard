@@ -1,4 +1,4 @@
-# AgentGuard
+﻿# AgentGuard
 
 > Autonomous security scanner for AI agents. Detects prompt injection, tool abuse, data exfiltration, and OWASP ASI Top 10 vulnerabilities in agent code.
 
@@ -36,6 +36,11 @@ Existing tools (Bandit, Semgrep, CodeQL) scan for traditional vulnerabilities. A
 | SARIF Output | Yes | Yes | Yes | No |
 | Pre-commit Hook | Yes | Yes | No | No |
 | GitHub Action | Yes | Yes | Yes | No |
+
+## Live Demo
+
+See AgentGuard in action on the [demo repo](https://github.com/dockfixlabs/agentguard-demo). The CI runs AgentGuard on every push, and findings appear in GitHub Code Scanning.
+
 
 ## Quick Start
 
