@@ -1,5 +1,5 @@
 name: "AgentGuard Security Scan"
-description: "Scan AI agent code for OWASP ASI Top 10 vulnerabilities -- prompt injection, tool abuse, data exfiltration, credential exposure, and more."
+description: "Scan AI agent code for OWASP ASI Top 10 vulnerabilities"
 branding:
   icon: "shield"
   color: "blue"
