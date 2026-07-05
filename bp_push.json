@@ -1,0 +1,4 @@
+{
+    "enforce_admins":  true,
+    "required_status_checks":  null
+}

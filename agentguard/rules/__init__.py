@@ -12,6 +12,7 @@ from agentguard.rules.agent_loop import AgentLoopRule
 from agentguard.rules.trust_boundary import TrustBoundaryRule
 from agentguard.rules.taint_tracking import TaintTrackingRule
 from agentguard.rules.js_taint_tracking import JSTaintTrackingRule
+from agentguard.rules.interprocedural import InterproceduralRule
 
 ALL_RULES = [
     PromptInjectionRule(),
@@ -26,4 +27,5 @@ ALL_RULES = [
     TrustBoundaryRule(),
     TaintTrackingRule(),
     JSTaintTrackingRule(),
+    InterproceduralRule(),
 ]
