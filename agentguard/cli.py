@@ -10,8 +10,8 @@ from agentguard.scanner import scan_directory
 from agentguard.reporter import print_report, json_report, sarif_report, _make_console
 
 
-@click.command()
-@click.argument("target", default=".", type=click.Path(exists=True))
+@click.group(invoke_without_command=True)
+@click.argument("target", default=".", type=click.Path(exists=True), required=False)
 @click.option(
     "--format", "output_format",
     type=click.Choice(["text", "json", "sarif"], case_sensitive=False),
@@ -35,11 +35,12 @@ from agentguard.reporter import print_report, json_report, sarif_report, _make_c
     default=False,
     help="Include test files and directories in scan (default: skip tests)",
 )
-def main(target: str, output_format: str, exit_code: bool, min_severity: str,
-         include_tests: bool) -> None:
-    """AgentGuard -- Scan AI agent code for security vulnerabilities.
+@click.pass_context
+def main_group(ctx: click.Context, target: str, output_format: str, exit_code: bool,
+              min_severity: str, include_tests: bool) -> None:
+    """AgentGuard -- Autonomous security scanner for AI agent code.
 
-    TARGET: Directory or file to scan (default: current directory)
+    Scan AI agent code for OWASP ASI Top 10 vulnerabilities and novel attack vectors.
 
     Examples:
 
@@ -48,11 +49,15 @@ def main(target: str, output_format: str, exit_code: bool, min_severity: str,
         agentguard . --format sarif         # SARIF for CI/CD
         agentguard . --min-severity HIGH    # Only HIGH+ findings
         agentguard . --include-tests        # Include test files
+
+    Security Specification: https://github.com/dockfixlabs/agentguard/blob/main/specification.md
     """
+    if ctx.invoked_subcommand is not None:
+        return
+
     console = _make_console()
     result = scan_directory(target, include_tests=include_tests)
 
-    # Filter by severity
     severity_order = ["CRITICAL", "HIGH", "MEDIUM", "LOW", "INFO"]
     min_idx = severity_order.index(min_severity.upper())
     allowed = severity_order[:min_idx + 1]
@@ -69,5 +74,61 @@ def main(target: str, output_format: str, exit_code: bool, min_severity: str,
         sys.exit(1)
 
 
-if __name__ == "__main__":
-    main()
+@main_group.command()
+@click.option(
+    "--pre-commit",
+    "install_precommit",
+    is_flag=True,
+    default=False,
+    help="Install AgentGuard as a pre-commit hook",
+)
+@click.option(
+    "--in",
+    "target_dir",
+    type=click.Path(exists=True),
+    default=".",
+    help="Target project directory",
+)
+def install(install_precommit: bool, target_dir: str) -> None:
+    """Install AgentGuard integrations.
+
+    agentguard install --pre-commit       # Add to .pre-commit-config.yaml
+    agentguard install --pre-commit --in /path/to/project
+    """
+    if install_precommit:
+        from agentguard.precommit import install_precommit_hook
+        success = install_precommit_hook(target_dir)
+        if not success:
+            sys.exit(1)
+    else:
+        print("Usage: agentguard install --pre-commit")
+        print()
+        print("Install AgentGuard as a git pre-commit hook to block")
+        print("insecure AI agent code from being committed.")
+
+
+@main_group.command()
+@click.option(
+    "--pre-commit",
+    "uninstall_precommit",
+    is_flag=True,
+    default=False,
+    help="Remove AgentGuard from pre-commit hooks",
+)
+@click.option(
+    "--in",
+    "target_dir",
+    type=click.Path(exists=True),
+    default=".",
+    help="Target project directory",
+)
+def uninstall(uninstall_precommit: bool, target_dir: str) -> None:
+    """Remove AgentGuard integrations."""
+    if uninstall_precommit:
+        from agentguard.precommit import uninstall_precommit_hook
+        uninstall_precommit_hook(target_dir)
+    else:
+        print("Usage: agentguard uninstall --pre-commit")
+
+
+main = main_group.callback
