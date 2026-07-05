@@ -16,6 +16,7 @@ from agentguard.rules.interprocedural import InterproceduralRule
 from agentguard.rules.memory_poison import MemoryPoisoningRule
 from agentguard.rules.tool_output_trust import ToolOutputTrustRule
 from agentguard.rules.chain_amplify import ChainAmplificationRule
+from agentguard.rules.agent_collusion import AgentCollusionRule
 
 ALL_RULES = [
     PromptInjectionRule(),
@@ -34,4 +35,5 @@ ALL_RULES = [
     MemoryPoisoningRule(),
     ToolOutputTrustRule(),
     ChainAmplificationRule(),
+    AgentCollusionRule(),
 ]
