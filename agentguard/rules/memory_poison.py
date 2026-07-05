@@ -49,7 +49,7 @@ class MemoryPoisoningRule(Rule):
         rb"webhook|api[_]?callback|external[_]?data|untrusted_|"
         rb"raw[_]?input|unsanitized_|"
         rb"search[_]?result|scraped[_]?content|"
-        rb"tool[_]?output|tool[_]?result|agent[_]?response",
+        rb"tool[_]?output|tool[_]?result|agent[_]?result|agent[_]?response",
         re.IGNORECASE
     )
 
