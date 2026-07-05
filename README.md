@@ -1,4 +1,4 @@
-# AgentGuard
+﻿# AgentGuard
 
 > Autonomous security scanner for AI agents. Detects prompt injection, tool abuse, data exfiltration, and OWASP ASI Top 10 vulnerabilities in agent code.
 
@@ -64,6 +64,9 @@ Traditional SAST tools (Semgrep, CodeQL, Bandit) lack agent-specific detection r
 they were designed for traditional vulnerabilities, not AI agent attack vectors.
 
 [Benchmark Dashboard](https://dockfixlabs.github.io/agentguard-benchmark/)
+
+
+**Security Specification:** [SPECIFICATION.md](SPECIFICATION.md) — the formal standard for AI agent code security.
 
 ## Quick Start
 
@@ -254,3 +257,22 @@ MIT -- see [LICENSE](LICENSE).
 ---
 
 Built by [Dockfix Labs](https://github.com/dockfixlabs). Built for the AI agent era.
+
+
+---
+
+## AgentGuard Ecosystem
+
+**[AgentGuard](https://github.com/dockfixlabs/agentguard)** is the core security scanner. Companion tools:
+
+| Tool | Purpose | Install |
+|------|---------|---------|
+| [agentguard](https://github.com/dockfixlabs/agentguard) | AI agent code security scanner | `pip install dfx-agentguard` |
+| [mcp-scanner](https://github.com/dockfixlabs/mcp-scanner) | MCP server security audit | `pip install dfx-mcp-scanner` |
+| [agentguard-app](https://github.com/dockfixlabs/agentguard-app) | GitHub App for PR reviews | Install from Marketplace |
+| [agentguard-vscode](https://github.com/dockfixlabs/agentguard-vscode) | VS Code inline diagnostics | Install from VS Code |
+| [agentguard-benchmark](https://github.com/dockfixlabs/agentguard-benchmark) | Detection benchmark suite | `git clone` |
+| [agentguard-demo](https://github.com/dockfixlabs/agentguard-demo) | Live demo with Code Scanning | `git clone` |
+
+**19 detection rules | 102 tests | 50 benchmark samples | OWASP ASI Top 10**
+**GitHub Action:** [dockfixlabs/agentguard@v1](https://github.com/marketplace/actions/agentguard)
