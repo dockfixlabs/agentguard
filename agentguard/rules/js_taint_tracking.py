@@ -73,6 +73,19 @@ class JSTaintTrackingRule(Rule):
             if stripped.startswith("//") or stripped.startswith("/*"):
                 continue
 
+            # Track function parameters with taint-suggesting names
+            param_match = re.match(
+                r'(?:async\s+)?function\s+\w+\s*\(([^)]+)\)|'
+                r'(?:const|let|var)\s+\w+\s*=\s*(?:async\s+)?\(([^)]+)\)\s*=>',
+                stripped
+            )
+            if param_match:
+                params = (param_match.group(1) or param_match.group(2) or "")
+                for p in params.split(","):
+                    p = p.strip().split("=")[0].strip().split(":")[0].strip()
+                    if p and p in JS_SOURCES:
+                        tainted_vars[p] = i
+
             # Detect source assignment: const/let/var x = <source>
             assign_match = re.match(
                 r'(?:const|let|var)\s+(\w+)\s*=\s*(.+)',
