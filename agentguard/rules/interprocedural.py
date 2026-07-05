@@ -3,6 +3,7 @@
 from __future__ import annotations
 import ast
 from agentguard.models import Finding, OWASP_ASI, Rule, Severity
+from agentguard.rules.cross_file import get_imported_sinks
 
 SOURCE_WORDS = {
     "user_input", "user_msg", "user_message", "user_query",
@@ -28,11 +29,14 @@ LLM_SINK_SIGS = {
 
 
 class InterproceduralRule(Rule):
-    """Tracks taint across function calls within Python files.
+    """Tracks taint across function calls within and across Python files.
 
     Detects when tainted data is passed as an argument to a function
     that internally calls an LLM API, or when a function parameter
     with a taint-suggesting name reaches an LLM sink.
+
+    Phase 2: Also resolves Python imports to track taint through
+    `from utils import call_llm` patterns.
     """
     rule_id = "ASI01-INTERPROCEDURAL"
     rule_name = "Cross-Function Taint Flow"
@@ -54,11 +58,18 @@ class InterproceduralRule(Rule):
         findings = []
         funcs = self._collect_funcs(tree)
 
+        imported_sinks = {}
+        try:
+            imported_sinks = get_imported_sinks(file, content)
+        except Exception:
+            pass
+
         for node in ast.walk(tree):
             if isinstance(node, ast.FunctionDef):
                 findings.extend(self._check_func(node, funcs, file))
             if isinstance(node, ast.Call):
                 findings.extend(self._check_call(node, funcs, file))
+                findings.extend(self._check_imported_call(node, imported_sinks, file))
 
         return findings
 
@@ -130,6 +141,34 @@ class InterproceduralRule(Rule):
                             confidence=0.8,
                         ))
                         break
+        return findings
+
+    def _check_imported_call(self, call, imported_sinks, file):
+        """Check call to imported function that has LLM sinks (Phase 2)."""
+        findings = []
+        callee = None
+        if isinstance(call.func, ast.Name):
+            callee = call.func.id
+        elif isinstance(call.func, ast.Attribute):
+            callee = call.func.attr
+
+        if callee and callee in imported_sinks:
+            sink_line = imported_sinks[callee]
+            for arg in call.args:
+                if self._is_source(arg):
+                    findings.append(Finding(
+                        rule_id="ASI01-CROSS-FILE",
+                        rule_name="Cross-File Taint Flow",
+                        severity=Severity.CRITICAL,
+                        owasp=self.owasp,
+                        file=file,
+                        line=call.lineno,
+                        snippet="%s(...)" % callee,
+                        description="Tainted data passed to imported function '%s' which calls LLM at line %d in its module -- cross-file prompt injection" % (callee, sink_line),
+                        recommendation="Sanitize data before passing to LLM-interacting functions across module boundaries.",
+                        confidence=0.85,
+                    ))
+                    break
         return findings
 
     def _check_func(self, node, funcs, file):
