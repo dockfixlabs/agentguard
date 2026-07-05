@@ -1,4 +1,4 @@
-﻿# AgentGuard
+# AgentGuard
 
 > Autonomous security scanner for AI agents. Detects prompt injection, tool abuse, data exfiltration, and OWASP ASI Top 10 vulnerabilities in agent code.
 
@@ -41,6 +41,31 @@ Existing tools (Bandit, Semgrep, CodeQL) scan for traditional vulnerabilities. A
 
 See AgentGuard in action on the [demo repo](https://github.com/dockfixlabs/agentguard-demo). The CI runs AgentGuard on every push, and findings appear in GitHub Code Scanning.
 
+
+
+## Sovereign Security Audit 2026
+
+AgentGuard was deployed against 6 major AI agent frameworks:
+
+| Framework | Stars | Files | Findings | CRITICAL |
+|-----------|-------|-------|----------|----------|
+| LlamaIndex | 35K | 2,951 | 1,003 | 252 |
+| CAMEL | 17K | 899 | 746 | 387 |
+| LangChain | 95K | 1,784 | 452 | --- |
+| Qwen-Agent | 16K | 239 | 441 | 263 |
+| CrewAI | 25K | 84 | 391 | --- |
+| AutoGen | 53K | 549 | 229 | 80 |
+| **TOTAL** | | **6,506** | **3,262** | **982+** |
+
+**Full report:** [AUDIT_REPORT_2026.md](AUDIT_REPORT_2026.md)
+
+| Tool | Detection | FP |
+|------|-----------|-----|
+| **AgentGuard** | **100%** | **0%** |
+| Semgrep | 0% | --- |
+| CodeQL | 0% | --- |
+
+[Benchmark Dashboard](https://dockfixlabs.github.io/agentguard-benchmark/)
 
 ## Quick Start
 
