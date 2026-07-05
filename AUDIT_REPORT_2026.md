@@ -4,16 +4,15 @@
 
 AgentGuard (v0.6.8) was deployed against 6 major AI agent frameworks. The results are definitive: **every framework contains critical security vulnerabilities that no existing scanner detects.**
 
-**Comparison:**
-| Tool | Detection Rate | False Positives |
-|------|---------------|-----------------|
-| **AgentGuard** | **100%** | **0** |
-| Semgrep | 0% | N/A |
-| CodeQL | 0% | N/A |
+**Note on scope:**
+AgentGuard is the first and only static analysis tool with dedicated OWASP ASI Top 10 rules.
+Traditional tools (Semgrep, CodeQL, Bandit) lack agent-specific detection rules.
 
-*Benchmark: 50 curated AI agent security samples. Full results at https://dockfixlabs.github.io/agentguard-benchmark/*
-
----
+**Important caveat on findings:**
+These scans use pattern-matching rules. Some categories (ASI-AGENT-COLLUSION,
+ASI09-AGENT-LOOP) may flag code patterns rather than exploitable vulnerabilities.
+CRITICAL counts should be interpreted as patterns requiring investigation, not
+confirmed exploits. Manual verification is recommended before acting on findings.
 
 ## Framework Audit Results
 

@@ -59,11 +59,9 @@ AgentGuard was deployed against 6 major AI agent frameworks:
 
 **Full report:** [AUDIT_REPORT_2026.md](AUDIT_REPORT_2026.md)
 
-| Tool | Detection | FP |
-|------|-----------|-----|
-| **AgentGuard** | **100%** | **0%** |
-| Semgrep | 0% | --- |
-| CodeQL | 0% | --- |
+AgentGuard is the **first and only** static analysis tool with dedicated OWASP ASI Top 10 rules.
+Traditional SAST tools (Semgrep, CodeQL, Bandit) lack agent-specific detection rules --
+they were designed for traditional vulnerabilities, not AI agent attack vectors.
 
 [Benchmark Dashboard](https://dockfixlabs.github.io/agentguard-benchmark/)
 
