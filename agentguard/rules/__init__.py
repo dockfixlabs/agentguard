@@ -15,6 +15,7 @@ from agentguard.rules.js_taint_tracking import JSTaintTrackingRule
 from agentguard.rules.interprocedural import InterproceduralRule
 from agentguard.rules.memory_poison import MemoryPoisoningRule
 from agentguard.rules.tool_output_trust import ToolOutputTrustRule
+from agentguard.rules.chain_amplify import ChainAmplificationRule
 
 ALL_RULES = [
     PromptInjectionRule(),
@@ -32,4 +33,5 @@ ALL_RULES = [
     InterproceduralRule(),
     MemoryPoisoningRule(),
     ToolOutputTrustRule(),
+    ChainAmplificationRule(),
 ]
