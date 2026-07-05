@@ -10,7 +10,14 @@ SOURCE_WORDS = {
     "prompt_input", "chat_input", "msg",
     "result", "tool_result", "tool_output", "response_text",
     "search_result", "web_result", "api_response",
-    "input", "data", "content", "text",
+    "input", "data", "content",
+}
+
+TARGETED_PARAMS = {
+    "user_input", "user_msg", "user_message", "user_query",
+    "user_request", "user_data", "user_content",
+    "input", "query", "request", "message",
+    "user_prompt",
 }
 
 LLM_SINK_SIGS = {
@@ -132,10 +139,7 @@ class InterproceduralRule(Rule):
             params, has_sink, sink_line, _ = funcs[name]
             if has_sink:
                 for p in params:
-                    if any(kw in p.lower()
-                           for kw in ("user", "input", "query", "message",
-                                      "prompt", "request", "data", "content",
-                                      "result", "tool", "msg")):
+                    if p.lower() in TARGETED_PARAMS:
                         findings.append(Finding(
                             rule_id=self.rule_id,
                             rule_name=self.rule_name,
