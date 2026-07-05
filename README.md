@@ -1,4 +1,4 @@
-# AgentGuard
+﻿# AgentGuard
 
 > Autonomous security scanner for AI agents. Detects prompt injection, tool abuse, data exfiltration, and OWASP ASI Top 10 vulnerabilities in agent code.
 
