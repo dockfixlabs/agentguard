@@ -13,6 +13,7 @@ from agentguard.rules.trust_boundary import TrustBoundaryRule
 from agentguard.rules.taint_tracking import TaintTrackingRule
 from agentguard.rules.js_taint_tracking import JSTaintTrackingRule
 from agentguard.rules.interprocedural import InterproceduralRule
+from agentguard.rules.memory_poison import MemoryPoisoningRule
 
 ALL_RULES = [
     PromptInjectionRule(),
@@ -28,4 +29,5 @@ ALL_RULES = [
     TaintTrackingRule(),
     JSTaintTrackingRule(),
     InterproceduralRule(),
+    MemoryPoisoningRule(),
 ]
