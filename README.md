@@ -1,4 +1,4 @@
-﻿# AgentGuard
+# AgentGuard
 
 > Autonomous security scanner for AI agents. Detects prompt injection, tool abuse, data exfiltration, and OWASP ASI Top 10 vulnerabilities in agent code.
 
@@ -121,6 +121,14 @@ Options:
 | ASI10 | Trust Boundary Violation | Detected | Root access, host filesystem mounts, no sandbox, self-modification |
 
 ## CI/CD Integration
+
+### Docker — Run Anywhere
+
+```bash
+docker run --rm -v $(pwd):/workspace ghcr.io/dockfixlabs/agentguard .
+```
+
+Works in any CI/CD pipeline. No Python needed.
 
 ### GitHub Action
 
