@@ -16,6 +16,11 @@ SCANABLE_EXTENSIONS = {
     ".sh", ".bash", ".zsh",
 }
 
+# Special filenames to scan (files without standard extensions)
+SCANABLE_FILENAMES = {
+    "dockerfile",  # Dockerfile, dockerfile
+}
+
 # Directories to always skip
 SKIP_DIRS = {
     "node_modules", ".git", "__pycache__", ".venv", "venv", "env",
@@ -37,8 +42,14 @@ TEST_PREFIXES = ("test_", "conftest", "fixture", "mock_", "sample_")
 
 def should_scan(path: Path, include_tests: bool = False) -> bool:
     """Check if a file should be scanned."""
-    if path.suffix.lower() not in SCANABLE_EXTENSIONS:
-        return False
+    suffix = path.suffix.lower()
+    name = path.name.lower()
+
+    # Check standard extensions
+    if suffix not in SCANABLE_EXTENSIONS:
+        # Check special filenames (Dockerfile, etc.)
+        if name not in SCANABLE_FILENAMES and not name.startswith("dockerfile."):
+            return False
 
     parts_lower = [p.lower() for p in path.parts]
 
@@ -107,7 +118,9 @@ def scan_directory(
 
     if target_path.is_file():
         # Single file: always scan regardless of test status
-        if target_path.suffix.lower() in SCANABLE_EXTENSIONS:
+        suffix = target_path.suffix.lower()
+        name = target_path.name.lower()
+        if suffix in SCANABLE_EXTENSIONS or name in SCANABLE_FILENAMES or name.startswith("dockerfile."):
             files_to_scan = [target_path]
     else:
         for path in target_path.rglob("*"):

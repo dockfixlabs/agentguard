@@ -1,8 +1,8 @@
-# AgentGuard Security Specification v0.6.8
+# AgentGuard Security Specification v0.7.0
 ## The Standard for AI Agent Code Security
 
 **Status:** Reference Implementation
-**Coverage:** OWASP ASI Top 10 (2026) + 6 Novel Attack Vectors
+**Coverage:** OWASP ASI Top 10 (2026) + 8 Novel Attack Vectors
 **Authority:** Dockfix Labs, open-source MIT license
 
 ---
@@ -104,6 +104,22 @@
 - **Severity:** CRITICAL
 - **CWE:** CWE-506 (Embedded Malicious Code)
 
+### ASI-MOUNT-EXPOSURE (v0.7.0)
+- **Technique:** Host filesystem exposure through Docker volume/bind mounts
+- **Detection:** Docker executors without read_only, sensitive path mounts, -v flag with /etc//root//home, bind mounts with type=bind + sensitive source
+- **Severity:** CRITICAL
+- **CWE:** CWE-732 (Incorrect Permission Assignment for Critical Resource)
+- **CVSS:** 8.6
+- **Context:** AI agent Docker code executors that expose host filesystem allow container breakout and host compromise
+
+### ASI-MEMORY-CLASS-CONFUSION (v0.7.0)
+- **Technique:** Agent self-modification of governance state (tools, permissions, prompts)
+- **Detection:** self.tools/permissions/config modification, system_prompt mutation, memory updates without auth checks
+- **Severity:** CRITICAL
+- **CWE:** CWE-863 (Incorrect Authorization)
+- **CVSS:** 7.8
+- **Context:** Agent classes that modify their own constraints bypass governance, enabling privilege escalation
+
 ---
 
 ## 3. Standard Taint Tracking Rules
@@ -146,7 +162,29 @@ No scanner currently detects the 6 novel vectors.
 
 ---
 
-**Version:** 0.6.8
-**Date:** 2026-07-05
+**Version:** 0.7.0
+**Date:** 2026-07-06
 **License:** MIT — Fork, modify, contribute. The standard is open.
 **Repository:** https://github.com/dockfixlabs/agentguard
+
+## 6. v0.7.0 Enhancements
+
+### YAML Config Scanning
+Extended scanner to detect security issues in YAML configuration files:
+- docker-compose.yml volume mount exposure
+- MCP server configuration vulnerabilities
+- Agent configuration files with security misconfigurations
+
+### Dockerfile Scanning
+Added Dockerfile security analysis:
+- Running as root (missing or explicit USER root)
+- Exposed ports without TLS/encryption
+- Secrets baked into ENV instructions
+- curl-pipe-bash remote code execution during build
+- ADD from remote URLs (supply chain risk)
+- chmod 777 world-writable permissions
+
+### New Detection Rules
+- **ASI-MOUNT-EXPOSURE:** 3 scanner modes (code, YAML, Dockerfile) for Docker mount exposure
+- **ASI-MEMORY-CLASS-CONFUSION:** Agent self-modification with authorization check analysis
+- **ASI-DOCKERFILE-SECURITY:** 8 detection patterns for Dockerfile security issues

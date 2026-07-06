@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "dfx-agentguard"
-version = "0.6.10"
+version = "0.7.0"
 description = "Autonomous security scanner for AI agents. Detects prompt injection, tool abuse, data exfiltration, and OWASP ASI Top 10 vulnerabilities."
 readme = "README.md"
 license = "MIT"
@@ -31,7 +31,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-dev = ["pytest>=7.0", "pytest-cov", "ruff"]
+dev = ["pytest>=7.0", "pytest-cov", "ruff", "pre-commit"]
 mcp = ["mcp>=0.9"]
 
 [project.scripts]
