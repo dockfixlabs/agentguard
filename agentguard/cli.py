@@ -132,4 +132,4 @@ def uninstall(uninstall_precommit: bool, target_dir: str) -> None:
         print("Usage: agentguard uninstall --pre-commit")
 
 
-main = main_group.callback
+main = main_group
