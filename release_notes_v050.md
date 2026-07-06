@@ -36,7 +36,7 @@ prompt = template.format(q=query)    # taint via .format()
 ### Test Results
 
 - **Unit tests**: 38/38 PASS (up from 32)
-- **Benchmark**: 32 samples, 100% detection, 0% FP
+- **Benchmark**: 32 samples covering all detection rules
 - **Taint tracking**: 6/6 test cases correct (4 detected, 2 correctly skipped)
 
 ### Install
