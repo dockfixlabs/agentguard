@@ -19,6 +19,9 @@ from agentguard.rules.chain_amplify import ChainAmplificationRule
 from agentguard.rules.agent_collusion import AgentCollusionRule
 from agentguard.rules.prompt_template import PromptTemplateRule
 from agentguard.rules.stegano_inject import SteganoInjectRule
+from agentguard.rules.mount_exposure import MountExposureRule
+from agentguard.rules.memory_class_confusion import MemoryClassConfusionRule
+from agentguard.rules.dockerfile_security import DockerfileSecurityRule
 
 ALL_RULES = [
     PromptInjectionRule(),
@@ -40,4 +43,7 @@ ALL_RULES = [
     AgentCollusionRule(),
     PromptTemplateRule(),
     SteganoInjectRule(),
+    MountExposureRule(),
+    MemoryClassConfusionRule(),
+    DockerfileSecurityRule(),
 ]

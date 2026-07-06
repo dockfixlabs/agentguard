@@ -11,7 +11,7 @@ from agentguard.reporter import print_report, json_report, sarif_report, _make_c
 
 
 @click.group(invoke_without_command=True)
-@click.version_option(version="0.6.10", prog_name="agentguard")
+@click.version_option(version="0.7.0", prog_name="agentguard")
 @click.argument("target", default=".", type=click.Path(exists=True), required=False)
 @click.option(
     "--format", "output_format",
