@@ -1,4 +1,4 @@
-﻿name: AgentGuard Self-Test
+name: AgentGuard Self-Test
 
 on:
   push:
@@ -10,17 +10,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Run AgentGuard
-        uses: dockfixlabs/agentguard@v1
+      - name: Set up Python
+        uses: actions/setup-python@v6
         with:
-          path: .
-          format: json
-          min-severity: HIGH
-          fail-on-finding: false
-      - name: Run AgentGuard (SARIF)
-        uses: dockfixlabs/agentguard@v1
-        with:
-          path: .
-          format: sarif
-          min-severity: HIGH
-          fail-on-finding: false
+          python-version: '3.12'
+      - name: Install AgentGuard
+        run: pip install -e .
+      - name: Self-Scan
+        run: python -c "from agentguard.scanner import scan_directory; import json; r=scan_directory('.'); print(json.dumps({'files':r.files_scanned,'findings':len(r.findings)}))"
