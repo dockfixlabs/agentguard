@@ -12,7 +12,7 @@
 - [x] Pre-commit hook (.pre-commit-hooks.yaml)
 - [x] GitHub Action (action.yml)
 - [x] Dockerfile for agentguard-app
-- [x] 100% detection rate, 0% false positives on benchmark
+- [x] hand-crafted benchmark samples validate rule coverage
 - [x] Test suite: 50 tests covering all OWASP ASI categories
 - [x] Dev.to publication (6 articles)
 - [x] AST-based taint tracking for Python (v0.5.0)

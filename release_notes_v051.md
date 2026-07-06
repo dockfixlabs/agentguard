@@ -27,7 +27,7 @@ Based on adversarial testing with 10 real-world attack patterns, the following g
 
 - **Unit tests**: 46/46 PASS (up from 38)
 - **Adversarial tests**: 10/10 attacks detected, 2/2 safe patterns passed
-- **Benchmark**: 32 samples, 100% detection, 0% false positives
+- **Benchmark**: 32 samples covering all detection rules
 
 ### PyPI Metadata Fixes
 

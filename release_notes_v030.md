@@ -2,7 +2,7 @@
 
 ### Headline
 
-**100% detection rate, 0% false positives** on the AgentGuard Benchmark Suite (28 samples across 5 OWASP ASI categories + clean code).
+**56 hand-crafted benchmark samples covering 22 detection rules** on the AgentGuard Benchmark Suite.
 
 ### Fixed
 
