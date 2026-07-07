@@ -7,7 +7,7 @@ name = "dfx-agentguard"
 version = "0.7.2"
 description = "Autonomous security scanner for AI agents. Detects prompt injection, tool abuse, data exfiltration, and OWASP ASI Top 10 vulnerabilities."
 readme = "README.md"
-license = {text = "MIT"}
+license = "MIT"
 license-files = ["LICENSE"]
 requires-python = ">=3.10"
 authors = [{name = "Dockfix Labs", email = "security@dockfixlabs.dev"}]
@@ -21,7 +21,6 @@ classifiers = [
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
-    "License :: OSI Approved :: MIT License",
     "Topic :: Security",
     "Topic :: Software Development :: Quality Assurance",
 ]
