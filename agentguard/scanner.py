@@ -26,7 +26,6 @@ SKIP_DIRS = {
     "node_modules", ".git", "__pycache__", ".venv", "venv", "env",
     ".tox", ".pytest_cache", ".ruff_cache", "dist", "build",
     ".next", ".nuxt", "vendor", ".cargo", "target",
-    "rules",  # avoid scanning scanner's own rule definitions
 }
 
 # Directories that contain intentional test vulnerabilities
