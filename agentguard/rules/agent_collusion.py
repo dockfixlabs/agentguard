@@ -46,7 +46,7 @@ class AgentCollusionRule(Rule):
         rb"multi[_]?agent[_]?(memory|context|state|knowledge|store|queue|cache)|"
         rb"agent[_]?pool|agent[_]?group|agent[_]?team|agent[_]?swarm|"
         rb"group[_]?chat|team[_]?chat|round[_]?robin|"
-        rb"ConversableAgent|GroupChat|RoundRobinGroupChat|Team|"
+        rb"ConversableAgent|GroupChat|RoundRobinGroupChat|"
         rb"SwarmAgent|CrewAgent|Orchestrator",
         re.IGNORECASE
     )
@@ -112,12 +112,18 @@ class AgentCollusionRule(Rule):
                 desc = "Shared agent state (%s) without access controls -- multiple agents share mutable memory enabling collusion" % pattern
 
             # If trust verification exists anywhere in file, lower confidence
-            confidence = 0.75 if file_has_trust_verify else 0.9
+            confidence = 0.6 if file_has_trust_verify else 0.8
+
+            # Lower severity for shared state pattern matches (may be legitimate agent architecture)
+            if state_match and not (comm_match or chain_match):
+                sev = Severity.MEDIUM
+            else:
+                sev = Severity.HIGH if file_has_trust_verify else Severity.CRITICAL
 
             findings.append(Finding(
                 rule_id=self.rule_id,
                 rule_name=self.rule_name,
-                severity=Severity.HIGH if file_has_trust_verify else Severity.CRITICAL,
+                severity=sev,
                 file=file,
                 line=i,
                 snippet=line.strip()[:120],
