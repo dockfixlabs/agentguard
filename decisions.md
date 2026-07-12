@@ -32,7 +32,17 @@
 **Reason:** The rules were rewritten to be more precise. Some old findings no longer match because the patterns changed. This is expected behavior, not a bug.
 **Status:** Active.
 
-### 2026-07-12 — PyPI downloads (13K) need source breakdown before using as growth metric
-**Decision:** Treat 13,783 downloads as unverified adoption signal until referrer breakdown is checked.
-**Reason:** High download count with 1 star and 0 forks suggests CI/bot traffic. Using this number in marketing without verification = misleading.
-**Status:** Pending investigation.
+### 2026-07-12 — PyPI upload blocked: no credentials in environment
+**Decision:** Defer PyPI upload. Owner needs to provide PyPI token or upload manually.
+**Reason:** v0.8.1 is on GitHub main but not on PyPI. Users who `pip install` get v0.8.0.
+**Status:** Blocked — needs owner action.
+
+### 2026-07-12 — Blog post draft: remove vulnerability details before publishing
+**Decision:** Blog post draft contains specific exploit details (LangChain CVSS 10.0, AutoGen Docker mount). Must be sanitized before any public posting.
+**Reason:** Responsible disclosure — 90-day window not expired. Publishing exploit details before CVE or fix = irresponsible.
+**Status:** Draft saved, NOT published. Needs owner review + sanitization.
+
+### 2026-07-12 — GitHub topics added for discoverability
+**Decision:** Added 10 topics: ai-security, sast, owasp, agent-security, static-analysis, prompt-injection, llm-security, code-scanner, python, security-audit.
+**Reason:** Repo had no topics. Topics improve GitHub search discoverability.
+**Status:** Applied.

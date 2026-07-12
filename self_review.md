@@ -27,34 +27,36 @@
 3. Identify fastest path to real users
 4. Execute without external actions (no client/GHSA contact without draft)
 
-### Review #2 — 2026-07-12 01:10 GMT
+### Review #2 — 2026-07-12 02:15 GMT
 
 ### Question: Is what I've accomplished built on verified facts or optimistic assumptions?
 
 **Verified facts:**
-- 88% heuristic precision on 50 independent findings — verified by reading source code
-- 37TP/0FP after full pipeline (7 TP lost from rule behavior changes, not over-filtering)
-- GitHub: 1 star, 0 forks, 329 unique clones, 29 unique visitors — real numbers
-- PyPI: 13,783 total downloads (4,282 without mirrors) since Jun 21 — real adoption signal
-- 3 GHSAs open, 0 responses — verified via GitHub
-- PR #18 created for v0.8.1 merge
+- v0.8.1 merged to main (PR #18), tag pushed
+- All 139 tests pass on Python 3.10/3.11/3.12
+- 88% precision on 50 independent findings
+- GitHub: 329 unique clones, 29 unique visitors, 1 star
+- PyPI: 4,330 downloads (without mirrors)
+- 3 GHSAs open, 0 responses
+- No direct competitor in AI agent SAST (AgentShield scans config files, not source code)
+- Blog post draft written, NOT published (external action — needs approval)
 
 **Optimistic assumptions I'm holding (honest list):**
-1. 13,783 PyPI downloads looks impressive but most could be CI/bots — need to check referrer breakdown
-2. 329 unique clones is decent but 0 forks and 1 star means very low engagement
-3. 88% precision on 50 findings (5.3% of 951) — confidence interval is wide
-4. Still assuming LangChain GHSA will get a response — 7 days, nothing
-5. The 7 lost TPs are from rule behavior changes — need to verify they're truly different rules now
+1. PyPI upload failed — no v0.8.1 on PyPI yet (no credentials in environment)
+2. Still assuming LangChain GHSA will get response — 12+ hours, nothing
+3. 4,330 downloads with 1 star = likely CI/bot traffic, not real users
+4. Blog post makes claims about 3 frameworks — need to verify I'm not exposing vulnerability details before responsible disclosure window
+5. "No competitors" claim based on GitHub search — could be missing private/commercial tools
 
 **Warning flags detected:**
-- 13,783 downloads with 1 star = suspicious ratio. Could be CI pipelines or mirror scraping. Not necessarily human users.
-- No issues, no PRs from external users = zero community engagement yet
-- 3 GHSAs with 0 response = possible signal that findings aren't compelling enough
+- PyPI upload blocked — v0.8.1 not available via pip yet
+- Blog post contains vulnerability details (LangChain CVSS 10.0, AutoGen Docker mount) — MUST NOT publish before CVE or at minimum 90-day window
+- 0 community engagement (no issues, no PRs, no discussions)
 
 **Actions for next session:**
-1. Check PyPI referrer breakdown to understand download sources
-2. Plan content strategy (blog post, Reddit) to convert downloads to users
-3. Monitor LangChain GHSA — send follow-up comment if no response by day 10
-4. Consider closing weak Dify/Haystack GHSAs to maintain credibility
+1. Get PyPI credentials and upload v0.8.1
+2. Remove specific vulnerability details from blog post (keep framework names, remove exploit details)
+3. Focus on GitHub Discovery — get the repo in front of developers
 
+### Review #3 — [next session]
 
