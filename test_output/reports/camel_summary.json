@@ -1,0 +1,770 @@
+{
+  "tool": "AgentGuard",
+  "version": "0.8.0",
+  "timestamp": "2026-07-08T19:40:41.257718+00:00",
+  "target": "../camel",
+  "files_scanned": 355,
+  "scan_duration_ms": 12843,
+  "summary": {
+    "total": 147,
+    "critical": 71,
+    "high": 28,
+    "medium": 48,
+    "low": 0,
+    "info": 0,
+    "risk_score": 946,
+    "framework_health": "CRITICAL \u2014 Large number of critical findings requiring immediate attention"
+  },
+  "classification": {
+    "confirmed": 62,
+    "investigate": 30,
+    "best_practice": 39,
+    "likely_fp": 16,
+    "fp_removed": 22,
+    "fp_downgraded": 0
+  },
+  "top_rules": [
+    {
+      "rule": "Data Exfiltration Risk",
+      "count": 54,
+      "severity": "CRITICAL"
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "count": 38,
+      "severity": "CRITICAL"
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "count": 19,
+      "severity": "CRITICAL"
+    },
+    {
+      "rule": "Agent Loop Exploitation",
+      "count": 16,
+      "severity": "HIGH"
+    },
+    {
+      "rule": "Prompt Injection",
+      "count": 6,
+      "severity": "CRITICAL"
+    },
+    {
+      "rule": "Unsafe Code Execution",
+      "count": 6,
+      "severity": "CRITICAL"
+    },
+    {
+      "rule": "Trust Boundary Violation",
+      "count": 4,
+      "severity": "CRITICAL"
+    },
+    {
+      "rule": "Prompt Injection (Taint Tracked)",
+      "count": 1,
+      "severity": "CRITICAL"
+    },
+    {
+      "rule": "Agent Memory Poisoning",
+      "count": 1,
+      "severity": "CRITICAL"
+    },
+    {
+      "rule": "Excessive Agency",
+      "count": 1,
+      "severity": "HIGH"
+    }
+  ],
+  "top_files": [
+    {
+      "file": "..\\camel\\examples\\toolkits\\terminal_toolkit.py",
+      "count": 15
+    },
+    {
+      "file": "..\\camel\\examples\\workforce\\workforce_shared_memory_validation.py",
+      "count": 12
+    },
+    {
+      "file": "..\\camel\\examples\\toolkits\\file_toolkit.py",
+      "count": 9
+    },
+    {
+      "file": "..\\camel\\examples\\runtimes\\shared_runtime_multi_toolkit.py",
+      "count": 8
+    },
+    {
+      "file": "..\\camel\\examples\\debug\\eigent.py",
+      "count": 8
+    },
+    {
+      "file": "..\\camel\\examples\\usecases\\codeforces_question_solver\\app.py",
+      "count": 6
+    },
+    {
+      "file": "..\\camel\\examples\\workforce\\eigent.py",
+      "count": 5
+    },
+    {
+      "file": "..\\camel\\examples\\models\\nemotron_model_example.py",
+      "count": 4
+    },
+    {
+      "file": "..\\camel\\examples\\datagen\\self_improving_cot\\self_improving_cot_example_with_r1.py",
+      "count": 4
+    },
+    {
+      "file": "..\\camel\\examples\\models\\claude_model_example.py",
+      "count": 3
+    }
+  ],
+  "owasp_coverage": {
+    "ASI03": 54,
+    "ASI02": 38,
+    "ASI01": 7,
+    "ASI06": 6,
+    "ASI10": 4,
+    "ASI09": 16,
+    "ASI04": 1
+  },
+  "critical_findings": [
+    {
+      "rule": "Data Exfiltration Risk",
+      "rule_id": "ASI03-DATA-EXFIL",
+      "file": "..\\camel\\examples\\models\\nemotron_model_example.py",
+      "line": 35,
+      "confidence": 0.85,
+      "description": "[CONFIRMED] Secret/credential value being logged -- credential exposure in logs",
+      "recommendation": "Never log secrets. Use structured logging with field redaction. Mask API keys, tokens, and passwords in all output."
+    },
+    {
+      "rule": "Data Exfiltration Risk",
+      "rule_id": "ASI03-DATA-EXFIL",
+      "file": "..\\camel\\examples\\models\\nemotron_model_example.py",
+      "line": 36,
+      "confidence": 0.85,
+      "description": "[CONFIRMED] Secret/credential value being logged -- credential exposure in logs",
+      "recommendation": "Never log secrets. Use structured logging with field redaction. Mask API keys, tokens, and passwords in all output."
+    },
+    {
+      "rule": "Data Exfiltration Risk",
+      "rule_id": "ASI03-DATA-EXFIL",
+      "file": "..\\camel\\examples\\models\\nemotron_model_example.py",
+      "line": 39,
+      "confidence": 0.85,
+      "description": "[CONFIRMED] Secret/credential value being logged -- credential exposure in logs",
+      "recommendation": "Never log secrets. Use structured logging with field redaction. Mask API keys, tokens, and passwords in all output."
+    },
+    {
+      "rule": "Data Exfiltration Risk",
+      "rule_id": "ASI03-DATA-EXFIL",
+      "file": "..\\camel\\examples\\models\\nemotron_model_example.py",
+      "line": 40,
+      "confidence": 0.85,
+      "description": "[CONFIRMED] Secret/credential value being logged -- credential exposure in logs",
+      "recommendation": "Never log secrets. Use structured logging with field redaction. Mask API keys, tokens, and passwords in all output."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\camel\\examples\\toolkits\\terminal_toolkit_runtimes.py",
+      "line": 47,
+      "confidence": 0.9,
+      "description": "[CONFIRMED] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Prompt Injection",
+      "rule_id": "ASI01-PROMPT-INJECTION",
+      "file": "..\\camel\\examples\\models\\aihubmix_model_example.py",
+      "line": 55,
+      "confidence": 0.85,
+      "description": "[CONFIRMED] f-string prompt with user-controlled variable -- prompt injection via format string",
+      "recommendation": "Sanitize and validate all user input before including in prompts. Use structured prompts with clear delimiters. Consider prompt shielding and input/output filtering."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\camel\\examples\\runtimes\\docker_runtime_with_tasks.py",
+      "line": 55,
+      "confidence": 0.9,
+      "description": "[CONFIRMED] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Unsafe Code Execution",
+      "rule_id": "ASI06-UNSAFE-EVAL",
+      "file": "..\\camel\\examples\\runtimes\\docker_runtime_with_tasks.py",
+      "line": 55,
+      "confidence": 0.95,
+      "description": "[CONFIRMED] eval() -- arbitrary code execution from string",
+      "recommendation": "Avoid dynamic code execution. Use safe alternatives: ast.literal_eval for literals, yaml.safe_load for YAML, subprocess with shell=False and argument lists."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\camel\\examples\\runtimes\\shared_runtime_multi_toolkit.py",
+      "line": 59,
+      "confidence": 0.9,
+      "description": "[CONFIRMED] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\camel\\examples\\runtimes\\shared_runtime_multi_toolkit.py",
+      "line": 60,
+      "confidence": 0.9,
+      "description": "[CONFIRMED] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\camel\\examples\\toolkits\\file_toolkit.py",
+      "line": 63,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.route() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Trust Boundary Violation",
+      "rule_id": "ASI10-TRUST-BOUNDARY",
+      "file": "..\\camel\\examples\\workforce\\workforce_workflow_memory_example.py",
+      "line": 65,
+      "confidence": 0.85,
+      "description": "[CONFIRMED] Agent can modify its own code -- self-modification attack vector",
+      "recommendation": "Make agent code immutable at runtime. Use code signing and integrity checks."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\camel\\examples\\runtimes\\shared_runtime_multi_toolkit.py",
+      "line": 66,
+      "confidence": 0.9,
+      "description": "[CONFIRMED] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\camel\\examples\\toolkits\\terminal_toolkit.py",
+      "line": 68,
+      "confidence": 0.9,
+      "description": "[CONFIRMED] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\camel\\examples\\toolkits\\terminal_toolkit.py",
+      "line": 71,
+      "confidence": 0.9,
+      "description": "[CONFIRMED] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\camel\\examples\\runtimes\\shared_runtime_multi_toolkit.py",
+      "line": 72,
+      "confidence": 0.9,
+      "description": "[CONFIRMED] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\camel\\examples\\runtimes\\shared_runtime_multi_toolkit.py",
+      "line": 81,
+      "confidence": 0.9,
+      "description": "[CONFIRMED] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Prompt Injection",
+      "rule_id": "ASI01-PROMPT-INJECTION",
+      "file": "..\\camel\\examples\\models\\aihubmix_model_example.py",
+      "line": 85,
+      "confidence": 0.85,
+      "description": "[CONFIRMED] f-string prompt with user-controlled variable -- prompt injection via format string",
+      "recommendation": "Sanitize and validate all user input before including in prompts. Use structured prompts with clear delimiters. Consider prompt shielding and input/output filtering."
+    },
+    {
+      "rule": "Prompt Injection",
+      "rule_id": "ASI01-PROMPT-INJECTION",
+      "file": "..\\camel\\examples\\usecases\\chat_with_github\\app.py",
+      "line": 89,
+      "confidence": 0.85,
+      "description": "[CONFIRMED] User-controlled variable in messages array -- prompt injection via LLM messages",
+      "recommendation": "Sanitize and validate all user input before including in prompts. Use structured prompts with clear delimiters. Consider prompt shielding and input/output filtering."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\camel\\examples\\toolkits\\terminal_toolkit.py",
+      "line": 91,
+      "confidence": 0.9,
+      "description": "[CONFIRMED] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Prompt Injection (Taint Tracked)",
+      "rule_id": "ASI01-TAINT-TRACK",
+      "file": "..\\camel\\examples\\usecases\\chat_with_github\\demo_git_ingest.py",
+      "line": 91,
+      "confidence": 0.92,
+      "description": "[CONFIRMED] Untrusted input flows into LLM sink variable 'prompt' without sanitization",
+      "recommendation": "Sanitize user input before including in prompts. Use structured message arrays with separate system/user roles. Never concatenate user input into system prompts."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\camel\\examples\\toolkits\\terminal_toolkit.py",
+      "line": 95,
+      "confidence": 0.9,
+      "description": "[CONFIRMED] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\camel\\examples\\runtimes\\shared_runtime_multi_toolkit.py",
+      "line": 110,
+      "confidence": 0.9,
+      "description": "[CONFIRMED] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Data Exfiltration Risk",
+      "rule_id": "ASI03-DATA-EXFIL",
+      "file": "..\\camel\\examples\\workforce\\workforce_shared_memory_validation.py",
+      "line": 115,
+      "confidence": 0.85,
+      "description": "[CONFIRMED] Secret/credential value being logged -- credential exposure in logs",
+      "recommendation": "Never log secrets. Use structured logging with field redaction. Mask API keys, tokens, and passwords in all output."
+    },
+    {
+      "rule": "Data Exfiltration Risk",
+      "rule_id": "ASI03-DATA-EXFIL",
+      "file": "..\\camel\\examples\\models\\claude_model_example.py",
+      "line": 119,
+      "confidence": 0.85,
+      "description": "[CONFIRMED] Secret/credential value being logged -- credential exposure in logs",
+      "recommendation": "Never log secrets. Use structured logging with field redaction. Mask API keys, tokens, and passwords in all output."
+    },
+    {
+      "rule": "Agent Memory Poisoning",
+      "rule_id": "ASI-MEMORY-POISON",
+      "file": "..\\camel\\examples\\memories\\agent_memory_example.py",
+      "line": 125,
+      "confidence": 0.85,
+      "description": "[CONFIRMED] Untrusted data (user_message) written to agent memory store without sanitization -- persistent knowledge base poisoning",
+      "recommendation": "Validate and sanitize ALL data before writing to vector stores, RAG databases, or agent memory. Use content filtering, input validation, and origin verification."
+    },
+    {
+      "rule": "Prompt Injection",
+      "rule_id": "ASI01-PROMPT-INJECTION",
+      "file": "..\\camel\\examples\\models\\claude_model_example.py",
+      "line": 125,
+      "confidence": 0.85,
+      "description": "[CONFIRMED] f-string prompt with user-controlled variable -- prompt injection via format string",
+      "recommendation": "Sanitize and validate all user input before including in prompts. Use structured prompts with clear delimiters. Consider prompt shielding and input/output filtering."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\camel\\examples\\toolkits\\terminal_toolkit.py",
+      "line": 132,
+      "confidence": 0.9,
+      "description": "[CONFIRMED] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\camel\\examples\\toolkits\\message_agent_toolkit.py",
+      "line": 134,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.send_message() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Data Exfiltration Risk",
+      "rule_id": "ASI03-DATA-EXFIL",
+      "file": "..\\camel\\examples\\workforce\\workforce_shared_memory_validation.py",
+      "line": 136,
+      "confidence": 0.85,
+      "description": "[CONFIRMED] Secret/credential value being logged -- credential exposure in logs",
+      "recommendation": "Never log secrets. Use structured logging with field redaction. Mask API keys, tokens, and passwords in all output."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\camel\\examples\\debug\\eigent.py",
+      "line": 138,
+      "confidence": 0.9,
+      "description": "[CONFIRMED] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\camel\\examples\\debug\\eigent.py",
+      "line": 140,
+      "confidence": 0.9,
+      "description": "[CONFIRMED] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Trust Boundary Violation",
+      "rule_id": "ASI10-TRUST-BOUNDARY",
+      "file": "..\\camel\\examples\\workforce\\workforce_callbacks_example.py",
+      "line": 144,
+      "confidence": 0.85,
+      "description": "[CONFIRMED] Agent can modify its own code -- self-modification attack vector",
+      "recommendation": "Make agent code immutable at runtime. Use code signing and integrity checks."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\camel\\examples\\debug\\eigent.py",
+      "line": 152,
+      "confidence": 0.9,
+      "description": "[CONFIRMED] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\camel\\examples\\debug\\eigent.py",
+      "line": 153,
+      "confidence": 0.9,
+      "description": "[CONFIRMED] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Data Exfiltration Risk",
+      "rule_id": "ASI03-DATA-EXFIL",
+      "file": "..\\camel\\examples\\workforce\\workforce_shared_memory_validation.py",
+      "line": 158,
+      "confidence": 0.85,
+      "description": "[CONFIRMED] Secret/credential value being logged -- credential exposure in logs",
+      "recommendation": "Never log secrets. Use structured logging with field redaction. Mask API keys, tokens, and passwords in all output."
+    },
+    {
+      "rule": "Prompt Injection",
+      "rule_id": "ASI01-PROMPT-INJECTION",
+      "file": "..\\camel\\examples\\models\\claude_model_example.py",
+      "line": 159,
+      "confidence": 0.85,
+      "description": "[CONFIRMED] f-string prompt with user-controlled variable -- prompt injection via format string",
+      "recommendation": "Sanitize and validate all user input before including in prompts. Use structured prompts with clear delimiters. Consider prompt shielding and input/output filtering."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\camel\\examples\\toolkits\\terminal_toolkit.py",
+      "line": 169,
+      "confidence": 0.9,
+      "description": "[CONFIRMED] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\camel\\examples\\toolkits\\terminal_toolkit.py",
+      "line": 173,
+      "confidence": 0.9,
+      "description": "[CONFIRMED] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\camel\\examples\\toolkits\\terminal_toolkit.py",
+      "line": 176,
+      "confidence": 0.9,
+      "description": "[CONFIRMED] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\camel\\examples\\toolkits\\terminal_toolkit.py",
+      "line": 195,
+      "confidence": 0.9,
+      "description": "[CONFIRMED] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\camel\\examples\\toolkits\\terminal_toolkit.py",
+      "line": 199,
+      "confidence": 0.9,
+      "description": "[CONFIRMED] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Prompt Injection",
+      "rule_id": "ASI01-PROMPT-INJECTION",
+      "file": "..\\camel\\examples\\toolkits\\vertex_ai_veo_toolkit.py",
+      "line": 214,
+      "confidence": 0.9,
+      "description": "[CONFIRMED] Untrusted input concatenated into prompt -- prompt injection vector",
+      "recommendation": "Sanitize and validate all user input before including in prompts. Use structured prompts with clear delimiters. Consider prompt shielding and input/output filtering."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\camel\\examples\\debug\\eigent.py",
+      "line": 227,
+      "confidence": 0.9,
+      "description": "[CONFIRMED] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\camel\\examples\\toolkits\\terminal_toolkit.py",
+      "line": 230,
+      "confidence": 0.9,
+      "description": "[CONFIRMED] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Data Exfiltration Risk",
+      "rule_id": "ASI03-DATA-EXFIL",
+      "file": "..\\camel\\examples\\workforce\\workforce_shared_memory_validation.py",
+      "line": 231,
+      "confidence": 0.85,
+      "description": "[CONFIRMED] Secret/credential value being logged -- credential exposure in logs",
+      "recommendation": "Never log secrets. Use structured logging with field redaction. Mask API keys, tokens, and passwords in all output."
+    },
+    {
+      "rule": "Unsafe Code Execution",
+      "rule_id": "ASI06-UNSAFE-EVAL",
+      "file": "..\\camel\\examples\\usecases\\codeforces_question_solver\\app.py",
+      "line": 265,
+      "confidence": 0.85,
+      "description": "[CONFIRMED] compile() with user input -- code compilation from untrusted data",
+      "recommendation": "Avoid dynamic code execution. Use safe alternatives: ast.literal_eval for literals, yaml.safe_load for YAML, subprocess with shell=False and argument lists."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\camel\\examples\\runtimes\\shared_runtime_multi_toolkit.py",
+      "line": 266,
+      "confidence": 0.9,
+      "description": "[CONFIRMED] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Unsafe Code Execution",
+      "rule_id": "ASI06-UNSAFE-EVAL",
+      "file": "..\\camel\\examples\\usecases\\codeforces_question_solver\\app.py",
+      "line": 266,
+      "confidence": 0.85,
+      "description": "[CONFIRMED] compile() with user input -- code compilation from untrusted data",
+      "recommendation": "Avoid dynamic code execution. Use safe alternatives: ast.literal_eval for literals, yaml.safe_load for YAML, subprocess with shell=False and argument lists."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\camel\\examples\\toolkits\\terminal_toolkit.py",
+      "line": 275,
+      "confidence": 0.9,
+      "description": "[CONFIRMED] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\camel\\examples\\toolkits\\terminal_toolkit.py",
+      "line": 277,
+      "confidence": 0.9,
+      "description": "[CONFIRMED] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\camel\\examples\\debug\\eigent.py",
+      "line": 292,
+      "confidence": 0.9,
+      "description": "[CONFIRMED] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\camel\\examples\\toolkits\\terminal_toolkit.py",
+      "line": 312,
+      "confidence": 0.9,
+      "description": "[CONFIRMED] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Unsafe Code Execution",
+      "rule_id": "ASI06-UNSAFE-EVAL",
+      "file": "..\\camel\\examples\\usecases\\codeforces_question_solver\\app.py",
+      "line": 320,
+      "confidence": 0.85,
+      "description": "[CONFIRMED] compile() with user input -- code compilation from untrusted data",
+      "recommendation": "Avoid dynamic code execution. Use safe alternatives: ast.literal_eval for literals, yaml.safe_load for YAML, subprocess with shell=False and argument lists."
+    },
+    {
+      "rule": "Unsafe Code Execution",
+      "rule_id": "ASI06-UNSAFE-EVAL",
+      "file": "..\\camel\\examples\\usecases\\codeforces_question_solver\\app.py",
+      "line": 322,
+      "confidence": 0.85,
+      "description": "[CONFIRMED] compile() with user input -- code compilation from untrusted data",
+      "recommendation": "Avoid dynamic code execution. Use safe alternatives: ast.literal_eval for literals, yaml.safe_load for YAML, subprocess with shell=False and argument lists."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\camel\\examples\\toolkits\\file_toolkit.py",
+      "line": 334,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.route() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\camel\\examples\\toolkits\\terminal_toolkit.py",
+      "line": 338,
+      "confidence": 0.9,
+      "description": "[CONFIRMED] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\camel\\examples\\toolkits\\file_toolkit.py",
+      "line": 343,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.route() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\camel\\examples\\toolkits\\file_toolkit.py",
+      "line": 361,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.route() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\camel\\examples\\workforce\\eigent.py",
+      "line": 370,
+      "confidence": 0.9,
+      "description": "[CONFIRMED] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\camel\\examples\\workforce\\eigent.py",
+      "line": 371,
+      "confidence": 0.9,
+      "description": "[CONFIRMED] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\camel\\examples\\workforce\\eigent.py",
+      "line": 376,
+      "confidence": 0.9,
+      "description": "[CONFIRMED] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\camel\\examples\\debug\\eigent.py",
+      "line": 399,
+      "confidence": 0.9,
+      "description": "[CONFIRMED] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\camel\\examples\\toolkits\\file_toolkit.py",
+      "line": 415,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.route() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\camel\\examples\\toolkits\\file_toolkit.py",
+      "line": 440,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.route() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\camel\\examples\\toolkits\\file_toolkit.py",
+      "line": 444,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.route() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\camel\\examples\\toolkits\\file_toolkit.py",
+      "line": 448,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.route() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\camel\\examples\\toolkits\\file_toolkit.py",
+      "line": 460,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.route() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Trust Boundary Violation",
+      "rule_id": "ASI10-TRUST-BOUNDARY",
+      "file": "..\\camel\\docs\\mintlify\\convert_notebook2mdx.py",
+      "line": 592,
+      "confidence": 0.85,
+      "description": "[CONFIRMED] Agent can modify its own code -- self-modification attack vector",
+      "recommendation": "Make agent code immutable at runtime. Use code signing and integrity checks."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\camel\\examples\\workforce\\eigent.py",
+      "line": 669,
+      "confidence": 0.9,
+      "description": "[CONFIRMED] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Trust Boundary Violation",
+      "rule_id": "ASI10-TRUST-BOUNDARY",
+      "file": "..\\camel\\docs\\mintlify\\build_api_docs.py",
+      "line": 840,
+      "confidence": 0.85,
+      "description": "[CONFIRMED] Agent can modify its own code -- self-modification attack vector",
+      "recommendation": "Make agent code immutable at runtime. Use code signing and integrity checks."
+    }
+  ]
+}

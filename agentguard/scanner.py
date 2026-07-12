@@ -7,6 +7,8 @@ from pathlib import Path
 
 from agentguard.models import ScanResult, Finding
 from agentguard.rules import ALL_RULES
+from agentguard.false_positive_filter import apply_fp_filters, FilterResult
+from agentguard.classifier import classify_findings, ClassifierResult
 
 # File extensions to scan
 SCANABLE_EXTENSIONS = {
@@ -28,6 +30,14 @@ SKIP_DIRS = {
     ".next", ".nuxt", "vendor", ".cargo", "target",
 }
 
+# Files to always skip (lock files, binary, generated)
+SKIP_FILES = {
+    "package-lock.json", "yarn.lock", "pnpm-lock.yaml",
+    "poetry.lock", "Pipfile.lock", "Gemfile.lock",
+    "Cargo.lock", "composer.lock", "mix.lock",
+    ".DS_Store", "Thumbs.db",
+}
+
 # Directories that contain intentional test vulnerabilities
 # Skipped by default, can be included with --include-tests
 TEST_DIRS = {
@@ -43,6 +53,10 @@ def should_scan(path: Path, include_tests: bool = False) -> bool:
     """Check if a file should be scanned."""
     suffix = path.suffix.lower()
     name = path.name.lower()
+
+    # Skip known lock/generated files
+    if name in SKIP_FILES:
+        return False
 
     # Check standard extensions
     if suffix not in SCANABLE_EXTENSIONS:
@@ -94,6 +108,8 @@ def scan_file(file_path: Path | str) -> list[Finding]:
 def scan_directory(
     target: str | Path,
     include_tests: bool = False,
+    enable_fp_filter: bool = True,
+    enable_classifier: bool = True,
 ) -> ScanResult:
     """Scan an entire directory for AI agent security vulnerabilities.
 
@@ -101,6 +117,10 @@ def scan_directory(
         target: Directory or file to scan.
         include_tests: If True, include test files and directories.
                        Defaults to False (test files skipped).
+        enable_fp_filter: If True, apply automatic false positive filtering.
+                          Defaults to True.
+        enable_classifier: If True, classify findings into CONFIRMED/INVESTIGATE/etc.
+                           Defaults to True.
     """
     target_path = Path(target)
     start_time = time.time()
@@ -130,9 +150,19 @@ def scan_directory(
     for f in files_to_scan:
         all_findings.extend(scan_file(f))
 
+    # ── False Positive Filtering ──
+    fp_result: FilterResult | None = None
+    if enable_fp_filter and all_findings:
+        all_findings, fp_result = apply_fp_filters(all_findings)
+
+    # ── Classification ──
+    classifier_result: ClassifierResult | None = None
+    if enable_classifier and all_findings:
+        all_findings, classifier_result = classify_findings(all_findings)
+
     duration_ms = int((time.time() - start_time) * 1000)
 
-    return ScanResult(
+    result = ScanResult(
         target=str(target),
         files_scanned=len(files_to_scan),
         findings=sorted(all_findings, key=lambda x: (
@@ -141,3 +171,11 @@ def scan_directory(
         )),
         scan_duration_ms=duration_ms,
     )
+
+    # Attach pipeline metadata for reporters
+    if fp_result:
+        result.__dict__["_fp_result"] = fp_result
+    if classifier_result:
+        result.__dict__["_classifier_result"] = classifier_result
+
+    return result

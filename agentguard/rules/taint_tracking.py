@@ -58,6 +58,18 @@ class TaintTracker:
         self.file = file
         self.tainted_vars: dict[str, int] = {}  # var_name -> line where tainted
         self.findings: list[Finding] = []
+        self._source_lines: list[str] = []
+        try:
+            with open(file, 'r', encoding='utf-8', errors='ignore') as f:
+                self._source_lines = f.readlines()
+        except:
+            pass
+
+    def _get_line(self, lineno: int) -> str:
+        """Get source line text, 1-indexed."""
+        if 0 < lineno <= len(self._source_lines):
+            return self._source_lines[lineno - 1].strip()[:200]
+        return ""
 
     def _is_source(self, node: ast.AST) -> bool:
         """Check if an AST node represents a taint source."""
@@ -196,7 +208,7 @@ class TaintTracker:
                             owasp=OWASP_ASI.ASI01,
                             file=self.file,
                             line=node.lineno,
-                            snippet=f"{target.id} = <tainted expression>",
+                            snippet=self._get_line(node.lineno) or f"{target.id} = <tainted expression>",
                             description=f"Untrusted input flows into LLM sink variable '{target.id}' without sanitization",
                             recommendation="Sanitize user input before including in prompts. Use structured message arrays with separate system/user roles. Never concatenate user input into system prompts.",
                             confidence=0.92,

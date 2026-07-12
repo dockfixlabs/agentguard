@@ -5,6 +5,38 @@ All notable changes to AgentGuard will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.8.0] - 2026-07-08
+
+### Added
+- **Automatic False Positive Filtering** (`false_positive_filter.py`): Post-scan FP detection using:
+  - Rule-specific exclusion patterns (known FP regexes per rule)
+  - File-level heuristics (metadata files, lock files, configs)
+  - Content-level heuristics (comments, documentation, security docs)
+  - Density-based anomaly detection (single rule flooding >50 findings/file)
+  - Severity auto-downgrade for noisy rule patterns
+- **Automatic Finding Classification** (`classifier.py`): 4-tier classification:
+  - `CONFIRMED`: High-confidence actionable vulnerabilities
+  - `INVESTIGATE`: Needs human review
+  - `BEST_PRACTICE`: Security pattern, not exploitable
+  - `LIKELY_FP`: Probable false positive
+- **Auto Report Generation** (`auto_reporter.py`):
+  - Structured Markdown audit reports with executive summary, OWASP coverage, top findings
+  - JSON summary for programmatic consumption
+  - CI-mode concise one-liner (`--ci` flag)
+  - Risk scoring (weighted by severity)
+  - Framework health assessment (HEALTHY / NEEDS REVIEW / CRITICAL)
+- New CLI flags: `--no-fp-filter`, `--no-classify`, `--auto-report PATH`, `--ci`
+- Scanner now skips lock files (`package-lock.json`, `yarn.lock`, `poetry.lock`, etc.)
+
+### Changed
+- `scan_directory()` now accepts `enable_fp_filter` and `enable_classifier` flags
+- Scan pipeline: raw findings -> FP filter -> classifier -> sorted output
+- FP filter enabled by default; classifier enabled by default
+
+### Fixed
+- Lock files no longer scanned (eliminates noise from `package-lock.json`)
+- Unicode arrow characters replaced with ASCII equivalents for Windows cp1256 compatibility
+
 ## [0.2.0] - 2026-06-21
 
 ### Added

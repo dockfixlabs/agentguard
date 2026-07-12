@@ -1,0 +1,502 @@
+[
+  {
+    "framework": "dify",
+    "rule": "Trust Boundary Violation",
+    "rule_id": "ASI10-TRUST-BOUNDARY",
+    "file": "..\\dify-audit\\api\\core\\mcp\\client\\streamable_client.py",
+    "line": 466,
+    "confidence": 0.85,
+    "description": "Agent can modify its own code -- self-modification attack vector",
+    "recommendation": "Make agent code immutable at runtime. Use code signing and integrity checks."
+  },
+  {
+    "framework": "langchain",
+    "rule": "Prompt Template Injection",
+    "rule_id": "ASI-PROMPT-TEMPLATE",
+    "file": "..\\langchain-audit\\libs\\langchain\\langchain_classic\\chains\\flare\\prompts.py",
+    "line": 29,
+    "confidence": 0.9,
+    "description": "Jinja2 template rendering with user-controlled data -- template injection enables structural prompt manipulation",
+    "recommendation": "Never pass user data directly to template.render(). Use whitelist-based template variables. Escape all user inputs before template rendering."
+  },
+  {
+    "framework": "dify",
+    "rule": "Trust Boundary Violation",
+    "rule_id": "ASI10-TRUST-BOUNDARY",
+    "file": "..\\dify-audit\\api\\core\\trigger\\entities\\entities.py",
+    "line": 238,
+    "confidence": 0.85,
+    "description": "Agent can modify its own code -- self-modification attack vector",
+    "recommendation": "Make agent code immutable at runtime. Use code signing and integrity checks."
+  },
+  {
+    "framework": "langchain",
+    "rule": "Action Chain Amplification",
+    "rule_id": "ASI-CHAIN-AMPLIFY",
+    "file": "..\\langchain-audit\\libs\\standard-tests\\langchain_tests\\integration_tests\\chat_models.py",
+    "line": 2512,
+    "confidence": 0.85,
+    "description": "Destructive operation inside unbounded loop without rate limiting or checkpoint -- single trigger can amplify into mass destruction",
+    "recommendation": "Add rate limits, batch_size caps, human-in-the-loop checkpoints, or incremental approval gates before destructive operations in loops."
+  },
+  {
+    "framework": "llamaindex",
+    "rule": "Trust Boundary Violation",
+    "rule_id": "ASI10-TRUST-BOUNDARY",
+    "file": "..\\llama-index-audit\\llama-index-core\\llama_index\\core\\chat_engine\\context.py",
+    "line": 389,
+    "confidence": 0.85,
+    "description": "Agent can modify its own code -- self-modification attack vector",
+    "recommendation": "Make agent code immutable at runtime. Use code signing and integrity checks."
+  },
+  {
+    "framework": "llamaindex",
+    "rule": "Prompt Injection (Taint Tracked)",
+    "rule_id": "ASI01-TAINT-TRACK",
+    "file": "..\\llama-index-audit\\llama-index-integrations\\llms\\llama-index-llms-dashscope\\llama_index\\llms\\dashscope\\base.py",
+    "line": 415,
+    "confidence": 0.92,
+    "description": "Untrusted input flows into LLM sink variable 'messages' without sanitization",
+    "recommendation": "Sanitize user input before including in prompts. Use structured message arrays with separate system/user roles. Never concatenate user input into system prompts."
+  },
+  {
+    "framework": "llamaindex",
+    "rule": "Trust Boundary Violation",
+    "rule_id": "ASI10-TRUST-BOUNDARY",
+    "file": "..\\llama-index-audit\\llama-index-core\\llama_index\\core\\agent\\workflow\\base_agent.py",
+    "line": 242,
+    "confidence": 0.85,
+    "description": "Agent can modify its own code -- self-modification attack vector",
+    "recommendation": "Make agent code immutable at runtime. Use code signing and integrity checks."
+  },
+  {
+    "framework": "llamaindex",
+    "rule": "Trust Boundary Violation",
+    "rule_id": "ASI10-TRUST-BOUNDARY",
+    "file": "..\\llama-index-audit\\llama-index-integrations\\evaluation\\llama-index-evaluation-tonic-validate\\llama_index\\evaluation\\tonic_validate\\answer_similarity.py",
+    "line": 63,
+    "confidence": 0.85,
+    "description": "Agent can modify its own code -- self-modification attack vector",
+    "recommendation": "Make agent code immutable at runtime. Use code signing and integrity checks."
+  },
+  {
+    "framework": "llamaindex",
+    "rule": "Trust Boundary Violation",
+    "rule_id": "ASI10-TRUST-BOUNDARY",
+    "file": "..\\llama-index-audit\\llama-index-core\\llama_index\\core\\evaluation\\pairwise.py",
+    "line": 135,
+    "confidence": 0.85,
+    "description": "Agent can modify its own code -- self-modification attack vector",
+    "recommendation": "Make agent code immutable at runtime. Use code signing and integrity checks."
+  },
+  {
+    "framework": "dify",
+    "rule": "Agent Memory Class Confusion",
+    "rule_id": "ASI-MEMORY-CLASS-CONFUSION",
+    "file": "..\\dify-audit\\api\\enterprise\\telemetry\\id_generator.py",
+    "line": 22,
+    "confidence": 0.88,
+    "description": "Memory/context/state update without authorization check \u2014 untrusted code can modify agent execution state",
+    "recommendation": "All memory updates must be guarded by authorization checks. Implement immutable memory with append-only logs and cryptographic verification."
+  },
+  {
+    "framework": "llamaindex",
+    "rule": "Unrestricted Tool Access",
+    "rule_id": "ASI02-TOOL-ABUSE",
+    "file": "..\\llama-index-audit\\docs\\examples\\discover_llamaindex\\document_management\\discord_dumps\\help_channel_dump_06_02_23.json",
+    "line": 74901,
+    "confidence": 0.9,
+    "description": "Dangerous system-level tool accessible to agent \u2014 code execution capability",
+    "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+  },
+  {
+    "framework": "llamaindex",
+    "rule": "Unsafe Code Execution",
+    "rule_id": "ASI06-UNSAFE-EVAL",
+    "file": "..\\llama-index-audit\\docs\\examples\\discover_llamaindex\\document_management\\discord_dumps\\help_channel_dump_06_02_23.json",
+    "line": 74901,
+    "confidence": 0.95,
+    "description": "eval() -- arbitrary code execution from string",
+    "recommendation": "Avoid dynamic code execution. Use safe alternatives: ast.literal_eval for literals, yaml.safe_load for YAML, subprocess with shell=False and argument lists."
+  },
+  {
+    "framework": "autogen",
+    "rule": "Prompt Injection (Taint Tracked)",
+    "rule_id": "ASI01-TAINT-TRACK",
+    "file": "..\\autogen-audit\\python\\packages\\autogen-ext\\src\\autogen_ext\\memory\\redis\\_redis_memory.py",
+    "line": 309,
+    "confidence": 0.92,
+    "description": "Untrusted input flows into LLM sink variable 'prompt' without sanitization",
+    "recommendation": "Sanitize user input before including in prompts. Use structured message arrays with separate system/user roles. Never concatenate user input into system prompts."
+  },
+  {
+    "framework": "dify",
+    "rule": "Prompt Injection",
+    "rule_id": "ASI01-PROMPT-INJECTION",
+    "file": "..\\dify-audit\\api\\core\\app\\apps\\agent_app\\runtime_request_builder.py",
+    "line": 166,
+    "confidence": 0.9,
+    "description": "Untrusted input concatenated into prompt -- prompt injection vector",
+    "recommendation": "Sanitize and validate all user input before including in prompts. Use structured prompts with clear delimiters. Consider prompt shielding and input/output filtering."
+  },
+  {
+    "framework": "langchain",
+    "rule": "Unrestricted Tool Access",
+    "rule_id": "ASI02-TOOL-ABUSE",
+    "file": "..\\langchain-audit\\libs\\langchain_v1\\langchain\\agents\\middleware\\_execution.py",
+    "line": 35,
+    "confidence": 0.9,
+    "description": "Dangerous system-level tool accessible to agent \u2014 code execution capability",
+    "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+  },
+  {
+    "framework": "qwen-agent",
+    "rule": "Agent Memory Class Confusion",
+    "rule_id": "ASI-MEMORY-CLASS-CONFUSION",
+    "file": "..\\qwen-agent\\benchmark\\code_interpreter\\prompt\\qwen_react.py",
+    "line": 50,
+    "confidence": 0.9,
+    "description": "Agent class mutates system_prompt/instructions \u2014 governance bypass via prompt self-modification",
+    "recommendation": "System prompts and instructions should be immutable. If dynamic prompts are needed, implement through an external, agent-immutable prompt manager with audit trail."
+  },
+  {
+    "framework": "camel",
+    "rule": "Agent Memory Poisoning",
+    "rule_id": "ASI-MEMORY-POISON",
+    "file": "..\\camel\\examples\\memories\\agent_memory_example.py",
+    "line": 125,
+    "confidence": 0.85,
+    "description": "Untrusted data (user_message) written to agent memory store without sanitization -- persistent knowledge base poisoning",
+    "recommendation": "Validate and sanitize ALL data before writing to vector stores, RAG databases, or agent memory. Use content filtering, input validation, and origin verification."
+  },
+  {
+    "framework": "dify",
+    "rule": "Unrestricted Tool Access",
+    "rule_id": "ASI02-TOOL-ABUSE",
+    "file": "..\\dify-audit\\api\\core\\trigger\\debug\\event_bus.py",
+    "line": 111,
+    "confidence": 0.9,
+    "description": "Dangerous system-level tool accessible to agent \u2014 code execution capability",
+    "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+  },
+  {
+    "framework": "dify",
+    "rule": "Unsafe Code Execution",
+    "rule_id": "ASI06-UNSAFE-EVAL",
+    "file": "..\\dify-audit\\api\\core\\trigger\\debug\\event_bus.py",
+    "line": 111,
+    "confidence": 0.95,
+    "description": "eval() -- arbitrary code execution from string",
+    "recommendation": "Avoid dynamic code execution. Use safe alternatives: ast.literal_eval for literals, yaml.safe_load for YAML, subprocess with shell=False and argument lists."
+  },
+  {
+    "framework": "autogen",
+    "rule": "Host Filesystem Mount Exposure",
+    "rule_id": "ASI-MOUNT-EXPOSURE",
+    "file": "..\\autogen-audit\\.devcontainer\\docker-compose.yml",
+    "line": 11,
+    "confidence": 0.92,
+    "description": "docker-compose volume mount exposes sensitive host path: /var/run/docker.sock",
+    "recommendation": "Remove mount to sensitive path. Use named Docker volumes or restrict to app-specific directories with read_only access."
+  },
+  {
+    "framework": "qwen-agent",
+    "rule": "Agent Memory Class Confusion",
+    "rule_id": "ASI-MEMORY-CLASS-CONFUSION",
+    "file": "..\\qwen-agent\\benchmark\\code_interpreter\\prompt\\react.py",
+    "line": 51,
+    "confidence": 0.9,
+    "description": "Agent class mutates system_prompt/instructions \u2014 governance bypass via prompt self-modification",
+    "recommendation": "System prompts and instructions should be immutable. If dynamic prompts are needed, implement through an external, agent-immutable prompt manager with audit trail."
+  },
+  {
+    "framework": "llamaindex",
+    "rule": "Agent Memory Class Confusion",
+    "rule_id": "ASI-MEMORY-CLASS-CONFUSION",
+    "file": "..\\llama-index-audit\\llama-index-integrations\\llms\\llama-index-llms-huggingface\\llama_index\\llms\\huggingface\\base.py",
+    "line": 361,
+    "confidence": 0.9,
+    "description": "Agent class mutates system_prompt/instructions \u2014 governance bypass via prompt self-modification",
+    "recommendation": "System prompts and instructions should be immutable. If dynamic prompts are needed, implement through an external, agent-immutable prompt manager with audit trail."
+  },
+  {
+    "framework": "camel",
+    "rule": "Unrestricted Tool Access",
+    "rule_id": "ASI02-TOOL-ABUSE",
+    "file": "..\\camel\\examples\\debug\\eigent.py",
+    "line": 227,
+    "confidence": 0.9,
+    "description": "Dangerous system-level tool accessible to agent \u2014 code execution capability",
+    "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+  },
+  {
+    "framework": "crewai",
+    "rule": "Agent Memory Class Confusion",
+    "rule_id": "ASI-MEMORY-CLASS-CONFUSION",
+    "file": "..\\crewai-audit\\lib\\crewai-files\\src\\crewai_files\\processing\\processor.py",
+    "line": 70,
+    "confidence": 0.9,
+    "description": "Agent class mutates system_prompt/instructions \u2014 governance bypass via prompt self-modification",
+    "recommendation": "System prompts and instructions should be immutable. If dynamic prompts are needed, implement through an external, agent-immutable prompt manager with audit trail."
+  },
+  {
+    "framework": "camel",
+    "rule": "Prompt Injection (Taint Tracked)",
+    "rule_id": "ASI01-TAINT-TRACK",
+    "file": "..\\camel\\examples\\usecases\\chat_with_github\\demo_git_ingest.py",
+    "line": 91,
+    "confidence": 0.92,
+    "description": "Untrusted input flows into LLM sink variable 'prompt' without sanitization",
+    "recommendation": "Sanitize user input before including in prompts. Use structured message arrays with separate system/user roles. Never concatenate user input into system prompts."
+  },
+  {
+    "framework": "langchain",
+    "rule": "Agent Memory Class Confusion",
+    "rule_id": "ASI-MEMORY-CLASS-CONFUSION",
+    "file": "..\\langchain-audit\\libs\\core\\langchain_core\\prompts\\chat.py",
+    "line": 603,
+    "confidence": 0.9,
+    "description": "Agent class mutates system_prompt/instructions \u2014 governance bypass via prompt self-modification",
+    "recommendation": "System prompts and instructions should be immutable. If dynamic prompts are needed, implement through an external, agent-immutable prompt manager with audit trail."
+  },
+  {
+    "framework": "qwen-agent",
+    "rule": "Prompt Injection",
+    "rule_id": "ASI01-PROMPT-INJECTION",
+    "file": "..\\qwen-agent\\qwen_agent\\agents\\write_from_scratch.py",
+    "line": 57,
+    "confidence": 0.9,
+    "description": "Untrusted input concatenated into prompt -- prompt injection vector",
+    "recommendation": "Sanitize and validate all user input before including in prompts. Use structured prompts with clear delimiters. Consider prompt shielding and input/output filtering."
+  },
+  {
+    "framework": "qwen-agent",
+    "rule": "Prompt Injection (Taint Tracked)",
+    "rule_id": "ASI01-TAINT-TRACK",
+    "file": "..\\qwen-agent\\qwen_server\\workstation_server.py",
+    "line": 292,
+    "confidence": 0.92,
+    "description": "Untrusted input flows into LLM sink variable 'messages' without sanitization",
+    "recommendation": "Sanitize user input before including in prompts. Use structured message arrays with separate system/user roles. Never concatenate user input into system prompts."
+  },
+  {
+    "framework": "qwen-agent",
+    "rule": "Prompt Injection (Taint Tracked)",
+    "rule_id": "ASI01-TAINT-TRACK",
+    "file": "..\\qwen-agent\\examples\\assistant_qwq.py",
+    "line": 58,
+    "confidence": 0.92,
+    "description": "Untrusted input flows into LLM sink variable 'messages' without sanitization",
+    "recommendation": "Sanitize user input before including in prompts. Use structured message arrays with separate system/user roles. Never concatenate user input into system prompts."
+  },
+  {
+    "framework": "dify",
+    "rule": "Unrestricted Tool Access",
+    "rule_id": "ASI02-TOOL-ABUSE",
+    "file": "..\\dify-audit\\dify-agent\\src\\dify_agent\\layers\\shell\\layer.py",
+    "line": 418,
+    "confidence": 0.9,
+    "description": "Dangerous system-level tool accessible to agent \u2014 code execution capability",
+    "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+  },
+  {
+    "framework": "autogen",
+    "rule": "Unrestricted Tool Access",
+    "rule_id": "ASI02-TOOL-ABUSE",
+    "file": "..\\autogen-audit\\python\\packages\\autogen-studio\\autogenstudio\\database\\db_manager.py",
+    "line": 253,
+    "confidence": 0.9,
+    "description": "Dangerous system-level tool accessible to agent \u2014 code execution capability",
+    "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+  },
+  {
+    "framework": "autogen",
+    "rule": "Unsafe Code Execution",
+    "rule_id": "ASI06-UNSAFE-EVAL",
+    "file": "..\\autogen-audit\\python\\packages\\autogen-studio\\autogenstudio\\database\\db_manager.py",
+    "line": 253,
+    "confidence": 0.95,
+    "description": "exec() -- arbitrary code execution",
+    "recommendation": "Avoid dynamic code execution. Use safe alternatives: ast.literal_eval for literals, yaml.safe_load for YAML, subprocess with shell=False and argument lists."
+  },
+  {
+    "framework": "qwen-agent",
+    "rule": "Prompt Injection (Taint Tracked)",
+    "rule_id": "ASI01-TAINT-TRACK",
+    "file": "..\\qwen-agent\\examples\\assistant_qwen3_coder.py",
+    "line": 82,
+    "confidence": 0.92,
+    "description": "Untrusted input flows into LLM sink variable 'messages' without sanitization",
+    "recommendation": "Sanitize user input before including in prompts. Use structured message arrays with separate system/user roles. Never concatenate user input into system prompts."
+  },
+  {
+    "framework": "camel",
+    "rule": "Data Exfiltration Risk",
+    "rule_id": "ASI03-DATA-EXFIL",
+    "file": "..\\camel\\examples\\workforce\\workforce_shared_memory_validation.py",
+    "line": 115,
+    "confidence": 0.85,
+    "description": "Secret/credential value being logged -- credential exposure in logs",
+    "recommendation": "Never log secrets. Use structured logging with field redaction. Mask API keys, tokens, and passwords in all output."
+  },
+  {
+    "framework": "autogen",
+    "rule": "Unsafe Code Execution",
+    "rule_id": "ASI06-UNSAFE-EVAL",
+    "file": "..\\autogen-audit\\python\\packages\\autogen-agentchat\\src\\autogen_agentchat\\agents\\_code_executor_agent.py",
+    "line": 291,
+    "confidence": 0.95,
+    "description": "eval() -- arbitrary code execution from string",
+    "recommendation": "Avoid dynamic code execution. Use safe alternatives: ast.literal_eval for literals, yaml.safe_load for YAML, subprocess with shell=False and argument lists."
+  },
+  {
+    "framework": "autogen",
+    "rule": "Unsafe Code Execution",
+    "rule_id": "ASI06-UNSAFE-EVAL",
+    "file": "..\\autogen-audit\\python\\packages\\autogen-agentchat\\src\\autogen_agentchat\\agents\\_code_executor_agent.py",
+    "line": 291,
+    "confidence": 0.95,
+    "description": "exec() -- arbitrary code execution",
+    "recommendation": "Avoid dynamic code execution. Use safe alternatives: ast.literal_eval for literals, yaml.safe_load for YAML, subprocess with shell=False and argument lists."
+  },
+  {
+    "framework": "autogen",
+    "rule": "Unsafe Code Execution",
+    "rule_id": "ASI06-UNSAFE-EVAL",
+    "file": "..\\autogen-audit\\python\\packages\\autogen-studio\\autogenstudio\\database\\db_manager.py",
+    "line": 259,
+    "confidence": 0.95,
+    "description": "exec() -- arbitrary code execution",
+    "recommendation": "Avoid dynamic code execution. Use safe alternatives: ast.literal_eval for literals, yaml.safe_load for YAML, subprocess with shell=False and argument lists."
+  },
+  {
+    "framework": "dify",
+    "rule": "Action Chain Amplification",
+    "rule_id": "ASI-CHAIN-AMPLIFY",
+    "file": "..\\dify-audit\\api\\providers\\vdb\\vdb-couchbase\\src\\dify_vdb_couchbase\\couchbase_vector.py",
+    "line": 236,
+    "confidence": 0.85,
+    "description": "Destructive operation inside unbounded loop without rate limiting or checkpoint -- single trigger can amplify into mass destruction",
+    "recommendation": "Add rate limits, batch_size caps, human-in-the-loop checkpoints, or incremental approval gates before destructive operations in loops."
+  },
+  {
+    "framework": "crewai",
+    "rule": "Excessive Agency",
+    "rule_id": "ASI04-EXCESSIVE-AGENCY",
+    "file": "..\\crewai-audit\\lib\\crewai-tools\\src\\crewai_tools\\tools\\daytona_sandbox_tool\\daytona_file_tool.py",
+    "line": 453,
+    "confidence": 0.9,
+    "description": "Agent can escalate privileges \u2014 sudo/chmod/setuid access",
+    "recommendation": "Never allow agents to escalate privileges. Run in restricted sandbox with no sudo access."
+  },
+  {
+    "framework": "langchain",
+    "rule": "Prompt Injection",
+    "rule_id": "ASI01-PROMPT-INJECTION",
+    "file": "..\\langchain-audit\\libs\\langchain_v1\\langchain\\agents\\factory.py",
+    "line": 1463,
+    "confidence": 0.9,
+    "description": "Untrusted input concatenated into prompt -- prompt injection vector",
+    "recommendation": "Sanitize and validate all user input before including in prompts. Use structured prompts with clear delimiters. Consider prompt shielding and input/output filtering."
+  },
+  {
+    "framework": "camel",
+    "rule": "Data Exfiltration Risk",
+    "rule_id": "ASI03-DATA-EXFIL",
+    "file": "..\\camel\\examples\\models\\nemotron_model_example.py",
+    "line": 36,
+    "confidence": 0.85,
+    "description": "Secret/credential value being logged -- credential exposure in logs",
+    "recommendation": "Never log secrets. Use structured logging with field redaction. Mask API keys, tokens, and passwords in all output."
+  },
+  {
+    "framework": "autogen",
+    "rule": "Excessive Agency",
+    "rule_id": "ASI04-EXCESSIVE-AGENCY",
+    "file": "..\\autogen-audit\\python\\packages\\autogen-ext\\src\\autogen_ext\\code_executors\\docker_jupyter\\_jupyter_server.py",
+    "line": 328,
+    "confidence": 0.9,
+    "description": "Agent can escalate privileges \u2014 sudo/chmod/setuid access",
+    "recommendation": "Never allow agents to escalate privileges. Run in restricted sandbox with no sudo access."
+  },
+  {
+    "framework": "camel",
+    "rule": "Prompt Injection",
+    "rule_id": "ASI01-PROMPT-INJECTION",
+    "file": "..\\camel\\examples\\models\\claude_model_example.py",
+    "line": 159,
+    "confidence": 0.85,
+    "description": "f-string prompt with user-controlled variable -- prompt injection via format string",
+    "recommendation": "Sanitize and validate all user input before including in prompts. Use structured prompts with clear delimiters. Consider prompt shielding and input/output filtering."
+  },
+  {
+    "framework": "langchain",
+    "rule": "Prompt Injection",
+    "rule_id": "ASI01-PROMPT-INJECTION",
+    "file": "..\\langchain-audit\\libs\\langchain_v1\\langchain\\agents\\factory.py",
+    "line": 1465,
+    "confidence": 0.9,
+    "description": "Untrusted input concatenated into prompt -- prompt injection vector",
+    "recommendation": "Sanitize and validate all user input before including in prompts. Use structured prompts with clear delimiters. Consider prompt shielding and input/output filtering."
+  },
+  {
+    "framework": "camel",
+    "rule": "Data Exfiltration Risk",
+    "rule_id": "ASI03-DATA-EXFIL",
+    "file": "..\\camel\\examples\\models\\claude_model_example.py",
+    "line": 119,
+    "confidence": 0.85,
+    "description": "Secret/credential value being logged -- credential exposure in logs",
+    "recommendation": "Never log secrets. Use structured logging with field redaction. Mask API keys, tokens, and passwords in all output."
+  },
+  {
+    "framework": "langchain",
+    "rule": "Action Chain Amplification",
+    "rule_id": "ASI-CHAIN-AMPLIFY",
+    "file": "..\\langchain-audit\\libs\\langchain\\langchain_classic\\chains\\flare\\base.py",
+    "line": 147,
+    "confidence": 0.85,
+    "description": "Destructive operation inside unbounded loop without rate limiting or checkpoint -- single trigger can amplify into mass destruction",
+    "recommendation": "Add rate limits, batch_size caps, human-in-the-loop checkpoints, or incremental approval gates before destructive operations in loops."
+  },
+  {
+    "framework": "langchain",
+    "rule": "Action Chain Amplification",
+    "rule_id": "ASI-CHAIN-AMPLIFY",
+    "file": "..\\langchain-audit\\libs\\langchain\\langchain_classic\\agents\\agent.py",
+    "line": 451,
+    "confidence": 0.85,
+    "description": "Destructive operation inside unbounded loop without rate limiting or checkpoint -- single trigger can amplify into mass destruction",
+    "recommendation": "Add rate limits, batch_size caps, human-in-the-loop checkpoints, or incremental approval gates before destructive operations in loops."
+  },
+  {
+    "framework": "camel",
+    "rule": "Data Exfiltration Risk",
+    "rule_id": "ASI03-DATA-EXFIL",
+    "file": "..\\camel\\examples\\models\\nemotron_model_example.py",
+    "line": 39,
+    "confidence": 0.85,
+    "description": "Secret/credential value being logged -- credential exposure in logs",
+    "recommendation": "Never log secrets. Use structured logging with field redaction. Mask API keys, tokens, and passwords in all output."
+  },
+  {
+    "framework": "crewai",
+    "rule": "Prompt Injection",
+    "rule_id": "ASI01-PROMPT-INJECTION",
+    "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\utilities\\crew_chat.py",
+    "line": 245,
+    "confidence": 0.85,
+    "description": "User-controlled variable in messages array -- prompt injection via LLM messages",
+    "recommendation": "Sanitize and validate all user input before including in prompts. Use structured prompts with clear delimiters. Consider prompt shielding and input/output filtering."
+  },
+  {
+    "framework": "crewai",
+    "rule": "Excessive Agency",
+    "rule_id": "ASI04-EXCESSIVE-AGENCY",
+    "file": "..\\crewai-audit\\lib\\crewai-core\\src\\crewai_core\\token_manager.py",
+    "line": 135,
+    "confidence": 0.9,
+    "description": "Agent can escalate privileges \u2014 sudo/chmod/setuid access",
+    "recommendation": "Never allow agents to escalate privileges. Run in restricted sandbox with no sudo access."
+  }
+]

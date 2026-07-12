@@ -43,19 +43,40 @@ See AgentGuard in action on the [demo repo](https://github.com/dockfixlabs/agent
 
 
 
+## Precision & Validation
+
+AgentGuard's precision has been independently measured:
+
+| Metric | Value |
+|--------|-------|
+| **Precision (independent sample)** | **88%** (44 TP / 6 FP) |
+| Sample size | 50 CONFIRMED findings |
+| Frameworks covered | 7 (CAMEL, Qwen-Agent, LangChain, CrewAI, AutoGen, LlamaIndex, Dify) |
+| Validation method | Manual source code inspection at each reported line |
+| FP filter effectiveness | 32 systematic FP patterns eliminated (from 36% to 88%) |
+
+The 6 remaining FPs are from a single pattern (ASI10 matching `def _update_prompts(self,...)`), 
+scheduled for fix in v0.8.1.
+
+**Methodology:** 50 findings were randomly sampled from 951 CONFIRMED results, 
+completely disjoint from the development/fix sample. Each finding was verified by 
+reading the actual source code at the reported line with surrounding context.
+
+
 ## Sovereign Security Audit 2026
 
-AgentGuard was deployed against 6 major AI agent frameworks:
+AgentGuard was deployed against 7 major AI agent frameworks:
 
-| Framework | Stars | Files | Findings | CRITICAL |
-|-----------|-------|-------|----------|----------|
-| LlamaIndex | 35K | 2,951 | 1,003 | 252 |
-| CAMEL | 17K | 899 | 746 | 387 |
-| LangChain | 95K | 1,784 | 452 | --- |
-| Qwen-Agent | 16K | 239 | 441 | 263 |
-| CrewAI | 25K | 84 | 391 | --- |
-| AutoGen | 53K | 549 | 229 | 80 |
-| **TOTAL** | | **6,506** | **3,262** | **982+** |
+| Framework | Files | Findings | CONFIRMED | Risk Score |
+|-----------|-------|----------|-----------|------------|
+| Dify | 2,030 | 1,687 | 216 | 12,570 |
+| LlamaIndex | 2,951 | 1,080 | 294 | 6,341 |
+| CrewAI | 1,042 | 1,317 | 99 | 6,392 |
+| LangChain | 1,831 | 436 | 132 | 2,653 |
+| AutoGen | 553 | 696 | 98 | 2,696 |
+| CAMEL | 355 | 147 | 62 | 946 |
+| Qwen-Agent | 238 | 242 | 50 | 1,325 |
+| **TOTAL** | **9,000** | **5,605** | **951** | **32,923** |
 
 **Full report:** [AUDIT_REPORT_2026.md](AUDIT_REPORT_2026.md)
 

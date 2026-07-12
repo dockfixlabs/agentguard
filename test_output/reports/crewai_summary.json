@@ -1,0 +1,3354 @@
+{
+  "tool": "AgentGuard",
+  "version": "0.8.0",
+  "timestamp": "2026-07-08T19:43:42.438317+00:00",
+  "target": "../crewai-audit",
+  "files_scanned": 1042,
+  "scan_duration_ms": 96190,
+  "summary": {
+    "total": 1317,
+    "critical": 358,
+    "high": 311,
+    "medium": 609,
+    "low": 39,
+    "info": 0,
+    "risk_score": 6392,
+    "framework_health": "CRITICAL \u2014 Large number of critical findings requiring immediate attention"
+  },
+  "classification": {
+    "confirmed": 99,
+    "investigate": 300,
+    "best_practice": 559,
+    "likely_fp": 359,
+    "fp_removed": 59,
+    "fp_downgraded": 39
+  },
+  "top_rules": [
+    {
+      "rule": "Data Exfiltration Risk",
+      "count": 560,
+      "severity": "CRITICAL"
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "count": 285,
+      "severity": "CRITICAL"
+    },
+    {
+      "rule": "Agent Loop Exploitation",
+      "count": 252,
+      "severity": "HIGH"
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "count": 77,
+      "severity": "CRITICAL"
+    },
+    {
+      "rule": "Trust Boundary Violation",
+      "count": 45,
+      "severity": "CRITICAL"
+    },
+    {
+      "rule": "Unsafe Code Execution",
+      "count": 37,
+      "severity": "CRITICAL"
+    },
+    {
+      "rule": "Agent Memory Class Confusion",
+      "count": 32,
+      "severity": "CRITICAL"
+    },
+    {
+      "rule": "Excessive Agency",
+      "count": 10,
+      "severity": "CRITICAL"
+    },
+    {
+      "rule": "Prompt Injection (Taint Tracked)",
+      "count": 6,
+      "severity": "CRITICAL"
+    },
+    {
+      "rule": "Prompt Injection",
+      "count": 6,
+      "severity": "CRITICAL"
+    }
+  ],
+  "top_files": [
+    {
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\cli.py",
+      "count": 69
+    },
+    {
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\agent\\core.py",
+      "count": 34
+    },
+    {
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\experimental\\agent_executor.py",
+      "count": 21
+    },
+    {
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\tools\\tool_usage.py",
+      "count": 16
+    },
+    {
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\memory\\unified_memory.py",
+      "count": 15
+    },
+    {
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\crew.py",
+      "count": 15
+    },
+    {
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\state\\runtime.py",
+      "count": 13
+    },
+    {
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\llm.py",
+      "count": 13
+    },
+    {
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\utilities\\agent_utils.py",
+      "count": 12
+    },
+    {
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\a2a\\updates\\streaming\\handler.py",
+      "count": 11
+    }
+  ],
+  "owasp_coverage": {
+    "ASI10": 45,
+    "ASI04": 10,
+    "ASI02": 77,
+    "ASI06": 37,
+    "ASI03": 560,
+    "ASI01": 15,
+    "ASI07": 1,
+    "ASI09": 252
+  },
+  "critical_findings": [
+    {
+      "rule": "Trust Boundary Violation",
+      "rule_id": "ASI10-TRUST-BOUNDARY",
+      "file": "..\\crewai-audit\\lib\\cli\\src\\crewai_cli\\templates\\flow\\crews\\content_crew\\content_crew.py",
+      "line": 23,
+      "confidence": 0.85,
+      "description": "[CONFIRMED] Agent can modify its own code -- self-modification attack vector",
+      "recommendation": "Make agent code immutable at runtime. Use code signing and integrity checks."
+    },
+    {
+      "rule": "Trust Boundary Violation",
+      "rule_id": "ASI10-TRUST-BOUNDARY",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\utilities\\task_output_storage_handler.py",
+      "line": 29,
+      "confidence": 0.85,
+      "description": "[CONFIRMED] Agent can modify its own code -- self-modification attack vector",
+      "recommendation": "Make agent code immutable at runtime. Use code signing and integrity checks."
+    },
+    {
+      "rule": "Trust Boundary Violation",
+      "rule_id": "ASI10-TRUST-BOUNDARY",
+      "file": "..\\crewai-audit\\lib\\cli\\src\\crewai_cli\\templates\\flow\\crews\\content_crew\\content_crew.py",
+      "line": 29,
+      "confidence": 0.85,
+      "description": "[CONFIRMED] Agent can modify its own code -- self-modification attack vector",
+      "recommendation": "Make agent code immutable at runtime. Use code signing and integrity checks."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\utilities\\env.py",
+      "line": 33,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\utilities\\env.py",
+      "line": 35,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\utilities\\env.py",
+      "line": 37,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\utilities\\env.py",
+      "line": 39,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Excessive Agency",
+      "rule_id": "ASI04-EXCESSIVE-AGENCY",
+      "file": "..\\crewai-audit\\lib\\crewai-core\\src\\crewai_core\\settings.py",
+      "line": 41,
+      "confidence": 0.9,
+      "description": "[CONFIRMED] Agent can escalate privileges \u2014 sudo/chmod/setuid access",
+      "recommendation": "Never allow agents to escalate privileges. Run in restricted sandbox with no sudo access."
+    },
+    {
+      "rule": "Trust Boundary Violation",
+      "rule_id": "ASI10-TRUST-BOUNDARY",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\crews\\crew_output.py",
+      "line": 43,
+      "confidence": 0.85,
+      "description": "[CONFIRMED] Agent can modify its own code -- self-modification attack vector",
+      "recommendation": "Make agent code immutable at runtime. Use code signing and integrity checks."
+    },
+    {
+      "rule": "Trust Boundary Violation",
+      "rule_id": "ASI10-TRUST-BOUNDARY",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\crews\\crew_output.py",
+      "line": 45,
+      "confidence": 0.85,
+      "description": "[CONFIRMED] Agent can modify its own code -- self-modification attack vector",
+      "recommendation": "Make agent code immutable at runtime. Use code signing and integrity checks."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\crewai-tools\\src\\crewai_tools\\tools\\daytona_sandbox_tool\\daytona_exec_tool.py",
+      "line": 47,
+      "confidence": 0.9,
+      "description": "[CONFIRMED] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Unsafe Code Execution",
+      "rule_id": "ASI06-UNSAFE-EVAL",
+      "file": "..\\crewai-audit\\lib\\crewai-tools\\src\\crewai_tools\\tools\\daytona_sandbox_tool\\daytona_exec_tool.py",
+      "line": 47,
+      "confidence": 0.95,
+      "description": "[CONFIRMED] exec() -- arbitrary code execution",
+      "recommendation": "Avoid dynamic code execution. Use safe alternatives: ast.literal_eval for literals, yaml.safe_load for YAML, subprocess with shell=False and argument lists."
+    },
+    {
+      "rule": "Trust Boundary Violation",
+      "rule_id": "ASI10-TRUST-BOUNDARY",
+      "file": "..\\crewai-audit\\lib\\cli\\src\\crewai_cli\\templates\\flow\\crews\\content_crew\\content_crew.py",
+      "line": 47,
+      "confidence": 0.85,
+      "description": "[CONFIRMED] Agent can modify its own code -- self-modification attack vector",
+      "recommendation": "Make agent code immutable at runtime. Use code signing and integrity checks."
+    },
+    {
+      "rule": "Data Exfiltration Risk",
+      "rule_id": "ASI03-DATA-EXFIL",
+      "file": "..\\crewai-audit\\lib\\crewai-tools\\src\\crewai_tools\\tools\\contextualai_query_tool\\contextual_query_tool.py",
+      "line": 48,
+      "confidence": 0.9,
+      "description": "[CONFIRMED] Secret accessed then sent to external URL -- active exfiltration",
+      "recommendation": "Isolate secret access from network code. Use secret managers that do not expose values to agent context."
+    },
+    {
+      "rule": "Trust Boundary Violation",
+      "rule_id": "ASI10-TRUST-BOUNDARY",
+      "file": "..\\crewai-audit\\lib\\cli\\src\\crewai_cli\\templates\\flow\\main.py",
+      "line": 50,
+      "confidence": 0.85,
+      "description": "[CONFIRMED] Agent can modify its own code -- self-modification attack vector",
+      "recommendation": "Make agent code immutable at runtime. Use code signing and integrity checks."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\crewai-tools\\src\\crewai_tools\\tools\\e2b_sandbox_tool\\e2b_exec_tool.py",
+      "line": 54,
+      "confidence": 0.9,
+      "description": "[CONFIRMED] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Excessive Agency",
+      "rule_id": "ASI04-EXCESSIVE-AGENCY",
+      "file": "..\\crewai-audit\\lib\\crewai-core\\src\\crewai_core\\settings.py",
+      "line": 58,
+      "confidence": 0.9,
+      "description": "[CONFIRMED] Agent can escalate privileges \u2014 sudo/chmod/setuid access",
+      "recommendation": "Never allow agents to escalate privileges. Run in restricted sandbox with no sudo access."
+    },
+    {
+      "rule": "Trust Boundary Violation",
+      "rule_id": "ASI10-TRUST-BOUNDARY",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\events\\utils\\console_formatter.py",
+      "line": 59,
+      "confidence": 0.85,
+      "description": "[CONFIRMED] Agent can modify its own code -- self-modification attack vector",
+      "recommendation": "Make agent code immutable at runtime. Use code signing and integrity checks."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\skills\\loader.py",
+      "line": 60,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\mcp\\transports\\stdio.py",
+      "line": 61,
+      "confidence": 0.9,
+      "description": "[CONFIRMED] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Trust Boundary Violation",
+      "rule_id": "ASI10-TRUST-BOUNDARY",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\mcp\\transports\\base.py",
+      "line": 62,
+      "confidence": 0.85,
+      "description": "[CONFIRMED] Agent can modify its own code -- self-modification attack vector",
+      "recommendation": "Make agent code immutable at runtime. Use code signing and integrity checks."
+    },
+    {
+      "rule": "Trust Boundary Violation",
+      "rule_id": "ASI10-TRUST-BOUNDARY",
+      "file": "..\\crewai-audit\\lib\\crewai-core\\src\\crewai_core\\token_manager.py",
+      "line": 63,
+      "confidence": 0.85,
+      "description": "[CONFIRMED] Agent can modify its own code -- self-modification attack vector",
+      "recommendation": "Make agent code immutable at runtime. Use code signing and integrity checks."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\cli.py",
+      "line": 65,
+      "confidence": 0.27,
+      "description": "[LIKELY_FP] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Trust Boundary Violation",
+      "rule_id": "ASI10-TRUST-BOUNDARY",
+      "file": "..\\crewai-audit\\lib\\crewai-files\\src\\crewai_files\\cache\\metrics.py",
+      "line": 65,
+      "confidence": 0.85,
+      "description": "[CONFIRMED] Agent can modify its own code -- self-modification attack vector",
+      "recommendation": "Make agent code immutable at runtime. Use code signing and integrity checks."
+    },
+    {
+      "rule": "Trust Boundary Violation",
+      "rule_id": "ASI10-TRUST-BOUNDARY",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\flow\\flow_wrappers.py",
+      "line": 65,
+      "confidence": 0.85,
+      "description": "[CONFIRMED] Agent can modify its own code -- self-modification attack vector",
+      "recommendation": "Make agent code immutable at runtime. Use code signing and integrity checks."
+    },
+    {
+      "rule": "Agent Memory Class Confusion",
+      "rule_id": "ASI-MEMORY-CLASS-CONFUSION",
+      "file": "..\\crewai-audit\\lib\\crewai-files\\src\\crewai_files\\processing\\processor.py",
+      "line": 68,
+      "confidence": 0.9,
+      "description": "[CONFIRMED] Agent class mutates system_prompt/instructions \u2014 governance bypass via prompt self-modification",
+      "recommendation": "System prompts and instructions should be immutable. If dynamic prompts are needed, implement through an external, agent-immutable prompt manager with audit trail."
+    },
+    {
+      "rule": "Agent Memory Class Confusion",
+      "rule_id": "ASI-MEMORY-CLASS-CONFUSION",
+      "file": "..\\crewai-audit\\lib\\crewai-files\\src\\crewai_files\\processing\\processor.py",
+      "line": 70,
+      "confidence": 0.9,
+      "description": "[CONFIRMED] Agent class mutates system_prompt/instructions \u2014 governance bypass via prompt self-modification",
+      "recommendation": "System prompts and instructions should be immutable. If dynamic prompts are needed, implement through an external, agent-immutable prompt manager with audit trail."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\skills\\loader.py",
+      "line": 78,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\a2a\\updates\\push_notifications\\handler.py",
+      "line": 81,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\utilities\\evaluators\\task_evaluator.py",
+      "line": 82,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Trust Boundary Violation",
+      "rule_id": "ASI10-TRUST-BOUNDARY",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\mcp\\transports\\stdio.py",
+      "line": 87,
+      "confidence": 0.85,
+      "description": "[CONFIRMED] Agent can modify its own code -- self-modification attack vector",
+      "recommendation": "Make agent code immutable at runtime. Use code signing and integrity checks."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\skills\\loader.py",
+      "line": 90,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\flow\\async_feedback\\providers.py",
+      "line": 92,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\a2a\\updates\\polling\\handler.py",
+      "line": 92,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Prompt Injection (Taint Tracked)",
+      "rule_id": "ASI01-TAINT-TRACK",
+      "file": "..\\crewai-audit\\lib\\crewai-tools\\src\\crewai_tools\\tools\\ai_mind_tool\\ai_mind_tool.py",
+      "line": 93,
+      "confidence": 0.9,
+      "description": "[CONFIRMED] Tainted data passed to LLM via 'openai_client.chat.completions.create' parameter 'messages'",
+      "recommendation": "Sanitize user input before passing to LLM APIs. Use structured message arrays. Validate and filter all user-controlled data."
+    },
+    {
+      "rule": "Trust Boundary Violation",
+      "rule_id": "ASI10-TRUST-BOUNDARY",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\tasks\\task_output.py",
+      "line": 94,
+      "confidence": 0.85,
+      "description": "[CONFIRMED] Agent can modify its own code -- self-modification attack vector",
+      "recommendation": "Make agent code immutable at runtime. Use code signing and integrity checks."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\cli.py",
+      "line": 95,
+      "confidence": 0.27,
+      "description": "[LIKELY_FP] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Trust Boundary Violation",
+      "rule_id": "ASI10-TRUST-BOUNDARY",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\tasks\\task_output.py",
+      "line": 96,
+      "confidence": 0.85,
+      "description": "[CONFIRMED] Agent can modify its own code -- self-modification attack vector",
+      "recommendation": "Make agent code immutable at runtime. Use code signing and integrity checks."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\a2a\\updates\\push_notifications\\handler.py",
+      "line": 96,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Excessive Agency",
+      "rule_id": "ASI04-EXCESSIVE-AGENCY",
+      "file": "..\\crewai-audit\\lib\\crewai-core\\src\\crewai_core\\token_manager.py",
+      "line": 101,
+      "confidence": 0.9,
+      "description": "[CONFIRMED] Agent can escalate privileges \u2014 sudo/chmod/setuid access",
+      "recommendation": "Never allow agents to escalate privileges. Run in restricted sandbox with no sudo access."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\skills\\loader.py",
+      "line": 101,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\cli.py",
+      "line": 102,
+      "confidence": 0.27,
+      "description": "[LIKELY_FP] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Trust Boundary Violation",
+      "rule_id": "ASI10-TRUST-BOUNDARY",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\memory\\storage\\backend.py",
+      "line": 102,
+      "confidence": 0.85,
+      "description": "[CONFIRMED] Agent can modify its own code -- self-modification attack vector",
+      "recommendation": "Make agent code immutable at runtime. Use code signing and integrity checks."
+    },
+    {
+      "rule": "Credential Exposure",
+      "rule_id": "ASI07-CREDENTIAL-LEAK",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\a2a\\utils\\agent_card_signing.py",
+      "line": 106,
+      "confidence": 0.99,
+      "description": "[CONFIRMED] Private key in source code -- immediate credential compromise",
+      "recommendation": "Remove immediately. Rotate the key. Use secret manager or HSM for private keys."
+    },
+    {
+      "rule": "Prompt Injection (Taint Tracked)",
+      "rule_id": "ASI01-TAINT-TRACK",
+      "file": "..\\crewai-audit\\lib\\crewai-tools\\src\\crewai_tools\\aws\\bedrock\\agents\\invoke_agent_tool.py",
+      "line": 111,
+      "confidence": 0.92,
+      "description": "[CONFIRMED] Untrusted input flows into LLM sink variable 'prompt' without sanitization",
+      "recommendation": "Sanitize user input before including in prompts. Use structured message arrays with separate system/user roles. Never concatenate user input into system prompts."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\scripts\\docs\\freeze_historical_versions.py",
+      "line": 119,
+      "confidence": 0.9,
+      "description": "[CONFIRMED] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\scripts\\docs\\freeze_historical_versions.py",
+      "line": 124,
+      "confidence": 0.9,
+      "description": "[CONFIRMED] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Trust Boundary Violation",
+      "rule_id": "ASI10-TRUST-BOUNDARY",
+      "file": "..\\crewai-audit\\lib\\crewai-core\\src\\crewai_core\\token_manager.py",
+      "line": 124,
+      "confidence": 0.85,
+      "description": "[CONFIRMED] Agent can modify its own code -- self-modification attack vector",
+      "recommendation": "Make agent code immutable at runtime. Use code signing and integrity checks."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\flow\\async_feedback\\providers.py",
+      "line": 124,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\utilities\\evaluators\\task_evaluator.py",
+      "line": 128,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Trust Boundary Violation",
+      "rule_id": "ASI10-TRUST-BOUNDARY",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\memory\\storage\\lancedb_storage.py",
+      "line": 128,
+      "confidence": 0.85,
+      "description": "[CONFIRMED] Agent can modify its own code -- self-modification attack vector",
+      "recommendation": "Make agent code immutable at runtime. Use code signing and integrity checks."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\state\\checkpoint_listener.py",
+      "line": 129,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Excessive Agency",
+      "rule_id": "ASI04-EXCESSIVE-AGENCY",
+      "file": "..\\crewai-audit\\lib\\crewai-core\\src\\crewai_core\\token_manager.py",
+      "line": 135,
+      "confidence": 0.9,
+      "description": "[CONFIRMED] Agent can escalate privileges \u2014 sudo/chmod/setuid access",
+      "recommendation": "Never allow agents to escalate privileges. Run in restricted sandbox with no sudo access."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\skills\\loader.py",
+      "line": 135,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\agents\\planner_observer.py",
+      "line": 137,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\mcp\\tool_resolver.py",
+      "line": 140,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\agents\\agent_adapters\\openai_agents\\openai_adapter.py",
+      "line": 143,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\agent\\utils.py",
+      "line": 146,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Prompt Injection (Taint Tracked)",
+      "rule_id": "ASI01-TAINT-TRACK",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\agents\\planner_observer.py",
+      "line": 148,
+      "confidence": 0.92,
+      "description": "[CONFIRMED] Untrusted input flows into LLM sink variable 'messages' without sanitization",
+      "recommendation": "Sanitize user input before including in prompts. Use structured message arrays with separate system/user roles. Never concatenate user input into system prompts."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\cli.py",
+      "line": 152,
+      "confidence": 0.27,
+      "description": "[LIKELY_FP] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Trust Boundary Violation",
+      "rule_id": "ASI10-TRUST-BOUNDARY",
+      "file": "..\\crewai-audit\\lib\\cli\\src\\crewai_cli\\run_crew.py",
+      "line": 154,
+      "confidence": 0.85,
+      "description": "[CONFIRMED] Agent can modify its own code -- self-modification attack vector",
+      "recommendation": "Make agent code immutable at runtime. Use code signing and integrity checks."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\a2a\\updates\\push_notifications\\handler.py",
+      "line": 155,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Trust Boundary Violation",
+      "rule_id": "ASI10-TRUST-BOUNDARY",
+      "file": "..\\crewai-audit\\lib\\cli\\src\\crewai_cli\\run_crew.py",
+      "line": 155,
+      "confidence": 0.85,
+      "description": "[CONFIRMED] Agent can modify its own code -- self-modification attack vector",
+      "recommendation": "Make agent code immutable at runtime. Use code signing and integrity checks."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\mcp\\client.py",
+      "line": 156,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\mcp\\tool_resolver.py",
+      "line": 157,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\state\\checkpoint_listener.py",
+      "line": 157,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\agents\\agent_adapters\\openai_agents\\openai_adapter.py",
+      "line": 157,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\a2a\\updates\\polling\\handler.py",
+      "line": 163,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.send_message() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\experimental\\skills\\registry.py",
+      "line": 167,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\agents\\agent_adapters\\openai_agents\\openai_adapter.py",
+      "line": 167,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\agents\\planner_observer.py",
+      "line": 171,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\state\\checkpoint_listener.py",
+      "line": 177,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\cli.py",
+      "line": 178,
+      "confidence": 0.27,
+      "description": "[LIKELY_FP] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\agent\\utils.py",
+      "line": 179,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\a2a\\updates\\polling\\handler.py",
+      "line": 181,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Agent Memory Class Confusion",
+      "rule_id": "ASI-MEMORY-CLASS-CONFUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\agents\\crew_agent_executor.py",
+      "line": 182,
+      "confidence": 0.9,
+      "description": "[CONFIRMED] Agent class mutates system_prompt/instructions \u2014 governance bypass via prompt self-modification",
+      "recommendation": "System prompts and instructions should be immutable. If dynamic prompts are needed, implement through an external, agent-immutable prompt manager with audit trail."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\cli.py",
+      "line": 187,
+      "confidence": 0.27,
+      "description": "[LIKELY_FP] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Trust Boundary Violation",
+      "rule_id": "ASI10-TRUST-BOUNDARY",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\llms\\providers\\gemini\\completion.py",
+      "line": 187,
+      "confidence": 0.85,
+      "description": "[CONFIRMED] Agent can modify its own code -- self-modification attack vector",
+      "recommendation": "Make agent code immutable at runtime. Use code signing and integrity checks."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\a2a\\task_helpers.py",
+      "line": 188,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Trust Boundary Violation",
+      "rule_id": "ASI10-TRUST-BOUNDARY",
+      "file": "..\\crewai-audit\\lib\\crewai-tools\\src\\crewai_tools\\tools\\spider_tool\\spider_tool.py",
+      "line": 189,
+      "confidence": 0.85,
+      "description": "[CONFIRMED] Agent can modify its own code -- self-modification attack vector",
+      "recommendation": "Make agent code immutable at runtime. Use code signing and integrity checks."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\agent\\utils.py",
+      "line": 189,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Trust Boundary Violation",
+      "rule_id": "ASI10-TRUST-BOUNDARY",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\events\\utils\\console_formatter.py",
+      "line": 191,
+      "confidence": 0.85,
+      "description": "[CONFIRMED] Agent can modify its own code -- self-modification attack vector",
+      "recommendation": "Make agent code immutable at runtime. Use code signing and integrity checks."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\agents\\planner_observer.py",
+      "line": 196,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\utilities\\reasoning_handler.py",
+      "line": 197,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\agents\\agent_adapters\\langgraph\\langgraph_adapter.py",
+      "line": 197,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\a2a\\utils\\transport.py",
+      "line": 199,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Trust Boundary Violation",
+      "rule_id": "ASI10-TRUST-BOUNDARY",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\events\\utils\\console_formatter.py",
+      "line": 201,
+      "confidence": 0.85,
+      "description": "[CONFIRMED] Agent can modify its own code -- self-modification attack vector",
+      "recommendation": "Make agent code immutable at runtime. Use code signing and integrity checks."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\state\\checkpoint_listener.py",
+      "line": 204,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\utilities\\evaluators\\crew_evaluator_handler.py",
+      "line": 206,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\experimental\\skills\\registry.py",
+      "line": 207,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\a2a\\updates\\push_notifications\\handler.py",
+      "line": 209,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\utilities\\reasoning_handler.py",
+      "line": 212,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\telemetry\\telemetry.py",
+      "line": 215,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\mcp\\client.py",
+      "line": 222,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Prompt Injection (Taint Tracked)",
+      "rule_id": "ASI01-TAINT-TRACK",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\memory\\analyze.py",
+      "line": 227,
+      "confidence": 0.92,
+      "description": "[CONFIRMED] Untrusted input flows into LLM sink variable 'messages' without sanitization",
+      "recommendation": "Sanitize user input before including in prompts. Use structured message arrays with separate system/user roles. Never concatenate user input into system prompts."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\utilities\\reasoning_handler.py",
+      "line": 228,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Excessive Agency",
+      "rule_id": "ASI04-EXCESSIVE-AGENCY",
+      "file": "..\\crewai-audit\\lib\\crewai-tools\\src\\crewai_tools\\tools\\daytona_sandbox_tool\\daytona_file_tool.py",
+      "line": 230,
+      "confidence": 0.9,
+      "description": "[CONFIRMED] Agent can escalate privileges \u2014 sudo/chmod/setuid access",
+      "recommendation": "Never allow agents to escalate privileges. Run in restricted sandbox with no sudo access."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\a2a\\task_helpers.py",
+      "line": 231,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\a2a\\updates\\push_notifications\\handler.py",
+      "line": 233,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\state\\runtime.py",
+      "line": 234,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\agents\\agent_adapters\\langgraph\\langgraph_adapter.py",
+      "line": 236,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\a2a\\updates\\polling\\handler.py",
+      "line": 242,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Prompt Injection",
+      "rule_id": "ASI01-PROMPT-INJECTION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\utilities\\crew_chat.py",
+      "line": 245,
+      "confidence": 0.85,
+      "description": "[CONFIRMED] User-controlled variable in messages array -- prompt injection via LLM messages",
+      "recommendation": "Sanitize and validate all user input before including in prompts. Use structured prompts with clear delimiters. Consider prompt shielding and input/output filtering."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\cli.py",
+      "line": 246,
+      "confidence": 0.27,
+      "description": "[LIKELY_FP] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Trust Boundary Violation",
+      "rule_id": "ASI10-TRUST-BOUNDARY",
+      "file": "..\\crewai-audit\\lib\\crewai-core\\src\\crewai_core\\settings.py",
+      "line": 247,
+      "confidence": 0.85,
+      "description": "[CONFIRMED] Agent can modify its own code -- self-modification attack vector",
+      "recommendation": "Make agent code immutable at runtime. Use code signing and integrity checks."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\agents\\agent_adapters\\langgraph\\langgraph_adapter.py",
+      "line": 247,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\state\\runtime.py",
+      "line": 254,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\a2a\\updates\\push_notifications\\handler.py",
+      "line": 255,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.send_message() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\cli.py",
+      "line": 256,
+      "confidence": 0.27,
+      "description": "[LIKELY_FP] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\a2a\\updates\\streaming\\handler.py",
+      "line": 261,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.send_message() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\cli.py",
+      "line": 263,
+      "confidence": 0.27,
+      "description": "[LIKELY_FP] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\a2a\\utils\\content_type.py",
+      "line": 264,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\cli.py",
+      "line": 265,
+      "confidence": 0.27,
+      "description": "[LIKELY_FP] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\a2a\\updates\\streaming\\handler.py",
+      "line": 265,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\cli.py",
+      "line": 269,
+      "confidence": 0.27,
+      "description": "[LIKELY_FP] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Trust Boundary Violation",
+      "rule_id": "ASI10-TRUST-BOUNDARY",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\tools\\tool_usage.py",
+      "line": 269,
+      "confidence": 0.85,
+      "description": "[CONFIRMED] Agent can modify its own code -- self-modification attack vector",
+      "recommendation": "Make agent code immutable at runtime. Use code signing and integrity checks."
+    },
+    {
+      "rule": "Trust Boundary Violation",
+      "rule_id": "ASI10-TRUST-BOUNDARY",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\llms\\providers\\gemini\\completion.py",
+      "line": 269,
+      "confidence": 0.85,
+      "description": "[CONFIRMED] Agent can modify its own code -- self-modification attack vector",
+      "recommendation": "Make agent code immutable at runtime. Use code signing and integrity checks."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\cli.py",
+      "line": 271,
+      "confidence": 0.27,
+      "description": "[LIKELY_FP] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\tools\\tool_usage.py",
+      "line": 273,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Trust Boundary Violation",
+      "rule_id": "ASI10-TRUST-BOUNDARY",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\llms\\providers\\anthropic\\completion.py",
+      "line": 273,
+      "confidence": 0.85,
+      "description": "[CONFIRMED] Agent can modify its own code -- self-modification attack vector",
+      "recommendation": "Make agent code immutable at runtime. Use code signing and integrity checks."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\a2a\\updates\\push_notifications\\handler.py",
+      "line": 273,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\state\\runtime.py",
+      "line": 274,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\flow\\runtime\\_actions.py",
+      "line": 274,
+      "confidence": 0.9,
+      "description": "[CONFIRMED] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Unsafe Code Execution",
+      "rule_id": "ASI06-UNSAFE-EVAL",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\flow\\runtime\\_actions.py",
+      "line": 274,
+      "confidence": 0.95,
+      "description": "[CONFIRMED] exec() -- arbitrary code execution",
+      "recommendation": "Avoid dynamic code execution. Use safe alternatives: ast.literal_eval for literals, yaml.safe_load for YAML, subprocess with shell=False and argument lists."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\a2a\\updates\\polling\\handler.py",
+      "line": 276,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Trust Boundary Violation",
+      "rule_id": "ASI10-TRUST-BOUNDARY",
+      "file": "..\\crewai-audit\\lib\\cli\\src\\crewai_cli\\memory_tui.py",
+      "line": 280,
+      "confidence": 0.85,
+      "description": "[CONFIRMED] Agent can modify its own code -- self-modification attack vector",
+      "recommendation": "Make agent code immutable at runtime. Use code signing and integrity checks."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\a2a\\utils\\agent_card.py",
+      "line": 284,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Prompt Injection (Taint Tracked)",
+      "rule_id": "ASI01-TAINT-TRACK",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\agents\\planner_observer.py",
+      "line": 286,
+      "confidence": 0.92,
+      "description": "[CONFIRMED] Untrusted input flows into LLM sink variable 'user_prompt' without sanitization",
+      "recommendation": "Sanitize user input before including in prompts. Use structured message arrays with separate system/user roles. Never concatenate user input into system prompts."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\experimental\\conversational_mixin.py",
+      "line": 291,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\a2a\\updates\\polling\\handler.py",
+      "line": 291,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\a2a\\updates\\streaming\\handler.py",
+      "line": 293,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\experimental\\evaluation\\agent_evaluator.py",
+      "line": 299,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\utilities\\reasoning_handler.py",
+      "line": 300,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Excessive Agency",
+      "rule_id": "ASI04-EXCESSIVE-AGENCY",
+      "file": "..\\crewai-audit\\lib\\crewai-tools\\src\\crewai_tools\\tools\\daytona_sandbox_tool\\daytona_file_tool.py",
+      "line": 306,
+      "confidence": 0.9,
+      "description": "[CONFIRMED] Agent can escalate privileges \u2014 sudo/chmod/setuid access",
+      "recommendation": "Never allow agents to escalate privileges. Run in restricted sandbox with no sudo access."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\a2a\\task_helpers.py",
+      "line": 308,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.send_message() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\crews\\utils.py",
+      "line": 311,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\a2a\\utils\\agent_card.py",
+      "line": 313,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Trust Boundary Violation",
+      "rule_id": "ASI10-TRUST-BOUNDARY",
+      "file": "..\\crewai-audit\\lib\\cli\\src\\crewai_cli\\memory_tui.py",
+      "line": 314,
+      "confidence": 0.85,
+      "description": "[CONFIRMED] Agent can modify its own code -- self-modification attack vector",
+      "recommendation": "Make agent code immutable at runtime. Use code signing and integrity checks."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\experimental\\evaluation\\agent_evaluator.py",
+      "line": 317,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Trust Boundary Violation",
+      "rule_id": "ASI10-TRUST-BOUNDARY",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\memory\\storage\\lancedb_storage.py",
+      "line": 319,
+      "confidence": 0.85,
+      "description": "[CONFIRMED] Agent can modify its own code -- self-modification attack vector",
+      "recommendation": "Make agent code immutable at runtime. Use code signing and integrity checks."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\a2a\\updates\\polling\\handler.py",
+      "line": 325,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\utilities\\reasoning_handler.py",
+      "line": 327,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\a2a\\updates\\streaming\\handler.py",
+      "line": 329,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\a2a\\utils\\agent_card.py",
+      "line": 331,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\a2a\\task_helpers.py",
+      "line": 332,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\experimental\\evaluation\\agent_evaluator.py",
+      "line": 332,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\mcp\\client.py",
+      "line": 334,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\a2a\\utils\\delegation.py",
+      "line": 335,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Trust Boundary Violation",
+      "rule_id": "ASI10-TRUST-BOUNDARY",
+      "file": "..\\crewai-audit\\lib\\crewai-tools\\src\\crewai_tools\\tools\\serper_dev_tool\\serper_dev_tool.py",
+      "line": 336,
+      "confidence": 0.85,
+      "description": "[CONFIRMED] Agent can modify its own code -- self-modification attack vector",
+      "recommendation": "Make agent code immutable at runtime. Use code signing and integrity checks."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\memory\\unified_memory.py",
+      "line": 339,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\a2a\\updates\\polling\\handler.py",
+      "line": 339,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\agent\\utils.py",
+      "line": 341,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Trust Boundary Violation",
+      "rule_id": "ASI10-TRUST-BOUNDARY",
+      "file": "..\\crewai-audit\\lib\\cli\\src\\crewai_cli\\memory_tui.py",
+      "line": 345,
+      "confidence": 0.85,
+      "description": "[CONFIRMED] Agent can modify its own code -- self-modification attack vector",
+      "recommendation": "Make agent code immutable at runtime. Use code signing and integrity checks."
+    },
+    {
+      "rule": "Trust Boundary Violation",
+      "rule_id": "ASI10-TRUST-BOUNDARY",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\memory\\unified_memory.py",
+      "line": 350,
+      "confidence": 0.85,
+      "description": "[CONFIRMED] Agent can modify its own code -- self-modification attack vector",
+      "recommendation": "Make agent code immutable at runtime. Use code signing and integrity checks."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\a2a\\utils\\agent_card.py",
+      "line": 350,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\a2a\\utils\\delegation.py",
+      "line": 353,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\a2a\\utils\\task.py",
+      "line": 353,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\crewai-tools\\src\\crewai_tools\\tools\\daytona_sandbox_tool\\daytona_file_tool.py",
+      "line": 358,
+      "confidence": 0.9,
+      "description": "[CONFIRMED] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Unsafe Code Execution",
+      "rule_id": "ASI06-UNSAFE-EVAL",
+      "file": "..\\crewai-audit\\lib\\crewai-tools\\src\\crewai_tools\\tools\\daytona_sandbox_tool\\daytona_file_tool.py",
+      "line": 358,
+      "confidence": 0.95,
+      "description": "[CONFIRMED] exec() -- arbitrary code execution",
+      "recommendation": "Avoid dynamic code execution. Use safe alternatives: ast.literal_eval for literals, yaml.safe_load for YAML, subprocess with shell=False and argument lists."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\a2a\\utils\\agent_card.py",
+      "line": 368,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\a2a\\utils\\task.py",
+      "line": 372,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\experimental\\conversational_mixin.py",
+      "line": 373,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\state\\runtime.py",
+      "line": 373,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\agent\\utils.py",
+      "line": 375,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\agents\\step_executor.py",
+      "line": 376,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\state\\runtime.py",
+      "line": 382,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\agent\\utils.py",
+      "line": 385,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Trust Boundary Violation",
+      "rule_id": "ASI10-TRUST-BOUNDARY",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\llms\\providers\\openai\\completion.py",
+      "line": 385,
+      "confidence": 0.85,
+      "description": "[CONFIRMED] Agent can modify its own code -- self-modification attack vector",
+      "recommendation": "Make agent code immutable at runtime. Use code signing and integrity checks."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\a2a\\utils\\agent_card.py",
+      "line": 385,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\a2a\\task_helpers.py",
+      "line": 395,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\a2a\\utils\\task.py",
+      "line": 400,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\state\\runtime.py",
+      "line": 408,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\a2a\\task_helpers.py",
+      "line": 409,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\a2a\\utils\\task.py",
+      "line": 411,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\agents\\step_executor.py",
+      "line": 413,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\state\\runtime.py",
+      "line": 421,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Cross-Function Taint Flow",
+      "rule_id": "ASI01-INTERPROCEDURAL",
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\docs_check.py",
+      "line": 422,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Tainted data passed to function '_generate_doc' which calls an LLM API at line 225 -- cross-function prompt injection",
+      "recommendation": "Sanitize data before passing to LLM-interacting functions."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\a2a\\utils\\task.py",
+      "line": 422,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\agents\\step_executor.py",
+      "line": 428,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\state\\runtime.py",
+      "line": 431,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\a2a\\updates\\streaming\\handler.py",
+      "line": 435,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\cli\\src\\crewai_cli\\run_crew.py",
+      "line": 440,
+      "confidence": 0.9,
+      "description": "[CONFIRMED] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\a2a\\task_helpers.py",
+      "line": 442,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\mcp\\client.py",
+      "line": 444,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\experimental\\conversational_mixin.py",
+      "line": 446,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\a2a\\updates\\streaming\\handler.py",
+      "line": 450,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Excessive Agency",
+      "rule_id": "ASI04-EXCESSIVE-AGENCY",
+      "file": "..\\crewai-audit\\lib\\crewai-tools\\src\\crewai_tools\\tools\\daytona_sandbox_tool\\daytona_file_tool.py",
+      "line": 453,
+      "confidence": 0.9,
+      "description": "[CONFIRMED] Agent can escalate privileges \u2014 sudo/chmod/setuid access",
+      "recommendation": "Never allow agents to escalate privileges. Run in restricted sandbox with no sudo access."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\a2a\\task_helpers.py",
+      "line": 455,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\state\\runtime.py",
+      "line": 463,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\mcp\\client.py",
+      "line": 465,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\cli\\src\\crewai_cli\\run_crew.py",
+      "line": 466,
+      "confidence": 0.9,
+      "description": "[CONFIRMED] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Cross-Function Taint Flow",
+      "rule_id": "ASI01-INTERPROCEDURAL",
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\docs_check.py",
+      "line": 467,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Tainted data passed to function '_translate_doc' which calls an LLM API at line 301 -- cross-function prompt injection",
+      "recommendation": "Sanitize data before passing to LLM-interacting functions."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\memory\\unified_memory.py",
+      "line": 474,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\state\\runtime.py",
+      "line": 476,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\mcp\\client.py",
+      "line": 480,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\a2a\\utils\\delegation.py",
+      "line": 484,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\state\\runtime.py",
+      "line": 486,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Trust Boundary Violation",
+      "rule_id": "ASI10-TRUST-BOUNDARY",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\memory\\storage\\qdrant_edge_storage.py",
+      "line": 488,
+      "confidence": 0.85,
+      "description": "[CONFIRMED] Agent can modify its own code -- self-modification attack vector",
+      "recommendation": "Make agent code immutable at runtime. Use code signing and integrity checks."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\a2a\\utils\\task.py",
+      "line": 489,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.publish() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\memory\\unified_memory.py",
+      "line": 500,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\mcp\\client.py",
+      "line": 504,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\a2a\\utils\\delegation.py",
+      "line": 507,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Trust Boundary Violation",
+      "rule_id": "ASI10-TRUST-BOUNDARY",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\tools\\tool_usage.py",
+      "line": 509,
+      "confidence": 0.85,
+      "description": "[CONFIRMED] Agent can modify its own code -- self-modification attack vector",
+      "recommendation": "Make agent code immutable at runtime. Use code signing and integrity checks."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\memory\\unified_memory.py",
+      "line": 512,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\tools\\tool_usage.py",
+      "line": 513,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Trust Boundary Violation",
+      "rule_id": "ASI10-TRUST-BOUNDARY",
+      "file": "..\\crewai-audit\\lib\\crewai-tools\\src\\crewai_tools\\aws\\bedrock\\code_interpreter\\code_interpreter_toolkit.py",
+      "line": 514,
+      "confidence": 0.85,
+      "description": "[CONFIRMED] Agent can modify its own code -- self-modification attack vector",
+      "recommendation": "Make agent code immutable at runtime. Use code signing and integrity checks."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\a2a\\updates\\streaming\\handler.py",
+      "line": 521,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\a2a\\updates\\streaming\\handler.py",
+      "line": 536,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\agent\\core.py",
+      "line": 550,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\a2a\\utils\\delegation.py",
+      "line": 567,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\agent\\core.py",
+      "line": 577,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\a2a\\updates\\streaming\\handler.py",
+      "line": 580,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\llms\\base_llm.py",
+      "line": 585,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\agent\\core.py",
+      "line": 589,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\events\\event_bus.py",
+      "line": 593,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\a2a\\updates\\streaming\\handler.py",
+      "line": 595,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\memory\\unified_memory.py",
+      "line": 617,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\llms\\base_llm.py",
+      "line": 622,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\a2a\\updates\\streaming\\handler.py",
+      "line": 623,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\agent\\core.py",
+      "line": 627,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\experimental\\conversational_mixin.py",
+      "line": 644,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\llms\\base_llm.py",
+      "line": 645,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\agent\\core.py",
+      "line": 650,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\memory\\unified_memory.py",
+      "line": 653,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\task.py",
+      "line": 662,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\agent\\core.py",
+      "line": 663,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\experimental\\conversational_mixin.py",
+      "line": 664,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\llms\\base_llm.py",
+      "line": 675,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\cli\\src\\crewai_cli\\cli.py",
+      "line": 686,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.publish() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\llms\\base_llm.py",
+      "line": 703,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\cli\\src\\crewai_cli\\checkpoint_tui.py",
+      "line": 704,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.notify() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Trust Boundary Violation",
+      "rule_id": "ASI10-TRUST-BOUNDARY",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\llms\\providers\\openai\\completion.py",
+      "line": 707,
+      "confidence": 0.85,
+      "description": "[CONFIRMED] Agent can modify its own code -- self-modification attack vector",
+      "recommendation": "Make agent code immutable at runtime. Use code signing and integrity checks."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\cli\\src\\crewai_cli\\checkpoint_tui.py",
+      "line": 711,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.notify() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\memory\\unified_memory.py",
+      "line": 723,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\llms\\base_llm.py",
+      "line": 743,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\cli\\src\\crewai_cli\\cli.py",
+      "line": 746,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.publish() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\cli.py",
+      "line": 749,
+      "confidence": 0.27,
+      "description": "[LIKELY_FP] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\task.py",
+      "line": 749,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\task.py",
+      "line": 756,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\llms\\base_llm.py",
+      "line": 756,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\cli.py",
+      "line": 760,
+      "confidence": 0.27,
+      "description": "[LIKELY_FP] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\cli.py",
+      "line": 765,
+      "confidence": 0.27,
+      "description": "[LIKELY_FP] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\cli.py",
+      "line": 768,
+      "confidence": 0.27,
+      "description": "[LIKELY_FP] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\agent\\core.py",
+      "line": 778,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Trust Boundary Violation",
+      "rule_id": "ASI10-TRUST-BOUNDARY",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\events\\utils\\console_formatter.py",
+      "line": 780,
+      "confidence": 0.85,
+      "description": "[CONFIRMED] Agent can modify its own code -- self-modification attack vector",
+      "recommendation": "Make agent code immutable at runtime. Use code signing and integrity checks."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\tools\\tool_usage.py",
+      "line": 786,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\task.py",
+      "line": 787,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\llms\\base_llm.py",
+      "line": 787,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\a2a\\wrapper.py",
+      "line": 789,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\cli.py",
+      "line": 790,
+      "confidence": 0.27,
+      "description": "[LIKELY_FP] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\memory\\unified_memory.py",
+      "line": 793,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\tools\\tool_usage.py",
+      "line": 795,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\cli.py",
+      "line": 797,
+      "confidence": 0.27,
+      "description": "[LIKELY_FP] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\agent\\core.py",
+      "line": 797,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\a2a\\wrapper.py",
+      "line": 805,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\memory\\unified_memory.py",
+      "line": 806,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\a2a\\wrapper.py",
+      "line": 832,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\cli.py",
+      "line": 849,
+      "confidence": 0.27,
+      "description": "[LIKELY_FP] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\a2a\\wrapper.py",
+      "line": 873,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\task.py",
+      "line": 874,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\llm.py",
+      "line": 879,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\task.py",
+      "line": 881,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\a2a\\wrapper.py",
+      "line": 886,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\agent\\core.py",
+      "line": 907,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\a2a\\wrapper.py",
+      "line": 916,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\crew.py",
+      "line": 920,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\cli.py",
+      "line": 926,
+      "confidence": 0.27,
+      "description": "[LIKELY_FP] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\agent\\core.py",
+      "line": 926,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\a2a\\wrapper.py",
+      "line": 929,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Trust Boundary Violation",
+      "rule_id": "ASI10-TRUST-BOUNDARY",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\tools\\tool_usage.py",
+      "line": 943,
+      "confidence": 0.85,
+      "description": "[CONFIRMED] Agent can modify its own code -- self-modification attack vector",
+      "recommendation": "Make agent code immutable at runtime. Use code signing and integrity checks."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\tools\\tool_usage.py",
+      "line": 945,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\crew.py",
+      "line": 948,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\crew.py",
+      "line": 957,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\tools\\tool_usage.py",
+      "line": 965,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\cli.py",
+      "line": 966,
+      "confidence": 0.27,
+      "description": "[LIKELY_FP] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\cli.py",
+      "line": 991,
+      "confidence": 0.27,
+      "description": "[LIKELY_FP] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\tools\\tool_usage.py",
+      "line": 996,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Trust Boundary Violation",
+      "rule_id": "ASI10-TRUST-BOUNDARY",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\tools\\tool_usage.py",
+      "line": 1019,
+      "confidence": 0.85,
+      "description": "[CONFIRMED] Agent can modify its own code -- self-modification attack vector",
+      "recommendation": "Make agent code immutable at runtime. Use code signing and integrity checks."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\crew.py",
+      "line": 1041,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\llm.py",
+      "line": 1077,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\llm.py",
+      "line": 1108,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\a2a\\wrapper.py",
+      "line": 1127,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\cli.py",
+      "line": 1186,
+      "confidence": 0.27,
+      "description": "[LIKELY_FP] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\cli.py",
+      "line": 1194,
+      "confidence": 0.27,
+      "description": "[LIKELY_FP] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\cli.py",
+      "line": 1197,
+      "confidence": 0.27,
+      "description": "[LIKELY_FP] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\cli.py",
+      "line": 1200,
+      "confidence": 0.27,
+      "description": "[LIKELY_FP] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\experimental\\conversational_mixin.py",
+      "line": 1206,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\cli.py",
+      "line": 1226,
+      "confidence": 0.27,
+      "description": "[LIKELY_FP] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\cli.py",
+      "line": 1234,
+      "confidence": 0.27,
+      "description": "[LIKELY_FP] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\crew.py",
+      "line": 1253,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\cli.py",
+      "line": 1255,
+      "confidence": 0.27,
+      "description": "[LIKELY_FP] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\agent\\core.py",
+      "line": 1302,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\agent\\core.py",
+      "line": 1319,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\agent\\core.py",
+      "line": 1335,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\agent\\core.py",
+      "line": 1345,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\cli.py",
+      "line": 1456,
+      "confidence": 0.27,
+      "description": "[LIKELY_FP] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\agent\\core.py",
+      "line": 1472,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\agent\\core.py",
+      "line": 1491,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\cli.py",
+      "line": 1495,
+      "confidence": 0.27,
+      "description": "[LIKELY_FP] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\agent\\core.py",
+      "line": 1502,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\cli.py",
+      "line": 1514,
+      "confidence": 0.27,
+      "description": "[LIKELY_FP] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\cli.py",
+      "line": 1515,
+      "confidence": 0.27,
+      "description": "[LIKELY_FP] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\cli.py",
+      "line": 1519,
+      "confidence": 0.27,
+      "description": "[LIKELY_FP] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\cli.py",
+      "line": 1522,
+      "confidence": 0.27,
+      "description": "[LIKELY_FP] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Trust Boundary Violation",
+      "rule_id": "ASI10-TRUST-BOUNDARY",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\llms\\providers\\openai\\completion.py",
+      "line": 1547,
+      "confidence": 0.85,
+      "description": "[CONFIRMED] Agent can modify its own code -- self-modification attack vector",
+      "recommendation": "Make agent code immutable at runtime. Use code signing and integrity checks."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\agent\\core.py",
+      "line": 1582,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\cli.py",
+      "line": 1589,
+      "confidence": 0.27,
+      "description": "[LIKELY_FP] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\llm.py",
+      "line": 1598,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\agent\\core.py",
+      "line": 1625,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\agent\\core.py",
+      "line": 1637,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\cli.py",
+      "line": 1653,
+      "confidence": 0.27,
+      "description": "[LIKELY_FP] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\cli.py",
+      "line": 1674,
+      "confidence": 0.27,
+      "description": "[LIKELY_FP] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Action Chain Amplification",
+      "rule_id": "ASI-CHAIN-AMPLIFY",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\experimental\\agent_executor.py",
+      "line": 1695,
+      "confidence": 0.85,
+      "description": "[CONFIRMED] Destructive operation inside unbounded loop without rate limiting or checkpoint -- single trigger can amplify into mass destruction",
+      "recommendation": "Add rate limits, batch_size caps, human-in-the-loop checkpoints, or incremental approval gates before destructive operations in loops."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\llm.py",
+      "line": 1725,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\cli.py",
+      "line": 1729,
+      "confidence": 0.27,
+      "description": "[LIKELY_FP] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\llm.py",
+      "line": 1736,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\cli.py",
+      "line": 1746,
+      "confidence": 0.27,
+      "description": "[LIKELY_FP] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\cli.py",
+      "line": 1747,
+      "confidence": 0.27,
+      "description": "[LIKELY_FP] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\cli.py",
+      "line": 1753,
+      "confidence": 0.27,
+      "description": "[LIKELY_FP] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\cli.py",
+      "line": 1756,
+      "confidence": 0.27,
+      "description": "[LIKELY_FP] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\llm.py",
+      "line": 1759,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\llm.py",
+      "line": 1768,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\cli.py",
+      "line": 1777,
+      "confidence": 0.27,
+      "description": "[LIKELY_FP] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\cli.py",
+      "line": 1778,
+      "confidence": 0.27,
+      "description": "[LIKELY_FP] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\cli.py",
+      "line": 1791,
+      "confidence": 0.27,
+      "description": "[LIKELY_FP] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\cli.py",
+      "line": 1795,
+      "confidence": 0.27,
+      "description": "[LIKELY_FP] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Prompt Injection (Taint Tracked)",
+      "rule_id": "ASI01-TAINT-TRACK",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\llms\\providers\\bedrock\\completion.py",
+      "line": 1805,
+      "confidence": 0.92,
+      "description": "[CONFIRMED] Untrusted input flows into LLM sink variable 'system_message' without sanitization",
+      "recommendation": "Sanitize user input before including in prompts. Use structured message arrays with separate system/user roles. Never concatenate user input into system prompts."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\cli.py",
+      "line": 1813,
+      "confidence": 0.27,
+      "description": "[LIKELY_FP] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\cli.py",
+      "line": 1831,
+      "confidence": 0.27,
+      "description": "[LIKELY_FP] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\cli.py",
+      "line": 1850,
+      "confidence": 0.27,
+      "description": "[LIKELY_FP] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\crew.py",
+      "line": 1857,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\cli.py",
+      "line": 1872,
+      "confidence": 0.27,
+      "description": "[LIKELY_FP] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\cli.py",
+      "line": 1895,
+      "confidence": 0.27,
+      "description": "[LIKELY_FP] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\agent\\core.py",
+      "line": 1897,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\llm.py",
+      "line": 1908,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\cli.py",
+      "line": 1968,
+      "confidence": 0.27,
+      "description": "[LIKELY_FP] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\cli.py",
+      "line": 1969,
+      "confidence": 0.27,
+      "description": "[LIKELY_FP] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\cli.py",
+      "line": 1976,
+      "confidence": 0.27,
+      "description": "[LIKELY_FP] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\cli.py",
+      "line": 1994,
+      "confidence": 0.27,
+      "description": "[LIKELY_FP] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\llm.py",
+      "line": 2040,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\cli.py",
+      "line": 2092,
+      "confidence": 0.27,
+      "description": "[LIKELY_FP] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\cli.py",
+      "line": 2100,
+      "confidence": 0.27,
+      "description": "[LIKELY_FP] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\cli.py",
+      "line": 2115,
+      "confidence": 0.27,
+      "description": "[LIKELY_FP] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\crew.py",
+      "line": 2115,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\cli.py",
+      "line": 2116,
+      "confidence": 0.27,
+      "description": "[LIKELY_FP] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\crew.py",
+      "line": 2134,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\llm.py",
+      "line": 2135,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Multi-Agent Collusion",
+      "rule_id": "ASI-AGENT-COLLUSION",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\crew.py",
+      "line": 2141,
+      "confidence": 0.8,
+      "description": "[INVESTIGATE] Inter-agent communication (.emit() without trust verification -- agents can collude through unvalidated messages",
+      "recommendation": "Implement inter-agent trust verification: message signing, sender identity checks, nonce/challenge-response, audit trails, and output validation gates between agents."
+    },
+    {
+      "rule": "Agent Memory Poisoning",
+      "rule_id": "ASI-MEMORY-POISON",
+      "file": "..\\crewai-audit\\lib\\crewai\\src\\crewai\\experimental\\agent_executor.py",
+      "line": 2208,
+      "confidence": 0.85,
+      "description": "[CONFIRMED] Untrusted data (tool_result) written to agent memory store without sanitization -- persistent knowledge base poisoning",
+      "recommendation": "Validate and sanitize ALL data before writing to vector stores, RAG databases, or agent memory. Use content filtering, input validation, and origin verification."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\cli.py",
+      "line": 2256,
+      "confidence": 0.27,
+      "description": "[LIKELY_FP] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\cli.py",
+      "line": 2257,
+      "confidence": 0.27,
+      "description": "[LIKELY_FP] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\cli.py",
+      "line": 2261,
+      "confidence": 0.27,
+      "description": "[LIKELY_FP] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\cli.py",
+      "line": 2265,
+      "confidence": 0.27,
+      "description": "[LIKELY_FP] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\cli.py",
+      "line": 2306,
+      "confidence": 0.27,
+      "description": "[LIKELY_FP] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\cli.py",
+      "line": 2310,
+      "confidence": 0.27,
+      "description": "[LIKELY_FP] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\cli.py",
+      "line": 2322,
+      "confidence": 0.27,
+      "description": "[LIKELY_FP] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Unrestricted Tool Access",
+      "rule_id": "ASI02-TOOL-ABUSE",
+      "file": "..\\crewai-audit\\lib\\devtools\\src\\crewai_devtools\\cli.py",
+      "line": 2323,
+      "confidence": 0.27,
+      "description": "[LIKELY_FP] Dangerous system-level tool accessible to agent \u2014 code execution capability",
+      "recommendation": "Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code."
+    },
+    {
+      "rule": "Excessive Agency",
+      "rule_id": "ASI04-EXCESSIVE-AGENCY",
+      "file": "..\\crewai-audit\\lib\\crewai-tools\\tool.specs.json",
+      "line": 7197,
+      "confidence": 0.9,
+      "description": "[CONFIRMED] Agent can escalate privileges \u2014 sudo/chmod/setuid access",
+      "recommendation": "Never allow agents to escalate privileges. Run in restricted sandbox with no sudo access."
+    }
+  ]
+}
