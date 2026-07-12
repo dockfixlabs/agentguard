@@ -79,6 +79,9 @@ RULE_FP_PATTERNS: dict[str, list[tuple[re.Pattern, str]]] = {
         # PyTorch model.eval()
         (re.compile(r'\.eval\(\)', re.I),
          "PyTorch model.eval() — not Python eval()"),
+        # eval/exec in JSON content strings (discord dumps, chat logs, etc.)
+        (re.compile(r'"content"\s*:', re.I),
+         "JSON content field — not executable code"),
         # eval/exec in prompt strings (not executable)
         (re.compile(r'^\s*["\']', re.I),
          "String literal — not executable code"),
@@ -92,9 +95,10 @@ RULE_FP_PATTERNS: dict[str, list[tuple[re.Pattern, str]]] = {
          "Docstring or string literal — not executable code"),
     ],
     "ASI01-TAINT-TRACK": [
-        # Bare array/message declarations — match messages = [ or messages =\n
-        (re.compile(r'^\s*(?:messages|prompt|user_prompt)\s*=\s*\[', re.I),
-         "Array declaration — too generic for taint"),
+        # Bare array/message declarations — BUT ONLY when no taint source visible
+        # If the line contains a variable from function param (query, user_input, etc.), keep it
+        (re.compile(r'^\s*(?:messages|prompt|user_prompt)\s*=\s*\[(?!.*(?:query|user_input|user_msg|input_text|request|message_content))', re.I),
+         "Array declaration with no visible taint source — too generic"),
         # I18N/translation lookup
         (re.compile(r'I18N|i18n|translation|locale|gettext', re.I),
          "Internationalization lookup — not user input"),
@@ -106,9 +110,8 @@ RULE_FP_PATTERNS: dict[str, list[tuple[re.Pattern, str]]] = {
         # Normal API headers (not exfiltration)
         (re.compile(r'["\']x-api-key["\']\s*:', re.I),
          "Standard API authentication header — not data exfiltration"),
-        # Redacted snippets can't be verified
-        (re.compile(r'\*\*\*REDACTED\*\*\*', re.I),
-         "Redacted snippet — cannot verify exfiltration"),
+        # NOTE: Do NOT filter ***REDACTED*** snippets — they indicate real secrets detected by credential_leak.py
+        # that were masked for display. These are TRUE POSITIVES.
     ],
     "ASI05-SUPPLY-CHAIN": [
         # Fetching from built-in/local source
