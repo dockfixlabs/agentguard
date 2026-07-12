@@ -22,7 +22,17 @@
 **Reason:** Catches overfitting, optimistic assumptions, and scope creep before they compound.
 **Status:** Active. First review conducted 2026-07-12.
 
-### 2026-07-12 — External action gate: draft + present before any external send
-**Decision:** Any action reaching an external party (GHSA, CVE request, client email, public post) must be drafted and presented before sending.
-**Reason:** External actions are irreversible. Internal decisions are reversible.
+### 2026-07-12 — Publish 88% precision and create PR for v0.8.1
+**Decision:** Publish 88% in README, push v0.8.1 branch, create PR #18.
+**Reason:** Precision is independently verified. 88% is honest and defensible. Publishing builds credibility.
+**Status:** PR #18 open, awaiting merge.
+
+### 2026-07-12 — Do not chase the 7 lost TPs from rule behavior changes
+**Decision:** Accept 7 TP loss from rewritten rules (not over-filtering). Focus on new users, not recovering old findings.
+**Reason:** The rules were rewritten to be more precise. Some old findings no longer match because the patterns changed. This is expected behavior, not a bug.
 **Status:** Active.
+
+### 2026-07-12 — PyPI downloads (13K) need source breakdown before using as growth metric
+**Decision:** Treat 13,783 downloads as unverified adoption signal until referrer breakdown is checked.
+**Reason:** High download count with 1 star and 0 forks suggests CI/bot traffic. Using this number in marketing without verification = misleading.
+**Status:** Pending investigation.

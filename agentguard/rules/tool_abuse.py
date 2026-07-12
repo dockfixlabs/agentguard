@@ -6,12 +6,21 @@ from agentguard.models import Finding, OWASP_ASI, Rule, Severity
 
 # Dangerous tool patterns — require actual call syntax, not just name mentions
 # Excludes: string literals, variable name assignments, prompt text
-DANGEROUS_TOOLS = re.compile(
+# HIGH severity: always dangerous (os.system, shell=True)
+DANGEROUS_TOOLS_HIGH = re.compile(
     r'(?:os\.system\s*\(|os\.popen\s*\(|os\.exec\w*\s*\(|os\.spawn\w*\s*\(|'
-    r'subprocess\.(?:call|run|Popen|check_output|check_call)\s*\(|'
     r'subprocess\.\w+.*shell\s*=\s*True)',
     re.I
 )
+
+# MEDIUM severity: potentially dangerous (subprocess without shell=True)
+DANGEROUS_TOOLS_MEDIUM = re.compile(
+    r'subprocess\.(?:call|run|Popen|check_output|check_call)\s*\(',
+    re.I
+)
+
+# Kept for backward compatibility
+DANGEROUS_TOOLS = DANGEROUS_TOOLS_HIGH
 
 # Unrestricted tool registration — must be actual function call, not name definition
 UNRESTRICTED_TOOL = re.compile(
@@ -75,6 +84,20 @@ class ToolAbuseRule(Rule):
                 description="Dangerous system-level tool accessible to agent — code execution capability",
                 recommendation="Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations.",
                 confidence=0.9,
+            ))
+        elif DANGEROUS_TOOLS_MEDIUM.search(stripped):
+            # subprocess without shell=True — still risky in agent context but lower severity
+            findings.append(Finding(
+                rule_id=self.rule_id,
+                rule_name=self.rule_name,
+                severity=Severity.MEDIUM,
+                owasp=self.owasp,
+                file=file,
+                line=line_num,
+                snippet=stripped[:200],
+                description="Subprocess call accessible to agent — potential command injection if input is tainted",
+                recommendation="Validate and sanitize all inputs to subprocess calls. Consider using shell=False with explicit argument lists.",
+                confidence=0.6,
             ))
 
         if UNRESTRICTED_TOOL.search(stripped):
