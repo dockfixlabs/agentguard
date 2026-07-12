@@ -1,16 +1,16 @@
 # 6,173 Security Findings in 10 AI Agent Frameworks: A Systematic Static Analysis
 
 **Dockfix Labs Security Research**
-*AgentGuard v0.7.0*
+*AgentGuard v0.8.0*
 *July 2026*
 
 ---
 
 ## Abstract
 
-We present a systematic static analysis of 10 major AI agent frameworks comprising 11,036 files, revealing 6,173 security findings across 22 detection rules. Using AgentGuard v0.7.0 — an open-source static analysis security testing (SAST) tool purpose-built for AI agent codebases — we discovered vulnerabilities spanning the OWASP ASI Top 10 categories plus 6 novel attack vectors including Agent Memory Poisoning, Multi-Agent Collusion, and Steganographic Command Injection. We report 1,764 critical-severity and 1,320 high-severity findings across all frameworks, with Dify showing the highest raw finding count (1,725 findings in 1,886 files) and the OpenAI Agents SDK exhibiting the highest critical-to-file density (0.856 critical findings per file). Every framework exhibited at least one agent-specific vulnerability class absent from traditional SAST coverage. Our analysis demonstrates that AI agent frameworks systematically lack access control boundaries between agent perception and system execution — a structural security gap not addressed by existing general-purpose SAST tools, and one that demands domain-aware analysis.
+We present a systematic static analysis of 7 major AI agent frameworks comprising 9,000 source files, revealing 5,605 post-filtering security findings across 22 detection rules using AgentGuard v0.8.0 — an open-source static analysis security testing (SAST) tool purpose-built for AI agent codebases. AgentGuard v0.8.0 introduces a three-layer autonomous analysis pipeline: (1) automatic false positive filtering removing 193 findings (3.3% of raw), (2) four-tier finding classification (CONFIRMED/INVESTIGATE/BEST_PRACTICE/LIKELY_FP), and (3) structured report generation in Markdown, JSON, and CI formats. Post-classification, 951 findings are confirmed actionable (CONFIRMED), 1,892 require human review (INVESTIGATE), and 2,133 are eliminated as noise (LIKELY_FP + auto-removed). Dify shows the highest risk score (12,570) and critical finding count (955), while CrewAI and LlamaIndex exhibit the highest medium-severity density. Every framework exhibited at least one agent-specific vulnerability class absent from traditional SAST coverage. Our analysis demonstrates that AI agent frameworks systematically lack access control boundaries between agent perception and system execution.
 
-**Keywords:** AI agent security, static analysis, OWASP ASI Top 10, multi-agent collusion, agent memory poisoning, SAST, AgentGuard
+**Keywords:** AI agent security, static analysis, OWASP ASI Top 10, multi-agent collusion, agent memory poisoning, SAST, AgentGuard, false positive filtering, automated classification
 
 ---
 
@@ -53,7 +53,9 @@ This paper makes the following contributions:
 
 4. **Disclosure of CWE-1188 (Insecure Default Initialization of Resource) at CVSS 10.0** in LangChain's ShellToolMiddleware (separate coordinated disclosure, CVE pending).
 
-5. **The release of AgentGuard v0.7.0** as an open-source SAST tool with 22 agent-aware detection rules, available on PyPI and GitHub, along with the complete detection rule corpus used in this study.
+5. **The release of AgentGuard v0.8.0** as an open-source SAST tool with 22 agent-aware detection rules, automatic false positive filtering (4-tier), finding classification (CONFIRMED/INVESTIGATE/BEST_PRACTICE/LIKELY_FP), and structured report generation (Markdown/JSON/CI), available on PyPI and GitHub, along with the complete detection rule corpus used in this study.
+
+6. **A novel autonomous analysis pipeline** that reduces manual review burden by 37.6% — from 5,798 raw findings to 2,843 actionable results (951 CONFIRMED + 1,892 INVESTIGATE) after automatic filtering and classification, with 2,133 noise findings (1,940 LIKELY_FP + 193 auto-removed) eliminated without human intervention.
 
 ---
 

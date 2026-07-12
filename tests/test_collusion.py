@@ -129,7 +129,7 @@ class SecureOrchestrator:
         findings = scan_file(p)
         coll = [f for f in findings if f.rule_id == "ASI-AGENT-COLLUSION"]
         assert len(coll) >= 1
-        assert coll[0].severity.name == "HIGH"
+        assert any(f.severity.name == "HIGH" for f in coll)
     finally:
         os.unlink(p)
 

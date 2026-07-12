@@ -4,17 +4,27 @@ from __future__ import annotations
 import re
 from agentguard.models import Finding, OWASP_ASI, Rule, Severity
 
-# Dangerous tool patterns -- subprocess alone is fine, shell=True or os.system is not
-DANGEROUS_TOOLS = re.compile(
-    r'(?:\bexec\s*\(|\beval\s*\(|os\.system\s*\(|os\.popen\s*\(|os\.exec\w*\s*\(|os\.spawn\w*\s*\(|'
-    r'subprocess\.\w+.*shell\s*=\s*True|'
-    r'child_process|run_command|shell_exec|popen|pty\.spawn|commands\.)',
+# Dangerous tool patterns — require actual call syntax, not just name mentions
+# Excludes: string literals, variable name assignments, prompt text
+# HIGH severity: always dangerous (os.system, shell=True)
+DANGEROUS_TOOLS_HIGH = re.compile(
+    r'(?:os\.system\s*\(|os\.popen\s*\(|os\.exec\w*\s*\(|os\.spawn\w*\s*\(|'
+    r'subprocess\.\w+.*shell\s*=\s*True)',
     re.I
 )
 
-# Unrestricted tool registration
+# MEDIUM severity: potentially dangerous (subprocess without shell=True)
+DANGEROUS_TOOLS_MEDIUM = re.compile(
+    r'subprocess\.(?:call|run|Popen|check_output|check_call)\s*\(',
+    re.I
+)
+
+# Kept for backward compatibility
+DANGEROUS_TOOLS = DANGEROUS_TOOLS_HIGH
+
+# Unrestricted tool registration — must be actual function call, not name definition
 UNRESTRICTED_TOOL = re.compile(
-    r'(?:register_tool|add_tool|define_tool|tool_manager\.\w+)\s*\(\s*.*(?:all|any|\*|wildcard|unlimited)',
+    r'(?:register_tool|add_tool|define_tool)\s*\(\s*.*(?:all|any|\*|wildcard|unlimited)',
     re.I
 )
 
@@ -24,23 +34,28 @@ NO_RATE_LIMIT = re.compile(
     re.I
 )
 
-# Shell/code execution tools exposed to agent
-SHELL_TOOL = re.compile(
-    r'(?:tool_name|name|function)\s*[:=]\s*["\'](?:shell|bash|exec|eval|run_command|terminal|cmd|powershell)["\']',
-    re.I
-)
+# FP FILTERS for this rule
+# Matches that are definitely not tool abuse
+FP_PATTERNS = [
+    # Name constant definitions: THING_NAME = "thing"
+    re.compile(r'^\s*[A-Z_]+_NAME\s*=\s*["\']'),
+    # String literals at start of line (prompt text, documentation)
+    re.compile(r'^\s*["\']'),
+    # Tool retrieval/iteration (not execution): get_function_name, filter, next()
+    re.compile(r'(?:get_function_name|get_tool|list_tools|filter\(|next\()'),
+    # Comments
+    re.compile(r'^\s*#'),
+    # Deprecation warnings
+    re.compile(r'deprecated', re.I),
+]
 
-# Arbitrary file access
-FILE_ACCESS = re.compile(
-    r'(?:tool_name|name|function)\s*[:=]\s*["\'](?:read_file|write_file|delete_file|file_operations|filesystem)["\'].*(?:\*|any|all|root|/)',
-    re.I
-)
 
-# Network access without restrictions
-NETWORK_TOOL = re.compile(
-    r'(?:tool_name|name|function)\s*[:=]\s*["\'](?:http_request|fetch|curl|wget|web_search|browse)["\'].*(?:\*|any|all|unlimited)',
-    re.I
-)
+def _is_false_positive(stripped: str) -> bool:
+    """Check if a matched line is a known false positive pattern."""
+    for pattern in FP_PATTERNS:
+        if pattern.search(stripped):
+            return True
+    return False
 
 
 class ToolAbuseRule(Rule):
@@ -53,7 +68,11 @@ class ToolAbuseRule(Rule):
         findings = []
         stripped = line.strip()
 
-        if DANGEROUS_TOOLS.search(stripped) and not stripped.startswith("#"):
+        # Skip known FP patterns
+        if _is_false_positive(stripped):
+            return findings
+
+        if DANGEROUS_TOOLS.search(stripped):
             findings.append(Finding(
                 rule_id=self.rule_id,
                 rule_name=self.rule_name,
@@ -63,8 +82,22 @@ class ToolAbuseRule(Rule):
                 line=line_num,
                 snippet=stripped[:200],
                 description="Dangerous system-level tool accessible to agent — code execution capability",
-                recommendation="Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations. Never expose raw subprocess to LLM-controlled code.",
+                recommendation="Remove shell/exec access from agents. Use sandboxed, whitelisted tool implementations.",
                 confidence=0.9,
+            ))
+        elif DANGEROUS_TOOLS_MEDIUM.search(stripped):
+            # subprocess without shell=True — still risky in agent context but lower severity
+            findings.append(Finding(
+                rule_id=self.rule_id,
+                rule_name=self.rule_name,
+                severity=Severity.MEDIUM,
+                owasp=self.owasp,
+                file=file,
+                line=line_num,
+                snippet=stripped[:200],
+                description="Subprocess call accessible to agent — potential command injection if input is tainted",
+                recommendation="Validate and sanitize all inputs to subprocess calls. Consider using shell=False with explicit argument lists.",
+                confidence=0.6,
             ))
 
         if UNRESTRICTED_TOOL.search(stripped):
@@ -77,7 +110,7 @@ class ToolAbuseRule(Rule):
                 line=line_num,
                 snippet=stripped[:200],
                 description="Tool registered with wildcard/unlimited scope — agent can invoke any tool",
-                recommendation="Explicitly whitelist allowed tools per agent role. Implement tool-level RBAC.",
+                recommendation="Explicitly whitelist allowed tools per agent role.",
                 confidence=0.8,
             ))
 
@@ -93,20 +126,6 @@ class ToolAbuseRule(Rule):
                 description="No rate limit or timeout on tool calls — resource exhaustion risk",
                 recommendation="Set explicit max_iterations, rate_limit, and timeout for all tool calls.",
                 confidence=0.75,
-            ))
-
-        if SHELL_TOOL.search(stripped):
-            findings.append(Finding(
-                rule_id=self.rule_id,
-                rule_name=self.rule_name,
-                severity=Severity.CRITICAL,
-                owasp=self.owasp,
-                file=file,
-                line=line_num,
-                snippet=stripped[:200],
-                description="Shell/terminal tool exposed to agent — arbitrary code execution",
-                recommendation="Never expose shell access to AI agents. Use restricted, purpose-built tools instead.",
-                confidence=0.95,
             ))
 
         return findings
