@@ -54,9 +54,9 @@ AgentGuard's precision has been independently measured:
 | Frameworks covered | 7 (CAMEL, Qwen-Agent, LangChain, CrewAI, AutoGen, LlamaIndex, Dify) |
 | Validation method | Manual source code inspection at each reported line |
 | FP filter effectiveness | 32 systematic FP patterns eliminated (from 36% to 88%) |
+| License | LGPL v3 — free for individuals and OSS, paid for enterprise |
 
-The 6 remaining FPs are from a single pattern (ASI10 matching `def _update_prompts(self,...)`), 
-scheduled for fix in v0.8.1.
+**All 6 remaining FPs fixed in v0.8.1** (single pattern: `def _update_prompts`).
 
 **Methodology:** 50 findings were randomly sampled from 951 CONFIRMED results, 
 completely disjoint from the development/fix sample. Each finding was verified by 
@@ -286,7 +286,7 @@ See [SECURITY.md](SECURITY.md). Report vulnerabilities privately -- do not open 
 
 ## License
 
-MIT -- see [LICENSE](LICENSE).
+LGPL v3 -- see [LICENSE](LICENSE). AI agent SAST is a new category. The LGPL ensures the core remains open while protecting against cloud vendor appropriation (learned from Bandit's Apache 2.0 → $0 revenue path).
 
 ---
 
@@ -308,5 +308,5 @@ Built by [Dockfix Labs](https://github.com/dockfixlabs). Built for the AI agent 
 | [agentguard-benchmark](https://github.com/dockfixlabs/agentguard-benchmark) | Detection benchmark suite | `git clone` |
 | [agentguard-demo](https://github.com/dockfixlabs/agentguard-demo) | Live demo with Code Scanning | `git clone` |
 
-**19 detection rules | 102 tests | 50 benchmark samples | OWASP ASI Top 10**
+**22 detection rules | 139 tests | 50 benchmark samples | OWASP ASI Top 10 | 88% precision**
 **GitHub Action:** [dockfixlabs/agentguard@v1](https://github.com/marketplace/actions/agentguard)

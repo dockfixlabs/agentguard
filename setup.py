@@ -2,11 +2,11 @@ from setuptools import setup, find_packages
 
 setup(
     name="dfx-agentguard",
-    version="0.8.0",
+    version="0.8.1",
     description="Autonomous security scanner for AI agents — detects prompt injection, tool abuse, data exfiltration, and OWASP ASI Top 10 vulnerabilities.",
     long_description=open("README.md", encoding="utf-8").read() if __import__("os").path.exists("README.md") else "",
     long_description_content_type="text/markdown",
-    license="MIT",
+    license="LGPL-3.0-only",
     python_requires=">=3.10",
     packages=find_packages(),
     install_requires=[
@@ -25,6 +25,7 @@ setup(
     keywords=["ai-security", "agent-security", "owasp-asi", "prompt-injection", "mcp", "static-analysis", "llm-security"],
     classifiers=[
         "Development Status :: 4 - Beta",
+        "License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)",
         "Programming Language :: Python :: 3",
         "Topic :: Security",
     ],
