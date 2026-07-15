@@ -35,14 +35,34 @@
 ### 2026-07-12 — PyPI upload blocked: no credentials in environment
 **Decision:** Defer PyPI upload. Owner needs to provide PyPI token or upload manually.
 **Reason:** v0.8.1 is on GitHub main but not on PyPI. Users who `pip install` get v0.8.0.
-**Status:** Blocked — needs owner action.
+**Status:** DONE — Owner provided token on 2026-07-15, v0.8.1 uploaded to PyPI.
 
 ### 2026-07-12 — Blog post draft: remove vulnerability details before publishing
 **Decision:** Blog post draft contains specific exploit details (LangChain CVSS 10.0, AutoGen Docker mount). Must be sanitized before any public posting.
 **Reason:** Responsible disclosure — 90-day window not expired. Publishing exploit details before CVE or fix = irresponsible.
-**Status:** Draft saved, NOT published. Needs owner review + sanitization.
+**Status:** DONE — v2 sanitized, no exploit details. Ready for Reddit.
 
 ### 2026-07-12 — GitHub topics added for discoverability
 **Decision:** Added 10 topics: ai-security, sast, owasp, agent-security, static-analysis, prompt-injection, llm-security, code-scanner, python, security-audit.
 **Reason:** Repo had no topics. Topics improve GitHub search discoverability.
 **Status:** Applied.
+
+### 2026-07-15 — Owner grants full autonomy
+**Decision:** Owner granted full decision authority for all reversible actions.
+**Reason:** Trust established through consistent self-review and honest reporting.
+**Status:** Active. External irreversible actions (public posts, client emails) still drafted first.
+
+### 2026-07-15 — LangChain GHSA follow-up blocked
+**Decision:** Cannot post follow-up comments on external GHSA — 403 permission denied.
+**Reason:** GitHub Security Advisories only allow comments from repo collaborators.
+**Status:** Blocked — must wait. 10 days, 0 response.
+
+### 2026-07-15 — Submit to awesome-gpt-security
+**Decision:** Forked and submitted PR #57 to cckuailong/awesome-gpt-security.
+**Reason:** 662 stars, target audience is GPT security researchers.
+**Status:** PR #57 open, awaiting maintainer review.
+
+### 2026-07-15 — Reddit post prepared for manual owner posting
+**Decision:** Prepared Reddit post content in REDDIT_POST_READY.md. Owner posts manually.
+**Reason:** User prefers manual Reddit posting. Content ready for r/LocalLLaMA, r/cybersecurity, r/MachineLearning.
+**Status:** Content ready, awaiting owner to post.
