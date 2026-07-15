@@ -94,7 +94,7 @@ they were designed for traditional vulnerabilities, not AI agent attack vectors.
 [Benchmark Dashboard](https://dockfixlabs.github.io/agentguard-benchmark/)
 
 
-**Security Specification:** [SPECIFICATION.md](SPECIFICATION.md) — the formal standard for AI agent code security.
+**Security Specification:** [specification.md](specification.md) — the formal standard for AI agent code security.
 
 ## Quick Start
 
@@ -250,7 +250,7 @@ clean             2          0    Verified clean
 TOTAL            28         26    —
 ```
 
-56 hand-crafted benchmark samples demonstrate comprehensive rule coverage.
+The complete [benchmark suite](https://github.com/dockfixlabs/agentguard-benchmark) contains 56 hand-crafted samples covering all detection rules.
 
 ## Project Ecosystem
 

@@ -33,8 +33,8 @@ runs:
           ARGS="$ARGS --no-exit-code"
         fi
         if [ "${{ inputs.format }}" = "sarif" ]; then
-          agentguard ${{ inputs.path }} $ARGS > agentguard-results.sarif 2>&1 || true
-          cat agentguard-results.sarif
+          agentguard ${{ inputs.path }} $ARGS > agentguard-results.sarif
+          echo "::notice::AgentGuard scan complete. Uploading SARIF results."
         else
           agentguard ${{ inputs.path }} $ARGS
         fi

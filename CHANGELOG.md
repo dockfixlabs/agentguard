@@ -78,6 +78,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Programmatic Python API
 - CI/CD integration ready
 - 10 test cases
+
 ## [0.2.1] - 2026-06-28
 
 ### Fixed

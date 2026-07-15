@@ -2,7 +2,7 @@
 
 ## Executive Summary
 
-AgentGuard (v0.6.8) was deployed against 6 major AI agent frameworks. The results are definitive: **every framework contains critical security vulnerabilities that no existing scanner detects.**
+AgentGuard (v0.8.1) was deployed against 6 major AI agent frameworks. The results are definitive: **every framework contains critical security vulnerabilities that no existing scanner detects.**
 
 **Note on scope:**
 AgentGuard is the first and only static analysis tool with dedicated OWASP ASI Top 10 rules.
@@ -132,10 +132,10 @@ AI agents are being deployed with access to databases, APIs, file systems, and p
 
 ---
 
-**AgentGuard v0.6.8**
+**AgentGuard v0.8.1**
 - GitHub: https://github.com/dockfixlabs/agentguard
 - PyPI: https://pypi.org/project/dfx-agentguard/
 - GitHub Action: https://github.com/marketplace/actions/agentguard
 - Benchmark: https://dockfixlabs.github.io/agentguard-benchmark/
-- 19 detection rules | 102 automated tests | 50 benchmark samples
-- MIT License | Open Core
+- 22 detection rules | 139 automated tests | 50 benchmark samples
+- LGPL v3 License

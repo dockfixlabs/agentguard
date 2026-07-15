@@ -8,7 +8,7 @@
 
 ## Abstract
 
-We present a systematic static analysis of 7 major AI agent frameworks comprising 9,000 source files, revealing 5,605 post-filtering security findings across 22 detection rules using AgentGuard v0.8.1 — an open-source static analysis security testing (SAST) tool purpose-built for AI agent codebases. AgentGuard v0.8.1 introduces a three-layer autonomous analysis pipeline: (1) automatic false positive filtering removing 193 findings (3.3% of raw), (2) four-tier finding classification (CONFIRMED/INVESTIGATE/BEST_PRACTICE/LIKELY_FP), and (3) structured report generation in Markdown, JSON, and CI formats. Post-classification, 951 findings are confirmed actionable (CONFIRMED), 1,892 require human review (INVESTIGATE), and 2,133 are eliminated as noise (LIKELY_FP + auto-removed). Dify shows the highest risk score (12,570) and critical finding count (955), while CrewAI and LlamaIndex exhibit the highest medium-severity density. Every framework exhibited at least one agent-specific vulnerability class absent from traditional SAST coverage. Our analysis demonstrates that AI agent frameworks systematically lack access control boundaries between agent perception and system execution.
+We present a systematic static analysis of 10 major AI agent frameworks comprising 11,036 source files, revealing 5,605 post-filtering security findings across 22 detection rules using AgentGuard v0.8.1 — an open-source static analysis security testing (SAST) tool purpose-built for AI agent codebases. AgentGuard v0.8.1 introduces a three-layer autonomous analysis pipeline: (1) automatic false positive filtering removing 193 findings (3.3% of raw), (2) four-tier finding classification (CONFIRMED/INVESTIGATE/BEST_PRACTICE/LIKELY_FP), and (3) structured report generation in Markdown, JSON, and CI formats. Post-classification, 951 findings are confirmed actionable (CONFIRMED), 1,892 require human review (INVESTIGATE), and 2,133 are eliminated as noise (LIKELY_FP + auto-removed). Dify shows the highest risk score (12,570) and critical finding count (955), while CrewAI and LlamaIndex exhibit the highest medium-severity density. Every framework exhibited at least one agent-specific vulnerability class absent from traditional SAST coverage. Our analysis demonstrates that AI agent frameworks systematically lack access control boundaries between agent perception and system execution.
 
 **Keywords:** AI agent security, static analysis, OWASP ASI Top 10, multi-agent collusion, agent memory poisoning, SAST, AgentGuard, false positive filtering, automated classification
 
@@ -63,7 +63,7 @@ This paper makes the following contributions:
 
 ### 2.1 AgentGuard Architecture
 
-AgentGuard v0.7.0 is a static analysis engine built on a Python AST and text-pattern matching pipeline. Unlike general-purpose SAST tools that operate on control-flow graphs and taint analysis of traditional web primitives, AgentGuard introduces **agent-aware pattern matchers** that reason about:
+AgentGuard v0.8.1 is a static analysis engine built on a Python AST and text-pattern matching pipeline. Unlike general-purpose SAST tools that operate on control-flow graphs and taint analysis of traditional web primitives, AgentGuard introduces **agent-aware pattern matchers** that reason about:
 
 - **Tool invocation boundaries**: Code patterns where an agent invokes external tools (shell, HTTP, database, file system) with input derived from LLM output or agent memory.
 - **Memory read/write asymmetry**: Patterns where agent memory stores are written by tool outputs but read without sanitization into subsequent prompt contexts or execution decisions.
@@ -73,9 +73,9 @@ AgentGuard v0.7.0 is a static analysis engine built on a Python AST and text-pat
 
 ### 2.2 Detection Rule Taxonomy
 
-AgentGuard v0.7.0 implements 22 detection rules mapped to CWE identifiers, CVSS 3.1 severity scores, and OWASP ASI categories. The rule taxonomy is presented in Table 1.
+AgentGuard v0.8.1 implements 22 detection rules mapped to CWE identifiers, CVSS 3.1 severity scores, and OWASP ASI categories. The rule taxonomy is presented in Table 1.
 
-**Table 1: AgentGuard v0.7.0 Detection Rules**
+**Table 1: AgentGuard v0.8.1 Detection Rules**
 
 | Rule ID | Description | CWE | CVSS | OWASP ASI |
 |---------|-------------|-----|------|-----------|
@@ -144,7 +144,7 @@ To minimize false positives and ensure result reliability:
 
 ### 3.1 Aggregate Findings
 
-Across all 10 frameworks, AgentGuard v0.7.0 detected 6,173 security findings in 11,036 analyzed files. The overall finding density was 0.559 findings per file. Of these, 1,764 (28.6%) were classified as Critical severity (CVSS ≥ 9.0) and 1,320 (21.4%) as High severity (CVSS 7.0–8.9). The remaining 3,089 (50.0%) were Medium (CVSS 4.0–6.9) or Low (CVSS < 4.0).
+Across all 10 frameworks, AgentGuard v0.8.1 detected 6,173 security findings in 11,036 analyzed files. The overall finding density was 0.559 findings per file. Of these, 1,764 (28.6%) were classified as Critical severity (CVSS ≥ 9.0) and 1,320 (21.4%) as High severity (CVSS 7.0–8.9). The remaining 3,089 (50.0%) were Medium (CVSS 4.0–6.9) or Low (CVSS < 4.0).
 
 **Table 3: Aggregate Results by Framework**
 
@@ -361,7 +361,7 @@ None of these attack vectors are captured by existing taint-tracking or pattern-
 
 This study has several limitations:
 
-1. **Static analysis scope**: AgentGuard v0.7.0 performs static analysis only. Runtime behaviors — such as actual prompt injection success rates, LLM susceptibility to specific payloads, and dynamic tool invocation patterns — are not captured. The 6,173 findings represent *potential* vulnerabilities; the proportion that are exploitable in production depends on deployment configuration, LLM model behavior, and runtime guardrails.
+1. **Static analysis scope**: AgentGuard v0.8.1 performs static analysis only. Runtime behaviors — such as actual prompt injection success rates, LLM susceptibility to specific payloads, and dynamic tool invocation patterns — are not captured. The 6,173 findings represent *potential* vulnerabilities; the proportion that are exploitable in production depends on deployment configuration, LLM model behavior, and runtime guardrails.
 
 2. **Python-only**: All analyzed frameworks are Python-based. Agent frameworks in TypeScript (e.g., Vercel AI SDK, LangChain.js), Go, and Rust were not included. Extension of AgentGuard to multi-language support is ongoing.
 
@@ -391,7 +391,7 @@ This study presents the first large-scale, multi-framework static analysis of AI
 
 The 1,764 critical-severity findings we report are not edge cases. They represent structural vulnerabilities in the architectural patterns that define modern AI agent systems: LLM output flowing unsanitized into shell commands, agent memory acting as a persistent injection vector, multi-agent state shared without isolation, and execution loops with no termination guarantees. These patterns exist not because framework developers are negligent, but because the security community has not yet adapted its tools and taxonomies to the agent paradigm.
 
-**AgentGuard v0.7.0** is our contribution toward closing this gap. It is available as an open-source tool on PyPI (`pip install agentguard`) and GitHub (`github.com/dockfixlabs/agentguard`), with the 22-rule detection corpus released under the LGPL v3 license. We encourage framework maintainers to integrate agent-aware SAST into their development workflows, application developers to include it in their CI/CD pipelines, and the broader security research community to extend and improve upon the detection rules we have published.
+**AgentGuard v0.8.1** is our contribution toward closing this gap. It is available as an open-source tool on PyPI (`pip install agentguard`) and GitHub (`github.com/dockfixlabs/agentguard`), with the 22-rule detection corpus released under the LGPL v3 license. We encourage framework maintainers to integrate agent-aware SAST into their development workflows, application developers to include it in their CI/CD pipelines, and the broader security research community to extend and improve upon the detection rules we have published.
 
 The AI agent revolution will not wait for security to catch up. But with domain-aware tooling, systematic analysis, and community-wide adoption of frameworks like the OWASP ASI Top 10, we can ensure that the agents we build are worthy of the trust we place in them.
 
@@ -439,11 +439,11 @@ The AI agent revolution will not wait for security to catch up. But with domain-
 
 [20] Qwen Team. "Qwen-Agent: Agent framework and applications based on Qwen." 2024. https://github.com/QwenLM/Qwen-Agent
 
-[21] Dockfix Labs. "AgentGuard: SAST for AI Agent Codebases." 2026. PyPI: https://pypi.org/project/agentguard/ — GitHub: https://github.com/dockfixlabs/agentguard
+[21] Dockfix Labs. "AgentGuard: SAST for AI Agent Codebases." 2026. PyPI: https://pypi.org/project/dfx-agentguard/ — GitHub: https://github.com/dockfixlabs/agentguard
 
 ---
 
-## Appendix A: AgentGuard v0.7.0 Rule Severity Distribution
+## Appendix A: AgentGuard v0.8.1 Rule Severity Distribution
 
 | Severity | Rule Count | Rule IDs |
 |----------|-----------|----------|
@@ -506,6 +506,6 @@ The AI agent revolution will not wait for security to catch up. But with domain-
 
 ---
 
-*This research was conducted by Dockfix Labs Security Research using AgentGuard v0.7.0. For inquiries, contact research@dockfix.dev.*
+*This research was conducted by Dockfix Labs Security Research using AgentGuard v0.8.1. For inquiries, contact research@dockfix.dev.*
 
-*AgentGuard is available under the LGPL v3 license at https://github.com/dockfixlabs/agentguard and https://pypi.org/project/agentguard/.*
+*AgentGuard is available under the LGPL v3 license at https://github.com/dockfixlabs/agentguard and https://pypi.org/project/dfx-agentguard/.*
