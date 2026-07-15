@@ -1,6 +1,6 @@
 # Why AI Agents Need SAST: 951 Findings in 7 Frameworks
 
-**Draft — Not Published — Pending Owner Approval**
+**Draft v2 — Sanitized — Pending Owner Approval**
 
 ---
 
@@ -42,23 +42,19 @@ We measured precision honestly:
 1. **Development sample** (50 findings): 36% → 100% after rule fixes
 2. **Independent sample** (50 new findings, zero overlap): **88%** (44 TP / 6 FP)
 
-The 100% on the development sample was overfitting. The 88% on the independent sample is the real number.
+The 100% on the development sample was overfitting. The 88% on the independent sample is the real number. We're publishing 88%, not 100%, because honesty builds trust.
 
 The 6 remaining false positives were all from one pattern: `def _update_prompts(self, ...)` being flagged as runtime self-modification. Fixed in v0.8.1.
 
-## 3 Most Interesting Findings
+## What We Found (No Exploit Details)
 
-### 1. LangChain ShellToolMiddleware (CVSS 10.0)
+We found vulnerabilities across all 7 frameworks spanning all 10 OWASP ASI categories. The most common patterns:
 
-LangChain's experimental ShellToolMiddleware allows agents to execute arbitrary shell commands. We reported this as GHSA-44f8-xvpq-8jcg with CVSS 10.0. Currently in triage.
+1. **Unrestricted tool access** — agents with direct `os.system()` or `subprocess` calls that accept user-controlled input
+2. **Credential exposure in source** — real-looking API keys committed in example files
+3. **Missing trust boundaries** — agent code that can modify its own runtime behavior
 
-### 2. AutoGen Docker Mount Exposure
-
-AutoGen's Docker code executor mounts the host filesystem into the container with broad permissions. This allows agent code to access sensitive host files.
-
-### 3. CAMEL Credential Exposure
-
-Multiple CAMEL example files contained real-looking API keys in source code, committed to the repository.
+Several findings have been reported privately via GitHub Security Advisories. We won't disclose specifics until the responsible disclosure window closes.
 
 ## Why Existing Tools Miss This
 
@@ -88,9 +84,9 @@ Outputs Markdown, JSON, or SARIF for GitHub Code Scanning integration.
 
 ## Links
 
-- GitHub: https://github.com/dockfixlabs/agentguard
-- PyPI: https://pypi.org/project/dfx-agentguard/
-- OWASP ASI: https://owasp.org/www-project-agentic-security-initiative/
+- GitHub: <https://github.com/dockfixlabs/agentguard>
+- PyPI: <https://pypi.org/project/dfx-agentguard/>
+- OWASP ASI: <https://owasp.org/www-project-agentic-security-initiative/>
 
 ---
 

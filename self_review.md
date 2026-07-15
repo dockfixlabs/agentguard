@@ -58,5 +58,35 @@
 2. Remove specific vulnerability details from blog post (keep framework names, remove exploit details)
 3. Focus on GitHub Discovery — get the repo in front of developers
 
-### Review #3 — [next session]
+### Review #3 — 2026-07-15 14:25 GMT
+
+### Question: Is what I've accomplished built on verified facts or optimistic assumptions?
+
+**Verified facts:**
+- v0.8.1 on PyPI — `pip install dfx-agentguard` gives 0.8.1, verified
+- v0.8.1 on GitHub main — all 139 tests pass
+- LangChain GHSA: 10 days in triage, 0 comments, 0 response
+- AutoGen #7917/#7918: open with technical discussion (3 comments each)
+- GitHub: 1 star, 0 forks, 291 unique clones, 22 unique visitors
+- No direct competitor in AI agent SAST
+- Blog post draft v2 sanitized — no exploit details
+
+**Warning flags:**
+- 963 total clones but 0 forks and 0 external issues = people clone, try, forget
+- LangChain GHSA 10 days with 0 response — may never get CVE
+- 7 open issues (5 are ours: 2 AutoGen + 3 GHSAs) = 0 external engagement
+- Dify and Haystack GHSAs are weak — should consider closing to maintain credibility
+
+**Decisions made this session:**
+1. Uploaded v0.8.1 to PyPI — done
+2. Sanitized blog post (removed exploit details) — ready for owner review
+3. Identified awesome-lists targets (awesome-ai-agents 28K, awesome-gpt-security 662)
+4. Need owner approval before submitting to awesome-lists or posting blog (external action)
+
+**Actions needed from owner:**
+1. Review blog post draft — approve for Reddit posting
+2. Approve awesome-list submission
+3. Decide on closing weak Dify/Haystack GHSAs
+
+### Review #4 — [next session]
 
