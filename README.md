@@ -4,7 +4,7 @@
 
 [![PyPI](https://img.shields.io/pypi/v/dfx-agentguard?style=flat-square&logo=pypi&logoColor=white&color=1f6feb)](https://pypi.org/project/dfx-agentguard/)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10+-3776AB?style=flat-square&logo=python&logoColor=white)](https://python.org)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
+[![License: LGPL v3](https://img.shields.io/badge/License-LGPL_v3-blue?style=flat-square)](LICENSE)
 [![CI](https://img.shields.io/badge/CI-GitHub%20Actions-2088FF?style=flat-square&logo=github-actions&logoColor=white)](https://github.com/dockfixlabs/agentguard/actions)
 [![OWASP ASI](https://img.shields.io/badge/OWASP-ASI%20Top%2010-orange?style=flat-square)](https://owasp.org/www-project-agentic-security-initiative/)
 
@@ -61,6 +61,11 @@ scheduled for fix in v0.8.1.
 **Methodology:** 50 findings were randomly sampled from 951 CONFIRMED results, 
 completely disjoint from the development/fix sample. Each finding was verified by 
 reading the actual source code at the reported line with surrounding context.
+
+
+## Roadmap
+
+See [ROADMAP.md](ROADMAP.md) for the full 2026–2027 roadmap. Current phase: **Phase 1 — Prove Technical Value** (complete). Next: **Phase 2 — Build Audience**.
 
 
 ## Sovereign Security Audit 2026
