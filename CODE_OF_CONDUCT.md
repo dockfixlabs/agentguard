@@ -1,4 +1,4 @@
-﻿# Code of Conduct
+# Code of Conduct
 
 ## Our Pledge
 
@@ -24,7 +24,7 @@ Examples of unacceptable behavior:
 
 ## Enforcement
 
-Instances of abusive, harassing, or otherwise unacceptable behavior may be reported to the repository maintainers at **security@dockfixlabs.dev**. All complaints will be reviewed and investigated promptly and fairly.
+Instances of abusive, harassing, or otherwise unacceptable behavior may be reported to the repository maintainers at **admin@dockfixlabs.dev**. All complaints will be reviewed and investigated promptly and fairly.
 
 ## Attribution
 

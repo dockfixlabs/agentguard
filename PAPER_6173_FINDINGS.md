@@ -391,7 +391,7 @@ This study presents the first large-scale, multi-framework static analysis of AI
 
 The 1,764 critical-severity findings we report are not edge cases. They represent structural vulnerabilities in the architectural patterns that define modern AI agent systems: LLM output flowing unsanitized into shell commands, agent memory acting as a persistent injection vector, multi-agent state shared without isolation, and execution loops with no termination guarantees. These patterns exist not because framework developers are negligent, but because the security community has not yet adapted its tools and taxonomies to the agent paradigm.
 
-**AgentGuard v0.8.1** is our contribution toward closing this gap. It is available as an open-source tool on PyPI (`pip install agentguard`) and GitHub (`github.com/dockfixlabs/agentguard`), with the 22-rule detection corpus released under the LGPL v3 license. We encourage framework maintainers to integrate agent-aware SAST into their development workflows, application developers to include it in their CI/CD pipelines, and the broader security research community to extend and improve upon the detection rules we have published.
+**AgentGuard v0.8.1** is our contribution toward closing this gap. It is available as an open-source tool on PyPI (`pip install dfx-agentguard`) and GitHub (`github.com/dockfixlabs/agentguard`), with the 22-rule detection corpus released under the LGPL v3 license. We encourage framework maintainers to integrate agent-aware SAST into their development workflows, application developers to include it in their CI/CD pipelines, and the broader security research community to extend and improve upon the detection rules we have published.
 
 The AI agent revolution will not wait for security to catch up. But with domain-aware tooling, systematic analysis, and community-wide adoption of frameworks like the OWASP ASI Top 10, we can ensure that the agents we build are worthy of the trust we place in them.
 
@@ -399,7 +399,7 @@ The AI agent revolution will not wait for security to catch up. But with domain-
 
 ## 7. References
 
-[1] OWASP Foundation. "OWASP Top 10 for Agentic Security Incidents (ASI)." 2025. https://owasp.org/www-project-top-10-for-agentic-security-incidents/
+[1] OWASP Foundation. "OWASP Top 10 for Agentic Security Incidents (ASI)." 2025. https://genai.owasp.org/
 
 [2] CWE Project. "CWE-1188: Insecure Default Initialization of Resource." MITRE Corporation. https://cwe.mitre.org/data/definitions/1188.html
 
