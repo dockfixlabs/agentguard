@@ -5,6 +5,16 @@ All notable changes to AgentGuard will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.8.1] - 2026-07-12
+
+### Fixed
+- All 6 remaining false positives fixed (single pattern: `def _update_prompts` flagged as ASI10 self-modification)
+- CLI version now reads from `__version__` instead of hardcoded string
+
+### Changed
+- License: MIT → LGPL v3 (protects core from cloud vendor appropriation; apps/extensions remain MIT-compatible)
+- README precision claim: "scheduled for fix" → confirmed fixed; added license row to precision table
+
 ## [0.8.0] - 2026-07-08
 
 ### Added

@@ -1,4 +1,5 @@
 __pycache__/
+test_output/
 *.py[cod]
 *$py.class
 *.egg-info/
@@ -17,3 +18,33 @@ htmlcov/
 *.so
 .DS_Store
 Thumbs.db
+
+# Internal scripts (research/development tools, not part of the package)
+aggregate_results.py
+auto_verdict.py
+benchmark_pipeline.py
+benchmark_quick.py
+check_pypi.py
+check_stats.py
+competitor_analysis.py
+debug*.py
+diagnose_lost_tps.py
+extract_*.py
+final_verdict.py
+find_our_ghsas.py
+full_*.py
+independent_*.py
+manual_verify.py
+print_summary.py
+rescan_*.py
+test_debug*.py
+test_pipeline.py
+
+# Internal documents (not for public consumption)
+blog_post_draft.md
+reddit_post_*.md
+release_notes_*.md
+decisions.md
+strategy.md
+self_review.md
+trusted_publishing.md

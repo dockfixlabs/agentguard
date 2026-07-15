@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from agentguard import __version__
+
 import sys
 
 import click
@@ -19,7 +21,7 @@ from agentguard.auto_reporter import (
 
 
 @click.group(invoke_without_command=True)
-@click.version_option(version="0.8.0", prog_name="agentguard")
+@click.version_option(version=__version__, prog_name="agentguard")
 @click.argument("target", default=".", type=click.Path(exists=True), required=False)
 @click.option(
     "--format", "output_format",

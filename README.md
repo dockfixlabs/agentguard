@@ -3,10 +3,10 @@
 > Autonomous security scanner for AI agents. Detects prompt injection, tool abuse, data exfiltration, and OWASP ASI Top 10 vulnerabilities in agent code.
 
 [![PyPI](https://img.shields.io/pypi/v/dfx-agentguard?style=flat-square&logo=pypi&logoColor=white&color=1f6feb)](https://pypi.org/project/dfx-agentguard/)
-[![Python 3.10+](https://img.shields.io/badge/Python-3.10+-3776AB?style=flat-square&logo=python&logoColor=white)](https://python.org)
+[![Python 3.10+](https://img.shields.io/badge/Python-3.10+-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
 [![License: LGPL v3](https://img.shields.io/badge/License-LGPL_v3-blue?style=flat-square)](LICENSE)
 [![CI](https://img.shields.io/badge/CI-GitHub%20Actions-2088FF?style=flat-square&logo=github-actions&logoColor=white)](https://github.com/dockfixlabs/agentguard/actions)
-[![OWASP ASI](https://img.shields.io/badge/OWASP-ASI%20Top%2010-orange?style=flat-square)](https://owasp.org/www-project-agentic-security-initiative/)
+[![OWASP ASI](https://img.shields.io/badge/OWASP-ASI%20Top%2010-orange?style=flat-square)](https://genai.owasp.org/)
 
 ---
 
@@ -36,6 +36,8 @@ Existing tools (Bandit, Semgrep, CodeQL) scan for traditional vulnerabilities. A
 | SARIF Output | Yes | Yes | Yes | No |
 | Pre-commit Hook | Yes | Yes | No | No |
 | GitHub Action | Yes | Yes | Yes | No |
+
+*Comparison based on author's assessment of default rule sets (v0.8.1 vs Semgrep OSS v1.x, CodeQL default queries, Bandit v1.7). "Partial" indicates some coverage via general-purpose rules but no agent-specific detection.*
 
 ## Live Demo
 
@@ -128,6 +130,10 @@ Options:
   --exit-code / --no-exit-code  Exit non-zero if findings found (default: on)
   --min-severity [CRITICAL|HIGH|MEDIUM|LOW|INFO]  Minimum severity to report
   --include-tests               Include test files in scan (default: skip)
+  --no-fp-filter                Disable false positive filtering
+  --no-classify                 Disable finding classification
+  --auto-report PATH            Generate auto Markdown audit report
+  --ci                          CI/CD concise output mode
   --help                        Show help
 ```
 
@@ -180,7 +186,7 @@ jobs:
 ### Drop-in GitHub Action
 
 ```yaml
-- uses: dockfixlabs/agentguard@v0.4.0
+- uses: dockfixlabs/agentguard@v0.8.1
   with:
     path: src/
     format: sarif
@@ -191,7 +197,7 @@ jobs:
 ```yaml
 repos:
   - repo: https://github.com/dockfixlabs/agentguard
-    rev: v0.4.0
+    rev: v0.8.1
     hooks:
       - id: agentguard
         args: ["--min-severity", "HIGH"]
@@ -254,7 +260,7 @@ TOTAL            28         26    —
 | [mcp-scanner](https://github.com/dockfixlabs/mcp-scanner) | MCP server configuration scanner |
 | [agentguard-app](https://github.com/dockfixlabs/agentguard-app) | GitHub App for automated PR reviews |
 | [agentguard-vscode](https://github.com/dockfixlabs/agentguard-vscode) | VS Code extension |
-| [agentguard-benchmark](https://github.com/dockfixlabs/agentguard-benchmark) | Benchmark suite (28 samples) |
+| [agentguard-benchmark](https://github.com/dockfixlabs/agentguard-benchmark) | Benchmark suite (56 samples) |
 
 ## Roadmap
 
@@ -308,5 +314,5 @@ Built by [Dockfix Labs](https://github.com/dockfixlabs). Built for the AI agent 
 | [agentguard-benchmark](https://github.com/dockfixlabs/agentguard-benchmark) | Detection benchmark suite | `git clone` |
 | [agentguard-demo](https://github.com/dockfixlabs/agentguard-demo) | Live demo with Code Scanning | `git clone` |
 
-**22 detection rules | 139 tests | 50 benchmark samples | OWASP ASI Top 10 | 88% precision**
-**GitHub Action:** [dockfixlabs/agentguard@v1](https://github.com/marketplace/actions/agentguard)
+**22 detection rules | 139 tests | 28 benchmark samples | OWASP ASI Top 10 | 88% precision**
+**GitHub Action:** [dockfixlabs/agentguard@v1](https://github.com/marketplace/actions/agentguard-security-scan)
