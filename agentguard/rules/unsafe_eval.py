@@ -5,6 +5,8 @@ import re
 from agentguard.models import Finding, OWASP_ASI, Rule, Severity
 
 # Dynamic code execution patterns
+# The re.I flag on the pattern matching (not used inside re.compile tuples)
+# ensures case-insensitive matching at scan time.
 EXEC_PATTERNS = [
     (re.compile(r'\beval\s*\('), "eval() -- arbitrary code execution from string", Severity.CRITICAL, 0.95),
     (re.compile(r'\bexec\s*\('), "exec() -- arbitrary code execution", Severity.CRITICAL, 0.95),
@@ -18,6 +20,14 @@ EXEC_PATTERNS = [
     (re.compile(r'yaml\.load\s*\('), "yaml.load() without SafeLoader -- deserialization risk", Severity.HIGH, 0.75),
     (re.compile(r'marshal\.loads?\s*\('), "marshal.load() -- unsafe deserialization", Severity.HIGH, 0.8),
 ]
+
+# FP exclusion: lines that are regex pattern definitions used for security scanning.
+# re.compile(r'...eval...') or re.compile(r'...exec...') are DETECTOR patterns,
+# not actual eval/exec calls. Same for __import__, subprocess, os.system within r'...' strings.
+REGEX_DETECTOR_LINE = re.compile(
+    r'r["\'](?:[^"\'\\]|\\[\'"])*\b(?:eval|exec|__import__|compile|getattr|subprocess|os\.system|os\.popen|pickle\s*\.\s*loads?|yaml\.load|marshal\s*\.\s*loads?)\b',
+    re.I
+)
 
 # Insecure output handling: LLM output rendered without escaping
 OUTPUT_PATTERNS = [
@@ -48,6 +58,11 @@ class UnsafeEvalRule(Rule):
         findings = []
         stripped = line.strip()
         if stripped.startswith("#") or stripped.startswith("//"):
+            return findings
+
+        # Skip regex detector patterns — these are patterns FOR detecting,
+        # not actual code execution (same pattern as trust_boundary.py fix)
+        if REGEX_DETECTOR_LINE.search(stripped):
             return findings
 
         for pattern, desc, sev, confidence in EXEC_PATTERNS:
