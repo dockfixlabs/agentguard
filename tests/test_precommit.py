@@ -1,14 +1,30 @@
 """Tests for pre-commit hook integration."""
-import tempfile, os, subprocess
+import tempfile, os
 from pathlib import Path
 from agentguard.precommit import install_precommit_hook, uninstall_precommit_hook
 
+import pytest
 
+# Skip these tests if pre-commit binary is not available
+try:
+    import subprocess
+    subprocess.run(["pre-commit", "--version"], capture_output=True, check=True)
+    PRE_COMMIT_INSTALLED = True
+except (subprocess.CalledProcessError, FileNotFoundError):
+    PRE_COMMIT_INSTALLED = False
+
+needs_precommit = pytest.mark.skipif(
+    not PRE_COMMIT_INSTALLED,
+    reason="pre-commit is not installed in this environment"
+)
+
+
+@needs_precommit
 def test_install_precommit_new_config():
     """Install hook in a clean directory with no existing config."""
     with tempfile.TemporaryDirectory() as tmp:
         success = install_precommit_hook(tmp)
-        # May fail if pre-commit is not installed
+        assert success is True
         config = Path(tmp) / ".pre-commit-config.yaml"
         assert config.exists()
         content = config.read_text()
@@ -36,6 +52,7 @@ def test_uninstall_precommit():
         assert "agentguard" not in content
 
 
+@needs_precommit
 def test_install_preserves_existing_config():
     """Adding agentguard should not destroy existing hooks."""
     with tempfile.TemporaryDirectory() as tmp:
@@ -52,6 +69,7 @@ def test_install_preserves_existing_config():
         assert "agentguard" in content
 
 
+@needs_precommit
 def test_install_idempotent():
     """Installing twice should not duplicate."""
     with tempfile.TemporaryDirectory() as tmp:
