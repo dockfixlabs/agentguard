@@ -74,6 +74,31 @@ RULE_FP_PATTERNS: dict[str, list[tuple[re.Pattern, str]]] = {
         # def _update_prompts, def update(self, ...) — method definitions, not self-modification
         (re.compile(r'^\s*def\s+(?:update|_update)\w*\s*\(', re.I),
          "Method definition — update method, not runtime self-modification"),
+        # Security scanner / detector code — analyzing patterns, not executing them
+        (re.compile(r'\b(?:re\.compile|re\.match|re\.search|re\.findall|regex_pattern|_PATTERN|_RE_)\b', re.I),
+         "Regex pattern in security scanner — analyzing code, not self-modifying"),
+        # Import statements and module loading for static analysis
+        (re.compile(r'^(?:import |from )\w+\s+import\b', re.I),
+         "Import statement — module loading for analysis, not runtime self-modification"),
+        # Security research / audit code
+        (re.compile(r'\b(?:audit|scanner|detector|analyz|security.*research|vulnerability.*scan)\b', re.I),
+         "Security scanner/audit code — detecting vulnerabilities, not creating them"),
+        # Compile() in regex/parser context, not code injection
+        (re.compile(r're\.compile\(', re.I),
+         "Regex compilation — pattern matching, not runtime code compilation"),
+        # setattr/getattr for introspection/meta-programming in frameworks
+        (re.compile(r'\b(?:getattr|hasattr)\s*\(', re.I),
+         "Attribute introspection — read-only, not self-modification"),
+        # File path references in comments/docs, not runtime execution
+        (re.compile(r'^\s*#.*(?:/etc|/var|/root|/proc|/home|docker\s*socket)', re.I),
+         "Comment referencing paths — documentation, not runtime access"),
+        # Volume mount in Dockerfile/Makefile descriptions (strings in code)
+        (re.compile(r'["\'](?:volumes|mounts|binds)["\']\s*:', re.I),
+         "Dictionary key for mount config — not actual mount operation"),
+        # ASI rule definitions that contain security keywords in regex pattern strings
+        # These regex patterns DETECT dangerous behaviors — they don't PERFORM them
+        (re.compile(r'r\'(?:[^\'\\]|\\\')*\b(?:__import__|importlib|import_module|monkey_patch|__code__|__class__|__file__|setattr|compile)\b', re.I),
+         "Security rule regex pattern for detecting self-modification — not performing it"),
     ],
     "ASI06-UNSAFE-EVAL": [
         # PyTorch model.eval()
@@ -85,6 +110,15 @@ RULE_FP_PATTERNS: dict[str, list[tuple[re.Pattern, str]]] = {
         # eval/exec in prompt strings (not executable)
         (re.compile(r'^\s*["\']', re.I),
          "String literal — not executable code"),
+        # eval/exec mentioned in security scanner patterns (re.compile)
+        (re.compile(r're\.compile\s*\(.*\b(?:eval|exec)\b', re.I),
+         "Security scanner regex for eval/exec detection — not actual eval/exec"),
+        # eval/exec in docstrings, comments, or security documentation
+        (re.compile(r'^\s*(?:#|"""|\'\'\').*\b(?:eval|exec)\b', re.I),
+         "Documentation/comment mentioning eval/exec — not executable code"),
+        # regex_escape or similar: eval as literal string not function call
+        (re.compile(r'["\']eval["\']|["\']exec["\']', re.I),
+         "String literal 'eval'/'exec' — not function call"),
     ],
     "ASI04-EXCESSIVE-AGENCY": [
         # chmod setting restrictive permissions (0o700, 0o600) — securing, not escalating

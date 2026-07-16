@@ -29,12 +29,18 @@ VOLUME_MOUNT = re.compile(
 )
 
 # Real self-modification: requires actual code manipulation patterns
+# NOTE: compile() alone is NOT self-modification — it's a builtin for regex/AST.
+# Only flag compile() when combined with user input or dynamic sources.
+# CRITICAL: re.compile(r'...eval...') is NOT self-modification — it's a regex
+# pattern literal used by security scanners. Only flag binascii.compile() or
+# compile() called with actual variable/user input (not regex string literals).
 SELF_MODIFY = re.compile(
     r'(?:setattr\s*\(\s*self|'
-    r'importlib|import_module|__import__|compile\s*\(|'
+    r'importlib|import_module|__import__|'
+    r'(?<!re\.)compile\s*\(\s*(?:[^r]|".*?(?:input|user|request|query|message)\b)|'  # NOT re.compile, or actual user input
     r'monkey_patch|monkeypatch|hot.?patch|'
     r'__file__\s*.*write|write\s*\(.*__file__|'
-    r'\.__code__|\.__class__\s*=)',
+    r'(?<!\.)__code__|(?<!\.)__class__\s*=)',  # standalone, not attribute access
     re.I
 )
 
@@ -46,11 +52,23 @@ DB_ACCESS = re.compile(
 
 # FP exclusion: skip class defs, I/O writes, event handlers — but NOT when the line
 # contains actual self-modification keywords (monkey_patch, setattr, __code__, etc.)
+# ALSO skip any line whose primary content is a regex pattern string (r'...' or r"...")
+# containing self-modification-detectable keywords — these are security scanner
+# detection patterns, not actual vulnerabilities.
 FP_EXCLUDE = re.compile(
     r'^\s*(?:class\s+|#'
     r'|f\.write|f\.read|file\.write|file\.read'
     r'|log_|on_|handle_|_callback|_handler|_event'
-    r'|\.json|\.md|\.txt|\.csv)',
+    r'|\.json|\.md|\.txt|\.csv'
+    r'|r["\'](?:[^"\'\\]|\\[\'"])*\b(?:__import__|importlib|import_module|monkey_patch|__code__|__class__|__file__|setattr|compile)\b'
+    r'|\(re\.compile)',  # tuple/dict entries with re.compile
+    re.I
+)
+
+# Lines that are purely regex pattern definitions used for security scanning —
+# these are the detectors, not the vulnerabilities.
+REGEX_PATTERN_LINE = re.compile(
+    r'r["\'](?:[^"\'\\]|\\[\'"])*\b(?:__import__|importlib|import_module|monkey_patch|__code__|__class__|__file__|setattr|compile|eval|exec)\b',
     re.I
 )
 
@@ -120,7 +138,7 @@ class TrustBoundaryRule(Rule):
                 confidence=0.7,
             ))
 
-        if SELF_MODIFY.search(stripped) and not FP_EXCLUDE.search(stripped) and not DEF_EXCLUDE.search(stripped):
+        if SELF_MODIFY.search(stripped) and not FP_EXCLUDE.search(stripped) and not DEF_EXCLUDE.search(stripped) and not REGEX_PATTERN_LINE.search(stripped):
             findings.append(Finding(
                 rule_id=self.rule_id, rule_name=self.rule_name,
                 severity=Severity.CRITICAL, owasp=self.owasp,
