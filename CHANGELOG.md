@@ -5,6 +5,21 @@ All notable changes to AgentGuard will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.8.3] - 2026-07-16
+
+### Fixed
+- **Self-scan false positive reduction (87%)**: 249 → 32 findings when scanning AgentGuard's own codebase
+- ASI10 Trust Boundary: 200+ → 5 findings — added REGEX_PATTERN_LINE exclusion for security detector patterns
+- ASI06 Unsafe Eval: 20 → 12 findings — added REGEX_DETECTOR_LINE to skip `r'...eval/exec/...'` detector strings
+- 7 exclusion patterns added for ASI10 in false_positive_filter.py
+- 3 exclusion patterns added for ASI06 in false_positive_filter.py
+- Precommit tests now skip cleanly when `pre-commit` binary is not installed (3 skipped, 0 failed)
+
+## [0.8.2] - 2026-07-15
+
+### Fixed
+- GHSA-44f8: ShellToolMiddleware CVSS 10.0 disclosure analysis + LGPL v3 classifier
+
 ## [0.8.1] - 2026-07-12
 
 ### Fixed
