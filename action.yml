@@ -1,4 +1,4 @@
-name: "AgentGuard Security Scan"
+﻿name: "AgentGuard Security Scan"
 description: "Scan AI agent code for OWASP ASI Top 10 vulnerabilities"
 branding:
   icon: "shield"
@@ -39,3 +39,8 @@ runs:
           agentguard ${{ inputs.path }} $ARGS
         fi
       shell: bash
+    - name: Upload SARIF results
+      uses: github/codeql-action/upload-sarif@v3
+      with:
+        sarif_file: agentguard-results.sarif
+        category: agentguard
